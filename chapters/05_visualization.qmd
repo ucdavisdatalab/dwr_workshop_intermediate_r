@@ -1,5 +1,3 @@
-# (PART) Data Visualization & Analysis in R {-}
-
 # Data Visualization in R
 
 We are here today to learn how to do data visualization in R. Some of you will have recently done the Principles of Data Visualization workshop. There you were given a checklist of questions to guide you as you create a plot, which we are going to use today. [The checklist is here](./img/graphics_checklist.pdf).

@@ -1,5 +1,3 @@
-# (PART) Cleaning & Reshaping Data {-}
-
 String & Date Processing
 ========================
 

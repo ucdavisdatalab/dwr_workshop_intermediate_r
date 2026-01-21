@@ -1,0 +1,63 @@
+project:
+  type: book
+  render:
+    - "index.qmd"
+    - "chapters/*.qmd"
+  execute-dir: project  # working directory is always root of project
+  output-dir: "_build/"
+
+book:
+  title: "Intermediate R"
+  author:
+    - "Nick Ulle"
+    - "Wesley Brooks"
+  date: now
+  chapters:
+    - "index.qmd"
+    - part: "Cleaning & Reshaping Data"
+      chapters:
+        - "chapters/01_string_date_processing.qmd"
+        - "chapters/02_reshaping_data.qmd"
+    - part: "Writing & Debugging Code"
+      chapters:
+        - "chapters/03_writing_r_scripts.qmd"
+        - "chapters/04_debugging.qmd"
+    - part: "Visualizing & Analyzing Data"
+      chapters:
+        - "chapters/05_visualization.qmd"
+    - part: "Thinking in R"
+      chapters:
+        - "chapters/06_language_fundamentals.qmd"
+        - "chapters/07_language_fundamentals_2.qmd"
+  appendices:
+    - "chapters/appendices/references.qmd"
+    - "chapters/appendices/assessment.qmd"
+  repo-url: "https://github.com/ucdavisdatalab/workshop_intermediate_r"
+  repo-actions: [issue, source]
+  sidebar:
+    logo: "images/datalab-logo-full-color-rgb.png"
+    logo-alt: "The logo of the UC Davis DataLab."
+    logo-href: "https://datalab.ucdavis.edu/"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    include-in-header:
+      - text: |
+          <style>
+          .callout.callout-style-default .callout-body {
+            padding: 0 1.5rem 0;
+          }
+          .cell-output-stdout {
+            overflow-y: scroll;
+            max-height: 30rem;
+            margin-bottom: 0.75rem;
+          }
+          </style>
+  # Uncomment to also generate a PDF:
+  # pdf: default
+
+# Cache computations from each chapter:
+execute:
+  freeze: auto

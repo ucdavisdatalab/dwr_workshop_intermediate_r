@@ -1,5 +1,3 @@
-# (PART) Writing & Debugging R Code {-}
-
 Best Practices for Writing R Scripts
 ====================================
 

@@ -1,7 +1,5 @@
-# (PART) Backmatter {-}
-
-References {-}
-==============
+References
+==========
 
 This reader would not have been possible without the many excellent reference
 texts created by other members of the R community. Now that you've completed
@@ -15,7 +13,7 @@ for package/software development.
 
 Other texts I've found useful include:
 
-* [What They Forgot to Teach You About R][r-wtf] by Bryan & Hester. 
+* [What They Forgot to Teach You About R][r-wtf] by Bryan & Hester.
 * [The Art of R Programming][art-of-r] by Matloff (of UC Davis). A general
   reference on R programming, with more of a computer science and software
   engineering perspective than most R texts.
