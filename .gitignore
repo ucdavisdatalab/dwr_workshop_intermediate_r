@@ -1,3 +1,8 @@
+# Project-specific
+data/
+sandboxes/
+assessment/solutions/
+
 # General
 .DS_Store
 .AppleDouble
@@ -9,8 +14,6 @@
 
 # Thumbnails
 ._*
-data/
-*.md
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100
@@ -32,3 +35,7 @@ Temporary Items
 _main*
 docs/*.md
 .Rproj.user
+_bookdown_files/
+
+# DVC
+.dvc/
