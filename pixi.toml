@@ -1,0 +1,27 @@
+[workspace]
+authors = [
+  "Nick Ulle <nick.ulle@gmail.com>",
+  "Wesley Brooks"
+]
+channels = ["conda-forge"]
+name = "intermediate-r"
+description = "Reader for the Intermediate R workshop series."
+platforms = ["linux-64", "osx-64", "osx-arm64", "win-64"]
+version = "2026.winter.1"  # <year>.<quarter>.<revision #>
+
+[tasks]
+build = { cmd = "quarto render", description = "Build the reader." }
+publish = { cmd = "ghp-import --no-jekyll --no-history --push _build", description = "Publish the reader to the `gh-pages` branch on GitHub." }
+clean = { cmd = "rm -rf _build/", description = "Remove the build directory." }
+rebuild = { depends-on = ["clean", "build"], description = "Remove the build directory and build the reader." }
+
+[dependencies]
+ghp-import = ">=2.1.0,<3"
+r = ">=4.5,<4.6"
+quarto = ">=1.8.27,<2"
+
+[activation.env]
+# Make sure R only searches for packages within the Pixi environment.
+PIXI_R_LIBS = "$CONDA_PREFIX/lib/R/library"
+R_LIBS = "$PIXI_R_LIBS"
+R_LIBS_USER = "$PIXI_R_LIBS"

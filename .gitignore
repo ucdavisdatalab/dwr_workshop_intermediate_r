@@ -39,3 +39,6 @@ _bookdown_files/
 
 # DVC
 .dvc/
+# pixi environments
+.pixi/*
+!.pixi/config.toml
