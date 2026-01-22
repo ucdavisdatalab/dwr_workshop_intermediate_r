@@ -493,11 +493,13 @@ head(penguins) |>
   kable()
 ```
 
-Now imagine that you are trying to use a script that was written by a previous member of your lab. Let's copy it from its home on the web, [here](https://raw.githubusercontent.com/ucdavisdatalab/workshop_intermediate_r/main/code/debug_case_study.R) to a new blank script on our computer(s). The script provides a function that splits the penguins into groups according to some grouping factors like species and sex, then plots the uncertainty in the average penguin mass per group. The plot is shown below for mass by species.
+Now imagine that you are trying to use a script that was written by a previous
+member of your lab. Let's copy it from its home on the web,
+[here](https://raw.githubusercontent.com/ucdavisdatalab/workshop_intermediate_r/main/R/debug_case_study.R) to a new blank script on our computer(s). The script provides a function that splits the penguins into groups according to some grouping factors like species and sex, then plots the uncertainty in the average penguin mass per group. The plot is shown below for mass by species.
 
 ```{r load-case-study}
 #| echo: false
-source("code/debug_case_study.R")
+source("R/debug_case_study.R")
 ```
 
 
