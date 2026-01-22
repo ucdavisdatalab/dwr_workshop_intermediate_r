@@ -324,37 +324,74 @@ You can learn more about the `.Rprofile` file and R's startup process at
 
 ## Debugging
 
-It can be very frustrating when your computer doesn't do what you expect! **Debugging** code is the process of addressing why your computer is doing something unexpected. Almost anything you do in R will be a process made up of many steps, executed line-by-line in sequential order. In general, you should proceed by breaking your workflow into small parts and confirming, step-by-step, that the result is what you expected.
+It can be very frustrating when your computer doesn't do what you expect!
+**Debugging** code is the process of addressing why your computer is doing
+something unexpected. Almost anything you do in R will be a process made up of
+many steps, executed line-by-line in sequential order. In general, you should
+proceed by breaking your workflow into small parts and confirming,
+step-by-step, that the result is what you expected.
 
 ### Read Your Errors and Warnings
-Your computer is dumb and it will do exactly what you tell it to do. There are two ways this can cause problems: if you ask the impossible or if your instructions take you to the wrong place. If you tell R to do something impossible, it will generate an error or a warning, which will include a message that tries to tell you what went wrong. Read the messages! Often, it will describe the problem and suggest a solution.
+
+Your computer is dumb and it will do exactly what you tell it to do. There are
+two ways this can cause problems: if you ask the impossible or if your
+instructions take you to the wrong place. If you tell R to do something
+impossible, it will generate an error or a warning, which will include a
+message that tries to tell you what went wrong. Read the messages! Often, it
+will describe the problem and suggest a solution.
 
 ```{r add-characters}
 #| error: true
 "seven" + 5
 ```
 
-We can't add the word seven to the number five. To make this code work, we have to change `"seven"` to `7`.
+We can't add the word seven to the number five. To make this code work, we have
+to change `"seven"` to `7`.
 
 ```{r file-not-exist}
 #| error: true
 read.csv("nope")
 ```
 
-The `read.csv()` function is used to import a data file that was saved in comma-separated format. In this case, we have asked `read.csv()` to read a file that doesn't exist. The error message doesn't tell you this exactly, but it does say that R was unable to open a connection to the file. Since the functions built into R are all pretty well tested, it makes sense to doubt the user input before doubting R. In this case, the only input was the file name, so a good first step is to check that the file actually exists.
+The `read.csv` function is used to import a data file that was saved in
+comma-separated format. In this case, we have asked `read.csv` to read a file
+that doesn't exist. The error message doesn't tell you this exactly, but it
+does say that R was unable to open a connection to the file. Since the
+functions built into R are all pretty well tested, it makes sense to doubt the
+user input before doubting R. In this case, the only input was the file name,
+so a good first step is to check that the file actually exists.
 
 ### Workflow Debugging
-Notice that I talked about the **workflow**, which is a broader concept than the code because it includes code, data, and how the code is used. Often you'll hit an error simply because you've changed your data since you first loaded it into R. In that case, restarting R and running your code in a clean environment might resolve the error without making any changes. Today we will focus on methods and tools for debugging, which will help you identify the reason that something unexpected happens. These lessons are relevant even if the error is not due to your code.
+
+Notice that I talked about the **workflow**, which is a broader concept than
+the code because it includes code, data, and how the code is used. Often you'll
+hit an error simply because you've changed your data since you first loaded it
+into R. In that case, restarting R and running your code in a clean environment
+might resolve the error without making any changes. Today we will focus on
+methods and tools for debugging, which will help you identify the reason that
+something unexpected happens. These lessons are relevant even if the error is
+not due to your code.
 
 ### Isolate the Problem
-The most important step when debugging an error is to locate it. There are two main strategies for doing this:
+
+The most important step when debugging an error is to locate it. There are two
+main strategies for doing this:
 
 * Work forward through the code from the beginning.
 * Work backward from the source of an error.
 
-Both strategies are valid and powerful. Working backward is probably faster for experienced R users because errors and messages have patterns that you learn to recognize over time. If you recognize the meaning of an error, you may be able to immediately identify its cause. The `traceback()` function is quite helpful for the "work backward" strategy, because it identifies the function where the error actually happened (which may be nested deeply within a function called by a line of code within another function.)
+Both strategies are valid and powerful. Working backward is probably faster for
+experienced R users because errors and messages have patterns that you learn to
+recognize over time. If you recognize the meaning of an error, you may be able
+to immediately identify its cause. The `traceback` function is quite helpful
+for the "work backward" strategy, because it identifies the function where the
+error actually happened (which may be nested deeply within a function called by
+a line of code within another function.)
 
-To work forward from the beginning may take longer than working backward, but it does have advantages. Often the source of an error comes before the line of code where the error occurs. Here's an example that builds upon an error we just saw a moment ago:
+To work forward from the beginning may take longer than working backward, but
+it does have advantages. Often the source of an error comes before the line of
+code where the error occurs. Here's an example that builds upon an error we
+just saw a moment ago:
 
 ```{r text-addition-error}
 #| error: true
@@ -362,18 +399,28 @@ num1 = "seven"
 num2 = 5
 sum(num1, num2)
 ```
-Even though the error occurs when we try to add `num1` and `num2`, the actual source of the error is that `num1 = "seven"` should be `num1 = 7`. When you debug by walking forward, you can stop after each line of code to confirm what has changed.
+
+Even though the error occurs when we try to add `num1` and `num2`, the actual
+source of the error is that `num1 = "seven"` should be `num1 = 7`. When you
+debug by walking forward, you can stop after each line of code to confirm what
+has changed.
 
 ### Functions for debugging
 
-R has several built-in functions to help with debugging. Here are a few of the most important.
+R has several built-in functions to help with debugging. Here are a few of the
+most important.
 
-- `traceback()` shows the **call stack**, which is the series of nested function calls that walk from the interactive prompt to the location of the error.
-- `stopifnot()` raises an error condition if your assumption about some object is wrong.
-- `browser()` pauses the running code and starts R's debugging system.
-- `debug()` inserts a call to `browser()` at the beginning of a function, so you can go step-by-step through its operation.
+* `traceback` shows the **call stack**, which is the series of nested function
+  calls that walk from the interactive prompt to the location of the error.
+* `stopifnot` raises an error condition if your assumption about some object
+  is wrong.
+* `browser` pauses the running code and starts R's debugging system.
+  `debug` inserts a call to `browser` at the beginning of a function, so you
+  can go step-by-step through its operation.
 
-Here's an example where we create a pair of functions and use `browser()` to start the debugger inside a loop:
+Here's an example where we create a pair of functions and use `browser` to
+start the debugger inside a loop:
+
 ```{r, eval = FALSE}
 # Run this in an R console.
 g = function(x, y) (1 + x) * y
@@ -391,9 +438,6 @@ f = function(n) {
 f(11)
 ```
 
-
-
-
 The most important debugger commands are:
 
 * `n` to run the next line
@@ -404,12 +448,11 @@ The most important debugger commands are:
 * `help` to print debugger help
 
 
-
 ### Other Functions
 
-The `debug()` function places a call to `browser()` at the beginning
-of a function. Use `debug()` to debug functions that you can't or don't want to
-edit. For example:
+The `debug` function places a call to `browser` at the beginning of a function.
+Use `debug` to debug functions that you can't or don't want to edit. For
+example:
 
 ```{r, eval = FALSE}
 # Run this in an R console.
@@ -421,7 +464,7 @@ debug(f)
 f(5, 5)
 ```
 
-You can use `undebug()` to reverse the effect of `debug()`:
+You can use `undebug` to reverse the effect of `debug`:
 
 ```{r, eval = FALSE}
 # Run this in an R console.
@@ -429,9 +472,9 @@ undebug(f)
 f(10, 20)
 ```
 
-The `debugonce()` function places a call to `browser()` at the beginning of a
+The `debugonce` function places a call to `browser` at the beginning of a
 function for the next call only. The idea is that you then don't have to call
-`undebug()`. For instance:
+`undebug`. For instance:
 
 ```{r, eval = FALSE}
 # Run this in an R console.
@@ -459,10 +502,17 @@ bad_fn = function(x, y) {
 bad_fn(3, 4)
 ```
 
-
-
 ### Debugging Case Study: Bootstrapping Average Penguin Mass
-Here is a more realistic example to demonstrate how debugging works in a practical code project. In this example, you take the role of a biologist studying penguins in Antarctica. You've captured and measured 344 penguins on three islands near the Palmer Station Long Term Ecological Research site and are doing some analysis with the data. The measurements include flipper length, bill width, sex, and body mass of the penguins. The data are available as the data object `penguins` in [Alison Horst's `palmerpenguins` package](https://allisonhorst.github.io/palmerpenguins/) so let's download and load that package now.
+
+Here is a more realistic example to demonstrate how debugging works in a
+practical code project. In this example, you take the role of a biologist
+studying penguins in Antarctica. You've captured and measured 344 penguins on
+three islands near the Palmer Station Long Term Ecological Research site and
+are doing some analysis with the data. The measurements include flipper length,
+bill width, sex, and body mass of the penguins. The data are available as the
+data object `penguins` in [Alison Horst's `palmerpenguins`
+package](https://allisonhorst.github.io/palmerpenguins/) so let's download and
+load that package now.
 
 ```{r install-palmer-penguins}
 #| eval: false
@@ -487,7 +537,11 @@ head(penguins) |>
 
 Now imagine that you are trying to use a script that was written by a previous
 member of your lab. Let's copy it from its home on the web,
-[here](https://raw.githubusercontent.com/ucdavisdatalab/workshop_intermediate_r/main/R/debug_case_study.R) to a new blank script on our computer(s). The script provides a function that splits the penguins into groups according to some grouping factors like species and sex, then plots the uncertainty in the average penguin mass per group. The plot is shown below for mass by species.
+[here](https://raw.githubusercontent.com/ucdavisdatalab/workshop_intermediate_r/main/R/debug_case_study.R)
+to a new blank script on our computer(s). The script provides a function that
+splits the penguins into groups according to some grouping factors like species
+and sex, then plots the uncertainty in the average penguin mass per group. The
+plot is shown below for mass by species.
 
 ```{r load-case-study}
 #| echo: false
@@ -501,9 +555,17 @@ source("R/debug_case_study.R")
 make_bootstrap_plots(penguins, "species")
 ```
 
-In the plot, the red dots are measured penguins within each group and the black boxplots show the variability in 1000 estimates of the group means. The estimates come from a process called the **bootstrap**. It works by taking samples from the data we already have (this is called **resampling**), in order to measure how different the samples are from each other. Statisticians do this because we often want to know how different our conclusions would be with completely new data, but we can't go back and collect the new data.
+In the plot, the red dots are measured penguins within each group and the black
+boxplots show the variability in 1000 estimates of the group means. The
+estimates come from a process called the **bootstrap**. It works by taking
+samples from the data we already have (this is called **resampling**), in order
+to measure how different the samples are from each other. Statisticians do this
+because we often want to know how different our conclusions would be with
+completely new data, but we can't go back and collect the new data.
 
-The functions work for multiple grouping factors. See how we can estimate the means of penguins grouped by species and sex, which helps us identify species where one sex is larger than the other:
+The functions work for multiple grouping factors. See how we can estimate the
+means of penguins grouped by species and sex, which helps us identify species
+where one sex is larger than the other:
 
 ```{r sex-and-species}
 #| message: false
@@ -511,7 +573,8 @@ The functions work for multiple grouping factors. See how we can estimate the me
 make_bootstrap_plots(penguins, "species", "sex")
 ```
 
-But when you group the penguins by species and island, the code generates an error. This is our bug:
+But when you group the penguins by species and island, the code generates an
+error. This is our bug:
 
 ```{r species-island-error}
 #| message: false
@@ -522,9 +585,20 @@ make_bootstrap_plots(penguins, "species", "island")
 
 #### Fixing The Bug
 
-As usual, our process is to isolate the bug, then identify its cause, and then to fix it. There are a lot of ways to do this, but they al begin with carefully reading the error message! In this case, we see that is `Error in indx[[i]] <- sample(1:N, size = 1): attempt to select less than one element in integerOneIndex`. The message gives us an explanation of the error and tells us what code generated the error. In this case there was an attempt to select less than one element from something while taking a random sample from the numbers from 1 to N.
+As usual, our process is to isolate the bug, then identify its cause, and then
+to fix it. There are a lot of ways to do this, but they al begin with carefully
+reading the error message! In this case, we see that is `Error in indx[[i]] <-
+sample(1:N, size = 1): attempt to select less than one element in
+integerOneIndex`. The message gives us an explanation of the error and tells us
+what code generated the error. In this case there was an attempt to select less
+than one element from something while taking a random sample from the numbers
+from 1 to N.
 
-There are many ways to isolate the location of the error. The `traceback()` function will work, or you could pepper the code with `print()` statements, or use the debugger to walk through the code until you hit the error. I'm going to include the `traceback()` function here, but we will also use the other methods in our exercise.
+There are many ways to isolate the location of the error. The `traceback`
+function will work, or you could pepper the code with `print` statements, or
+use the debugger to walk through the code until you hit the error. I'm going to
+include the `traceback` function here, but we will also use the other methods
+in our exercise.
 
 
 ```{r}
@@ -543,9 +617,14 @@ tb = '4: resample(group$body_mass_g, B = B) at debug_case_study.R#50
 cat(tb)
 ```
 
-The error is generated in the `resample()` function, which is one of the functions in the script you downloaded. You can identify which line of that code matches the code reported in the error message, which tells us that the error is generated on line 13 of `debug_case_study.R`.
+The error is generated in the `resample` function, which is one of the
+functions in the script you downloaded. You can identify which line of that
+code matches the code reported in the error message, which tells us that the
+error is generated on line 13 of `debug_case_study.R`.
 
-Remember that the location of an error and the cause of the error are not always the same thing. To try and understand the cause of the error, let's start the debugger by putting a `browser()` call just before line 13, like this:
+Remember that the location of an error and the cause of the error are not
+always the same thing. To try and understand the cause of the error, let's
+start the debugger by putting a `browser` call just before line 13, like this:
 
 ```{r resample-with-browser}
 #| eval: false
@@ -574,9 +653,17 @@ resample = function(data, B) {
 }
 ```
 
-Now when you run `make_bootstrap_plots(penguins, "species", "island")`, the debugger will start at the location where the error happens. Use RStudio's Environment pane to examine the values of variables, and then use the debugger controls to step forward and see how things update. Why aren't we seeing an error right away? It is probably because there are loops that run the same lines of code over and over again. Apparently the error only happens on certain passes through the loops.
+Now when you run `make_bootstrap_plots(penguins, "species", "island")`, the
+debugger will start at the location where the error happens. Use RStudio's
+Environment pane to examine the values of variables, and then use the debugger
+controls to step forward and see how things update. Why aren't we seeing an
+error right away? It is probably because there are loops that run the same
+lines of code over and over again. Apparently the error only happens on certain
+passes through the loops.
 
-Now we know that the bug has to be isolated not only on its line, but also in its time through the loop. Let's replace the call to `browser()` with a `message()` to identify what pass through the loops causes the error:
+Now we know that the bug has to be isolated not only on its line, but also in
+its time through the loop. Let's replace the call to `browser` with a `message`
+to identify what pass through the loops causes the error:
 
 ```{r resample-with-messages}
 #| eval: false
@@ -605,17 +692,28 @@ resample = function(data, B) {
 }
 ```
 
-
-Weirdly, it looks like the first pass through the outer loop (`b=1`) but not the first time we've done the first pass (there were a lot of messages before the error happened). And the error is in the zeroth iteration of the inner loop (`i=0`), which shouldn't be possible with `1:N`. To confirm your suspicion, create a reproducible example that generates the correct error:
+Weirdly, it looks like the first pass through the outer loop (`b=1`) but not
+the first time we've done the first pass (there were a lot of messages before
+the error happened). And the error is in the zeroth iteration of the inner loop
+(`i=0`), which shouldn't be possible with `1:N`. To confirm your suspicion,
+create a reproducible example that generates the correct error:
 
 ```{r case-study-reprex}
 #| error: true
 LETTERS[[0L]]
 ```
 
-Yep, that's the error: we are trying to set the zeroth item in a vector. But why?
+Yep, that's the error: we are trying to set the zeroth item in a vector. But
+why?
 
-Something is funny here, so let's start by understanding how we can have `b=1` after the loop has printed many times. Remember what `traceback()` told us: `resample()` is called from the `bootstrap()` function. Looking where that happens (line 50), we can see that this line is also inside a loop. So we have a new call to `resample()` every time this loop runs, which is how we can be on the first iteration of `resample()` even after a lot of iterations have run. Let's add a new `message()` statement to `bootstrap()` just before line 50 to tell us what iteration we are on:
+Something is funny here, so let's start by understanding how we can have `b=1`
+after the loop has printed many times. Remember what `traceback` told us:
+`resample` is called from the `bootstrap` function. Looking where that happens
+(line 50), we can see that this line is also inside a loop. So we have a new
+call to `resample` every time this loop runs, which is how we can be on the
+first iteration of `resample` even after a lot of iterations have run. Let's
+add a new `message` statement to `bootstrap` just before line 50 to tell us
+what iteration we are on:
 
 ```{r bootstrap-with-message}
 #| eval: false
@@ -655,7 +753,8 @@ bootstrap = function(data, ..., B=1000) {
 }
 ```
 
-It looks like the error happens with the second group. Let's change that `message()` into a call to `browser()` so we can look at the second group.
+It looks like the error happens with the second group. Let's change that
+`message` into a call to `browser` so we can look at the second group.
 
 ```{r group-2}
 #| echo: false
@@ -667,9 +766,17 @@ grp2 = "Browse[1]> groups[[2]]
 cat(grp2)
 ```
 
-Ahhh, the second group is empty: it has no rows! There were simply no penguns in the data for some combinations of species and island! That's why `1:N` gives us zero and we end up trying to assign the zeroth entry of `indx`.
+Ahhh, the second group is empty: it has no rows! There were simply no penguns
+in the data for some combinations of species and island! That's why `1:N` gives
+us zero and we end up trying to assign the zeroth entry of `indx`.
 
-Now we've isolated the problem and identified its cause. How would you solve it? (Hint: there are *many* solutions to this bug.) My solution would be to not try to resample the penguin masses of an empty group. Trying to loop over something like `1:N` happens a lot, and this is far from the first time that I've hit an error because `N=0`. A better way to define the limits of an interation counter is by `seq_len(N)`. Let's swap that in for `1:N` on line 12 of `debug_case_study.R` and then re-run the problmatic line of code.
+Now we've isolated the problem and identified its cause. How would you solve
+it? (Hint: there are *many* solutions to this bug.) My solution would be to not
+try to resample the penguin masses of an empty group. Trying to loop over
+something like `1:N` happens a lot, and this is far from the first time that
+I've hit an error because `N=0`. A better way to define the limits of an
+interation counter is by `seq_len(N)`. Let's swap that in for `1:N` on line 12
+of `debug_case_study.R` and then re-run the problmatic line of code.
 
 ```{r fixed-resample}
 #| message: false
@@ -700,7 +807,8 @@ resample = function(data, B) {
 make_bootstrap_plots(penguins, "species", "island")
 ```
 
-Here you can see that the unobserved species/island combinations have been simply left empty and we no longer have an error. Yay!
+Here you can see that the unobserved species/island combinations have been
+simply left empty and we no longer have an error. Yay!
 
 
 ## Measuring Performance
@@ -855,7 +963,3 @@ exploring profile data collected with `Rprof`. Examining profile data
 graphically makes it easier to interpret the results and to identify patterns.
 
 [profvis]: https://rstudio.github.io/profvis/
-
-
-
-
