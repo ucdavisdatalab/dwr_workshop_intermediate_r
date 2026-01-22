@@ -18,13 +18,13 @@ book:
       chapters:
         - "chapters/01_string_date_processing.qmd"
         - "chapters/02_reshaping_data.qmd"
-    - part: "Writing & Debugging Code"
-      chapters:
-        - "chapters/03_writing_r_scripts.qmd"
-        - "chapters/04_debugging.qmd"
     - part: "Visualizing & Analyzing Data"
       chapters:
-        - "chapters/05_visualization.qmd"
+        - "chapters/03_visualization.qmd"
+    - part: "Writing & Debugging Code"
+      chapters:
+        - "chapters/04_writing_r_scripts.qmd"
+        - "chapters/05_debugging.qmd"
     - part: "Thinking in R"
       chapters:
         - "chapters/06_language_fundamentals.qmd"

@@ -1,15 +1,12 @@
-# Overview {-}
+# Overview {.unnumbered}
 
 This is the reader for all of UC Davis DataLab's Intermediate R workshop
 series. The reader currently has four parts:
 
 1. _Cleaning & Reshaping Data_
-
-2. _Writing & Debugging R Code_
-
-3. _Data Visualization & Analysis in R_
-
-1. _Thinking in R_, which is about understanding how R works, how to diagnose
+2. _Visualizing & Analyzing Data_
+3. _Writing & Debugging Code_
+4. _Thinking in R_, which is about understanding how R works, how to diagnose
    and fix bugs in code, and how to estimate and measure performance
    characteristics of code.
 
