@@ -1,15 +1,7 @@
 # Best Practices for Writing R Scripts
 
-This chapter is all about R scripts: what they are, when to use them, and how
-to write them---with specific emphasis making sure your scripts are easy to
-read, extend, debug, and reuse. Topics covered along the way include package
-management, how to use iteration, how to print or log output, and how to read
-input from the command line or from configuration files.
-
-
-#### Learning Objectives {-}
-
-After completing this session, learners should be able to:
+:::{.callout-note title="Learning Goals" collapse="false"}
+After this lesson, you should be able to:
 
 * Describe the advantages and disadvantages of using scripts
 * Develop modular scripts that serve as applications and libraries
@@ -20,6 +12,13 @@ After completing this session, learners should be able to:
 * Identify and explain the difference between R's various printing functions
 * Read user input from the command line into R
 * Read data from configuration files into R
+:::
+
+This chapter is all about R scripts: what they are, when to use them, and how
+to write them---with specific emphasis making sure your scripts are easy to
+read, extend, debug, and reuse. Topics covered along the way include package
+management, how to use iteration, how to print or log output, and how to read
+input from the command line or from configuration files.
 
 
 ## Introduction

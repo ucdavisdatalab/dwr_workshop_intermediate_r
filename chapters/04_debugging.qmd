@@ -1,19 +1,14 @@
-# Squashing Bugs with R's Debugging Tools
-
 ```{r hidden-load}
 #| echo: false
 
-library(knitr)
-library(ggplot2)
+library("knitr")
+library("ggplot2")
 ```
 
-The major topics of this chapter are how to print output, how R's conditions
-system for warnings and errors works, how to use the R debugger, and how to
-estimate the performance of R code.
+# Squashing Bugs with R's Debugging Tools
 
-#### Learning Objectives {-}
-
-After completing this session, learners should be able to:
+:::{.callout-note title="Learning Goals" collapse="false"}
+After this lesson, you should be able to:
 
 * Use R's conditions system to raise and catch messages, warnings, and errors
 * Use R's debugging functions to diagnose bugs in code
@@ -21,6 +16,11 @@ After completing this session, learners should be able to:
 * Use the lobstr package to get memory usage for an R object
 * Describe what a profiler is and why you would use one
 * Describe what kinds of profiling tools R provides
+:::
+
+The major topics of this chapter are how to print output, how R's conditions
+system for warnings and errors works, how to use the R debugger, and how to
+estimate the performance of R code.
 
 
 ## Printing

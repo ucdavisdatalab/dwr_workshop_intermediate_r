@@ -1,13 +1,7 @@
 # Tidy & Relational Data
 
-This chapter is part 2 (of 2) of _Cleaning & Reshaping Data_, a workshop
-series about how to prepare data for analysis. The major topics of this chapter
-are how to reshape datasets with pivots and how to combine related datasets
-with joins
-
-#### Learning Objectives {-}
-
-After completing this session, learners should be able to:
+:::{.callout-note title="Learning Goals" collapse="false"}
+After this lesson, you should be able to:
 
 * Explain what it means for data to be tidy
 * Use the tidyr package to reshape data
@@ -15,6 +9,12 @@ After completing this session, learners should be able to:
 * Use the dplyr package to join data based on common columns
 * Describe the different types of joins
 * Identify which types of joins to use when faced with a relational dataset
+:::
+
+This chapter is part 2 (of 2) of _Cleaning & Reshaping Data_, a workshop
+series about how to prepare data for analysis. The major topics of this chapter
+are how to reshape datasets with pivots and how to combine related datasets
+with joins
 
 
 ## Tidy Datasets
