@@ -897,7 +897,7 @@ you call a generic:
 
 [sloop]: https://sloop.r-lib.org/
 
-```{r}
+```r
 # install.packages("sloop")
 library("sloop")
 s3_dispatch(split(mtcars, mtcars$cyl))
