@@ -384,7 +384,7 @@ library(lubridate)
 smart_long$fiscal_year = as.numeric(smart_long$fiscal_year)
 
 # create a month_number column from the abbreviated month names
-smart_long$month_number = 
+smart_long$month_number =
   fast_strptime(smart_long$Month, "%m") |>
   month()
 
@@ -732,7 +732,7 @@ grades = data.frame(
   grade = c(90, 85, 80, 75))
 
 # Left join
-left_join(students, grades, by = join_by(student_id==sid)) 
+left_join(students, grades, by = join_by(student_id==sid))
 ```
 
 Since the key column names don't match, I have provided a `join_by`
@@ -881,7 +881,7 @@ left_join(checkouts, books, by="book_id") |>
   group_by(book_id) |>
   summarize(title=first(title), author=first(author), n_checkouts=n()) |>
   arrange(desc(n_checkouts)) |>
-  head(n=10) 
+  head(n=10)
 ```
 
 Just for fun, here is an instructive example of why relational tables are a better way to store data than putting everything into one spreadsheet. If we want to identify the authors whose books were most checked out from the UCD library, we might think to adapt our previous example to group by author rather than by book_id.
@@ -937,7 +937,7 @@ grades = data.frame(student_id = c(2, 2, 3, 4, 4, 5),
                         grade = c(90, 50, 85, 80, 75, 30))
 
 # Left join
-left_join(students, grades, by = "student_id") 
+left_join(students, grades, by = "student_id")
 ```
 
 We get one row in the result for every possible combination of the matching keys! Sometimes that is what you want, and other times not. In this case, it might be reasonable that Beto, Desmond, and Erik have multiple grades in the book, but it is probably not reasonable that both Desmond and Erik have student ID 4 and have the same grades as each other. This is a many-to-many match, with all the risks we've mentioned before.
@@ -963,7 +963,7 @@ grades = data.frame(student_id = c(2, 2, 3, 4, 4, 5),
 
 # Left join
 distinct_keys_result = students |> distinct(student_id, .keep_all=TRUE) |>
-  left_join(grades, by = "student_id") 
+  left_join(grades, by = "student_id")
 ```
 
 
@@ -980,7 +980,7 @@ checkouts$date = checkouts$loan_date
 # Now create the list of checkouts
 left_join(checkouts, books, by="book_id") |>
   left_join(borrowers, by="borrower_id") |>
-  head(n=10) 
+  head(n=10)
 ```
 
 If you aren't satisfied with appending `.x` and `.y` to the ambiguous columns, then you can specify the `suffix` argument with a pair of strings like this:
@@ -988,7 +988,7 @@ If you aren't satisfied with appending `.x` and `.y` to the ambiguous columns, t
 ```{r ambiguous-date-custom-suffix}
 # Now create the list of checkouts
 left_join(checkouts, books, by="book_id", suffix=c("_checkout", "_book")) |>
-  head(n=10) 
+  head(n=10)
 ```
 
 By specifying the `suffix` argument, we get column names in the result with more meaningful names.
@@ -1009,7 +1009,7 @@ grades = data.frame(student_id = c(2, NA, 4, 5),
 # Left joins
 left_join(students, grades, by = "student_id")
 
-left_join(students, grades, by = "student_id", na_matches = "never") 
+left_join(students, grades, by = "student_id", na_matches = "never")
 ```
 
 Notice that since Beto's student ID is `NA`, none of the rows in the `grades` table can match him. As a result, his grade is left `NA` in the result.

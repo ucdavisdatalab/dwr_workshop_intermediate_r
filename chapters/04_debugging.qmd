@@ -327,7 +327,7 @@ You can learn more about the `.Rprofile` file and R's startup process at
 It can be very frustrating when your computer doesn't do what you expect! **Debugging** code is the process of addressing why your computer is doing something unexpected. Almost anything you do in R will be a process made up of many steps, executed line-by-line in sequential order. In general, you should proceed by breaking your workflow into small parts and confirming, step-by-step, that the result is what you expected.
 
 ### Read Your Errors and Warnings
-Your computer is dumb and it will do exactly what you tell it to do. There are two ways this can cause problems: if you ask the impossible or if your instructions take you to the wrong place. If you tell R to do something impossible, it will generate an error or a warning, which will include a message that tries to tell you what went wrong. Read the messages! Often, it will describe the problem and suggest a solution. 
+Your computer is dumb and it will do exactly what you tell it to do. There are two ways this can cause problems: if you ask the impossible or if your instructions take you to the wrong place. If you tell R to do something impossible, it will generate an error or a warning, which will include a message that tries to tell you what went wrong. Read the messages! Often, it will describe the problem and suggest a solution.
 
 ```{r add-characters}
 #| error: true
@@ -350,10 +350,10 @@ Notice that I talked about the **workflow**, which is a broader concept than the
 The most important step when debugging an error is to locate it. There are two main strategies for doing this:
 
 * Work forward through the code from the beginning.
-* Work backward from the source of an error.                                            
+* Work backward from the source of an error.
 
 Both strategies are valid and powerful. Working backward is probably faster for experienced R users because errors and messages have patterns that you learn to recognize over time. If you recognize the meaning of an error, you may be able to immediately identify its cause. The `traceback()` function is quite helpful for the "work backward" strategy, because it identifies the function where the error actually happened (which may be nested deeply within a function called by a line of code within another function.)
- 
+
 To work forward from the beginning may take longer than working backward, but it does have advantages. Often the source of an error comes before the line of code where the error occurs. Here's an example that builds upon an error we just saw a moment ago:
 
 ```{r text-addition-error}
@@ -535,7 +535,7 @@ traceback()
 ```{r simulate-traceback}
 #| echo: false
 
-tb = '4: resample(group$body_mass_g, B = B) at debug_case_study.R#50 
+tb = '4: resample(group$body_mass_g, B = B) at debug_case_study.R#50
 3: bootstrap(data, B = B, ...) at debug_case_study.R#60
 2: stack(bootstrap(data, B = B, ...)) at debug_case_study.R#60
 1: make_bootstrap_plots(penguins, "species", "island")'
@@ -552,23 +552,23 @@ Remember that the location of an error and the cause of the error are not always
 resample = function(data, B) {
   N = length(data)
   result = numeric(B)
-  
+
   # repeat this whole process B times
   for (b in 1:B) {
-    
+
     # make an object to hold the resampled indices
     indx = integer(N)
-    
+
     # resample one data point at a time
     for (i in 1:N) {
       browser()
       indx[[i]] = sample(1:N, size=1)
     }
-    
+
     # calculate the mean of this resampled data
     result[[b]] = mean(data[indx])
   }
-  
+
   # return all of the mean resamples
   result
 }
@@ -583,23 +583,23 @@ Now we know that the bug has to be isolated not only on its line, but also in it
 resample = function(data, B) {
   N = length(data)
   result = numeric(B)
-  
+
   # repeat this whole process B times
   for (b in 1:B) {
-    
+
     # make an object to hold the resampled indices
     indx = integer(N)
-    
+
     # resample one data point at a time
     for (i in 1:N) {
       message("i=", i, " b=", b)
       indx[[i]] = sample(1:N, size=1)
     }
-    
+
     # calculate the mean of this resampled data
     result[[b]] = mean(data[indx])
   }
-  
+
   # return all of the mean resamples
   result
 }
@@ -622,30 +622,30 @@ Something is funny here, so let's start by understanding how we can have `b=1` a
 bootstrap = function(data, ..., B=1000) {
   # get the names of grouping factors
   grouping_factors = sapply(list(...), unlist)
-  
+
   # identify all possible combinations of grouping factors
   grouping_levels =
     sapply(grouping_factors,
            function(grp) unique(data[[grp]]) |> as.character(),
            simplify = FALSE) |>
     setNames(grouping_factors)
-  
+
   # cross the grouping levels to get all combinations
   groups = split(data, data[,grouping_factors])
-  
+
   # create an empty data.frame to hold the results
   col_names = names(groups)
   result = replicate(length(groups), numeric(B), simplify=FALSE) |>
     as.data.frame(col.names = col_names)
-  
+
   # bootstrap the mean of mass for each group
   for (i in 1:length(groups)) {
-    
+
     message("group=", i)
-    
+
     # get the subset of data that is relevant to this group
     group = groups[[i]]
-    
+
     # calculate the mean of a bunch of bootstrap resamples
     result[[i]] = resample(group$body_mass_g, B=B)
   }
@@ -677,22 +677,22 @@ Now we've isolated the problem and identified its cause. How would you solve it?
 resample = function(data, B) {
   N = length(data)
   result = numeric(B)
-  
+
   # repeat this whole process B times
   for (b in 1:B) {
-    
+
     # make an object to hold the resampled indices
     indx = integer(N)
-    
+
     # resample one data point at a time
     for (i in seq_len(N)) {
       indx[[i]] = sample(1:N, size=1)
     }
-    
+
     # calculate the mean of this resampled data
     result[[b]] = mean(data[indx])
   }
-  
+
   # return all of the mean resamples
   result
 }

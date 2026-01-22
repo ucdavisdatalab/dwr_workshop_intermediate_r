@@ -540,7 +540,7 @@ baseenv()
 
 The base environment's parent is the special empty environment (identified by
 `R_EmptyEnv`), which contains no variables and has no parent. You can use the
-`emptyenv` function to get the empty environment: 
+`emptyenv` function to get the empty environment:
 
 ```{r}
 emptyenv()
@@ -666,7 +666,7 @@ For example, you can use the template for the `counter` function:
 ```{r}
 make_count = function() {
   counter = 0
-  
+
   function() {
     counter <<- counter + 1
     counter

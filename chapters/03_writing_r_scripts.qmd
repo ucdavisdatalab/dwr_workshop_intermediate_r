@@ -1267,7 +1267,7 @@ message("Hi, my name is ", name, " and x is ", x)
 ```
 
 This is a convenient way to print names or descriptions alongside values from
-your code without having to call a formatting function like `paste`. 
+your code without having to call a formatting function like `paste`.
 
 You can make the message function print something without adding a newline at
 the end by setting the argument `appendLF = FALSE`. The difference can be easy
