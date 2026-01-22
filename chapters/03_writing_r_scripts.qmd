@@ -67,13 +67,13 @@ reader][repro-org].
 
 [repro-org]: https://ucdavisdatalab.github.io/workshop_reproducible_research/chapters/02_core.html#project-organization
 
-This chapter is organized around a single case study (Section
-\@ref(case-study-us-fruit-prices)) that benefits from many of the practices we
+This chapter is organized around a single case study
+(@sec-case-study-us-fruit-prices) that benefits from many of the practices we
 recommend. At a few points, the narrative branches off from the case study to
 take a closer look at a particular practice or topic in more general terms.
 
 
-Case Study: U.S. Fruit Prices {#case-study-us-fruit-prices}
+Case Study: U.S. Fruit Prices {#sec-case-study-us-fruit-prices}
 -----------------------------
 
 The U.S. Department of Agriculture (USDA) Economic Research Service (ERS)
@@ -193,7 +193,7 @@ things you should do when you encounter a repetitive task like this one:
 2. Once you get the code working on a single case, test that the code is
    general enough to handle other cases, and then use iteration to run the code
    on all cases. You'll learn more about iteration later in this case study and
-   in Section \@ref(iteration-strategies).
+   in @sec-iteration-strategies.
 
 
 ### Reading the Pear Data
@@ -230,7 +230,7 @@ We'll add more calls to `library` here as we decide to use more packages. This
 way it's easy for someone to see which packages are required as soon as they
 open the script. Putting the calls to `library` in alphabetical order by
 package name is also a good idea. You can read more about how to manage the
-packages a script or project requires in Section \@ref(managing-environments).
+packages a script or project requires in @sec-managing-environments.
 
 When developing a script, it's often helpful to run the code, check what's
 working, and make changes, repeating this process until the script is finished.
@@ -332,8 +332,7 @@ library("stringr")
 We'll use several functions from stringr, but each will be explained in
 context. The package provides detailed documentation as well as a
 [cheatsheet][stringr-cheatsheet]. If you want to learn more about string
-processing and stringr in general, see Chapter \@ref(string-date-processing) of
-this reader.
+processing and stringr in general, see @sec-string-date-processing.
 
 [stringr-cheatsheet]: https://github.com/rstudio/cheatsheets/blob/master/strings.pdf
 
@@ -363,7 +362,7 @@ main()
 We'll use the fruit name later to label the data from each file.
 
 
-### Getting the Column Names
+### Getting the Column Names {#sec-getting-the-column-names}
 
 The column names on the `sheet` data frame come from the first row of the file,
 but the actual headers of the table are in the second and third rows of the
@@ -404,8 +403,8 @@ main()
 
 For each column, we need to paste the rows together. This "for each" is a hint
 that the task that can be solved with iteration. Before proceeding, take a
-moment to learn more about iteration by reading through Section
-\@ref(iteration-strategies). For this task, the result should be one string per
+moment to learn more about iteration by reading through
+@sec-iteration-strategies. For this task, the result should be one string per
 column, so you can use `sapply` to iterate over the columns.
 
 By setting its `collapse` argument, you can use R's built-in `paste` function
@@ -521,11 +520,11 @@ main()
 ```
 
 The first index corresponds to the header row, but we already dealt with the
-header in Section \@ref(getting-the-column-names). Since the header spans two
-rows, we can skip it by adding 2 to the first index. The second index
-corresponds to the last row of prices, so it seems like this is an effective
-strategy for getting the price data (we can't be completely sure until we test
-the strategy on other fruits).
+header in @sec-getting-the-column-names. Since the header spans two rows, we
+can skip it by adding 2 to the first index. The second index corresponds to the
+last row of prices, so it seems like this is an effective strategy for getting
+the price data (we can't be completely sure until we test the strategy on other
+fruits).
 
 Update `get_fruit_prices` and `main` in `extract_prices.R` to get the subset of
 rows with price data and to change the column names to the ones we computed
@@ -680,10 +679,10 @@ like there are only a few subgroups: `Canned`, `Dried`, `Fresh`, `Frozen`, and
 
 You can use stringr's `str_starts` function to detect entries in the `form`
 column which start with one of the subgroup names. The second argument to the
-function is a regular expression (see Section \@ref(regular-expressions)), a
-string which describes a pattern. You can use the pipe character `|` in a
-regular expression to separate several different options. Update the code for
-`get_fruit_prices` in `extract_prices.R`, source the file, and call `main`:
+function is a regular expression (see @sec-regular-expressions), a string which
+describes a pattern. You can use the pipe character `|` in a regular expression
+to separate several different options. Update the code for `get_fruit_prices`
+in `extract_prices.R`, source the file, and call `main`:
 
 ```{r, get_fruit_prices05}
 get_fruit_prices = function(sheet, col_names) {
@@ -729,8 +728,8 @@ main()
 Some of the columns in the data frame have inappropriate data types. This can
 be fixed with just a few lines of code, but since it doesn't provide any
 additional insight into how to write scripts, we won't do so here. If you want
-to know more about how to fix "messy data" problems, read Chapter
-\@ref(string-date-processing).
+to know more about how to fix "messy data" problems, read
+@sec-string-date-processing.
 
 
 ### Iterating Over All Fruit
@@ -797,7 +796,7 @@ The code for the function includes several calls to `message` to print
 informational messages. It's a good idea to include these so that you (or other
 users) can verify that the paths to files are correct and can quickly diagnose
 any bugs you encounter. You can read more about various ways to print output in
-R in Section \@ref(printing-output).
+R in @sec-printing-output.
 
 Once again, test that the code works by sourcing the script and calling `main`:
 
@@ -810,7 +809,7 @@ and also a small bug (related to frozen juice), but all of these can be fixed
 with small changes to the script.
 
 
-Managing Environments
+Managing Environments {#sec-managing-environments}
 ---------------------
 
 Your **computing environment** is the collection of hardware and software you
@@ -843,7 +842,7 @@ package.
 
 
 
-Iteration Strategies
+Iteration Strategies {#sec-iteration-strategies}
 --------------------
 
 R is powerful tool for automating tasks that have repetitive steps. For
@@ -887,7 +886,7 @@ iteration strategy to use. We assume you're already comfortable with
 vectorization and have at least some familiarity with apply functions.
 
 
-### For-loops
+### For-loops {#sec-for-loops}
 
 A **for-loop** evaluates an expression once for each element of a vector or
 list. The `for` keyword creates a for-loop. The syntax is:
@@ -901,8 +900,8 @@ for (I in DATA) {
 The variable `I` is called an **induction variable**. At the beginning of each
 iteration, `I` is assigned the next element of `DATA`. The loop iterates once
 for each element, unless a keyword instructs R to exit the loop early (more
-about this in Section \@ref(break-next)). As with if-statements and functions,
-the curly braces `{ }` are only required if the body contains multiple lines of
+about this in @section-break-next). As with if-statements and functions, the
+curly braces `{ }` are only required if the body contains multiple lines of
 code. Here's a simple for-loop:
 
 ```{r}
@@ -943,7 +942,7 @@ for (i in 2:n) {
 plot(result)
 ```
 
-Section \@ref(saving-multiple-results) explains this in more detail.
+@sec-saving-multiple-results explains this in more detail.
 
 If the iterations in a task are not dependent, it's preferable to use
 vectorization or apply functions instead of a loop. Vectorization is more
@@ -983,8 +982,8 @@ while (i < 10) {
 }
 ```
 
-Notice that this example does the same thing as the simple for-loop in Section
-\@ref(for-loops), but requires 5 lines of code instead of 2. While-loops are a
+Notice that this example does the same thing as the simple for-loop in
+@sec-for-loops, but requires 5 lines of code instead of 2. While-loops are a
 generalization of for-loops, and only do the bare minimum necessary to iterate.
 They tend to be most useful when you don't know how many iterations will be
 necessary to complete a task.
@@ -1006,7 +1005,7 @@ i
 ```
 
 
-### Saving Multiple Results
+### Saving Multiple Results {#sec-saving-multiple-results}
 
 Loops often produce a different result for each iteration. If you want to save
 more than one result, there are a few things you must do.
@@ -1074,7 +1073,7 @@ result
 ```
 
 
-### Break & Next
+### Break & Next {#section-break-next}
 
 The `break` keyword causes a loop to immediately exit. It only makes sense to
 use `break` inside of an if-statement.
@@ -1189,7 +1188,7 @@ Mini-reader][liza-reader].
 [liza-reader]: https://d-rug.github.io/realworld_functions_iteration/
 
 
-Printing Output
+Printing Output {#sec-printing-output}
 ---------------
 
  This section introduces several different functions for printing output
@@ -1225,9 +1224,9 @@ prompt. Thus it's not necessary to call `print` to print something when you're
 working directly in the console---only from within loops, functions, scripts,
 and other code that runs non-interactively.
 
-The `print` function is an S3 generic (see Section \@ref(s3)), so you if you
-create an S3 class, you can define a custom print method for it. For S4
-objects, R uses the S4 generic `show` instead of `print`.
+The `print` function is an S3 generic (see @sec-s3), so you if you create an S3
+class, you can define a custom print method for it. For S4 objects, R uses the
+S4 generic `show` instead of `print`.
 
 
 ### The `message` Function
@@ -1236,8 +1235,7 @@ To print output for users, the `message` function is the one you should use.
 The main reason for this is that the `message` function is part of R's
 **conditions system** for reporting status information as code runs. This makes
 it easier for other code to detect, record, respond to, or suppress the output
-(see Section \@ref(the-conditions-system) to learn more about R's conditions
-system).
+(see @sec-the-conditions-system to learn more about R's conditions system).
 
 The `message` function prints its argument(s) and a newline to the console:
 
@@ -1506,8 +1504,8 @@ arguments are a convenient and relatively safe way to set parameters in
 scripts. This is in contrast to editing scripts directly, which may be
 difficult (if the code is complex or disorganized) and may introduce bugs. That
 said, for scripts with lots of parameters, we recommend reading the parameters
-from a configuration file (see Section \@ref(configuration-files)) instead or
-in addition to command line arguments.
+from a configuration file (see @sec-configuration-files) instead or in addition
+to command line arguments.
 
 
 You can capture command line arguments with R's built-in the `commandArgs`
@@ -1561,7 +1559,7 @@ package depends on Python). One of the more promising packages is [optparse][].
 [optparse]: https://github.com/trevorld/r-optparse
 
 
-### Configuration Files
+### Configuration Files {#sec-configuration-files}
 
 When a script has lots of parameters, reading them from a separate
 configuration file is often a good idea. Configuration files are beneficial

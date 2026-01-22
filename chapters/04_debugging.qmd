@@ -51,7 +51,7 @@ These features make the `print` function ideal for printing information when
 you're trying to understand some code or diagnose a bug.
 
 
-The Conditions System
+The Conditions System {#sec-the-conditions-system}
 ---------------------
 
 R's conditions system provides a way to signal and handle unusual conditions
@@ -69,8 +69,8 @@ robust.
 The `message`, `warning`, and `stop` functions are the primary ways to
 **raise**, or signal, conditions.
 
-The `message` function is the primary way to print output (see Section
-\@ref(printing-output) for alternatives). A message provides status information
+The `message` function is the primary way to print output (see
+@sec-printing-output for alternatives). A message provides status information
 about running code, but does not necessarily indicate that something has gone
 wrong. You can use messages to print out any information you think might be
 relevant to users.
@@ -78,8 +78,8 @@ relevant to users.
 The `warning` function raises a **warning**. Warnings indicate that something
 unexpected happened, but that it didn't stop the code from running. By default,
 R doesn't print warnings to the console until code finishes running, which can
-make it difficult to understand their cause; Section \@ref(global-options)
-explains how to change this setting.
+make it difficult to understand their cause; @sec-global-options explains how
+to change this setting.
 
 Unnamed arguments to the `warning` function are concatenated with no separator
 between them, in the same way as arguments to the `message` function. For
@@ -253,7 +253,7 @@ If you want to learn more about R's conditions system, start by reading
 
 
 
-Global Options
+Global Options {#sec-global-options}
 --------------
 
 R's **global options** to control many different aspects of how R works.

@@ -33,7 +33,7 @@ values of those variables later. Understanding the process and the data
 structures involved will introduce you to new programming strategies, make it
 easier to reason about code, and help you identify potential bugs.
 
-### What's an Environment?
+### What's an Environment? {#sec-whats-an-environment}
 
 The foundation of how R stores and looks up variables is a data structure
 called an **environment**. Every environment has two parts:
@@ -239,10 +239,10 @@ As you can see, at the R prompt or the top level of an R script, the local
 environment is just the global environment.
 
 
-Except for `names`, the functions introduced in Section
-\@ref(whats-an-environment) default to the local environment if you don't set
-the `envir` parameter. This makes them convenient for inspecting or modifying
-the local environment's frame:
+Except for `names`, the functions introduced in @sec-whats-an-environment
+default to the local environment if you don't set the `envir` parameter. This
+makes them convenient for inspecting or modifying the local environment's
+frame:
 
 ```{r}
 ls(loc)
@@ -266,7 +266,7 @@ tea
 ```
 
 
-### Call Environments
+### Call Environments {#sec-call-environments}
 
 Every time you *call* (not define) a function, R creates a new environment.
 R uses this **call environment** as the local environment while the code in the
@@ -337,7 +337,7 @@ which to run code. However, it's usually preferable to define and call a
 function, since that makes it easier to test and reuse the code.
 
 
-### Lexical Scoping
+### Lexical Scoping {#sec-lexical-scoping}
 
 A function can access variables outside of its local environment, but only if
 those variables exist in the environment where the function was *defined* (not
@@ -435,8 +435,8 @@ environment's frame and returns the value:
 tea
 ```
 
-On the other hand, in the `get_tea` function from Section
-\@ref(lexical-scoping), `tea` is not a local variable:
+On the other hand, in the `get_tea` function from @sec-lexical-scoping, `tea`
+is not a local variable:
 
 ```{r}
 get_tea = function() {
@@ -477,8 +477,8 @@ global environment, finds it, and returns the value.
 
 R repeats the lookup process for as many parents as necessary to find the
 variable, stopping only when it finds the variable or a special environment
-called the **empty environment** which will be explained in Section
-\@ref(the-search-path).
+called the **empty environment** which will be explained in
+@sec-the-search-path.
 
 The lookup process also hints at how R finds variables and functions such as
 `pi` and `sqrt` that clearly aren't defined in the global environment. They're
@@ -504,7 +504,7 @@ the variable's name.
 
 
 
-### The Search Path
+### The Search Path {#sec-the-search-path}
 
 R also uses environments to manage packages. Each time you load a package with
 `library` or `require`, R creates a new environment:
@@ -620,7 +620,7 @@ global environment_.
 ### Tidy Closures
 
 The `count` function has a side effect---it reassigns a non-local variable. As
-discussed in \@ref(call-environments), functions with side effects make code
+discussed in @sec-call-environments, functions with side effects make code
 harder to understand and reason about. Use side effects sparingly and try to
 isolate them from the global environment.
 
@@ -757,7 +757,7 @@ correctly.
 
 
 
-S3
+S3 {#sec-s3}
 --
 
 R provides several systems for [**object-oriented programming** (OOP)][oop], a
@@ -769,8 +769,8 @@ functions work.
 [oop]: https://en.wikipedia.org/wiki/Object-oriented_programming
 
 The **S3** system is particularly important for understanding R, because it's
-the oldest and most widely-used. This section focuses on S3, while Section
-\@ref(other-object-systems) provides an overview of R's other OOP systems.
+the oldest and most widely-used. This section focuses on S3, while
+@sec-other-object-systems provides an overview of R's other OOP systems.
 
 The central idea of S3 is that some functions can be **generic**, meaning they
 perform different computations (and run different code) for different
@@ -1035,7 +1035,7 @@ method that is the next closest match for an object's class. You can learn more
 by reading `?NextMethod`.
 
 
-Other Object Systems
+Other Object Systems {#sec-other-object-systems}
 --------------------
 
 R provides many systems for object-oriented programming besides S3. Some are

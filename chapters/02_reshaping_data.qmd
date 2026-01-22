@@ -43,10 +43,10 @@ are:
 These rules ensure that all of the values in a dataset are visually organized
 and are easy to access with indexing operations. They're also specific enough
 to make tidiness a convenient standard for functions that operate on tabular
-datasets. In fact, the [Tidyverse][tidyverse] packages (see Section
-\@ref(the-tidyverse)) are designed from the ground up for working with tidy
-datasets. Tidy datesets have also been adopted as a standard in other software,
-including various packages for Python and Julia.
+datasets. In fact, the [Tidyverse][tidyverse] packages (see @sec-the-tidyverse)
+are designed from the ground up for working with tidy datasets. Tidy datesets
+have also been adopted as a standard in other software, including various
+packages for Python and Julia.
 
 [tidyverse]: https://www.tidyverse.org/
 
@@ -251,7 +251,7 @@ count and the population count.
 To make this dataset tidy, the `rate` column needs to be split into two
 columns, `cases` and `population`. The values in the `rate` column are strings,
 so one way to do this is with the stringr package's `str_split_fixed` function,
-described in Section \@ref(splitting-strings):
+described in @sec-splitting-strings:
 
 ```{r}
 library(stringr)
@@ -345,9 +345,9 @@ head(smart)
 
 To make the dataset tidy, it needs to be reshaped so that the values in the
 various fiscal year columns are all in one column. In other words, the dataset
-needs to be pivoted longer (Section \@ref(columns-into-rows)). The result of
-the pivot will be easier to understand if you rename the columns as their years
-first. Here's one way to do that:
+needs to be pivoted longer (@sec-columns-into-rows). The result of the pivot
+will be easier to understand if you rename the columns as their years first.
+Here's one way to do that:
 
 ```{r}
 names(smart)[-1] = 2018:2024
@@ -374,7 +374,10 @@ The SMART fiscal year extends from July to the following June and equals the
 calendar year at the end of the period. So for observations from July to
 December, the calendar year is the fiscal year minus 1. There are many ways to calculate a new column from the existing columns — we will use the `ifelse` function to set a column's values conditional on some other columns.
 
-Our calculation is to subtract one from the fiscal year if the month is seven or less so we have to convert the months to numbers from text abbreviations. Let's use our old friend the `fast_strptime` function from the `lubridate` package (Section \@ref(the-lubridate-package)).
+Our calculation is to subtract one from the fiscal year if the month is seven
+or less so we have to convert the months to numbers from text abbreviations.
+Let's use our old friend the `fast_strptime` function from the `lubridate`
+package (@sec-the-lubridate-package).
 
 ```{r}
 library(lubridate)
@@ -462,7 +465,7 @@ names(pop)[3] = "population"
 merge(cases, pop)
 ```
 
-#### Columns into Rows
+#### Columns into Rows {#sec-columns-into-rows}
 
 The steps for pivoting `table4a` longer are:
 
