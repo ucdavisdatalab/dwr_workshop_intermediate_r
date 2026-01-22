@@ -669,7 +669,7 @@ complies silently. A many-to-many match may be desired, but it is often a sign
 that something has gone wrong, so R emits a warning. You can get funky results
 when your keys are not unique!
 
-![Cats join meme](img/cat-legs-left-join-meme.jpg)
+![Cats join meme](/images/cat-legs-left-join-meme.jpg)
 
 
 ### Other Joins
@@ -685,8 +685,6 @@ There are several other kinds of joins:
   table, even if they do not match.
 
 <!--Here's visualization to help identify the differences:
-
-![Disney characters illustrate differences between joins](img/disney-meme.jpg)
 
 The following subsections provide examples of different types of joins.
 -->

@@ -3,7 +3,9 @@
 We are here today to learn how to do data visualization in R. Some of you will
 have recently done the Principles of Data Visualization workshop. There you
 were given a checklist of questions to guide you as you create a plot, which we
-are going to use today. [The checklist is here](./img/graphics_checklist.pdf).
+are going to use today. [The checklist is here][checklist].
+
+[checklist]: /docs/graphics_checklist.pdf
 
 
 ## Our Friend `ggplot2`
@@ -62,7 +64,7 @@ look at the data and the image we want to create.
 head(penguins)
 ```
 
-![Plot of bill length vs. flipper length for the Palmer Penguins](img/flipper-bill.png)
+![Plot of bill length vs. flipper length for the Palmer Penguins](/images/flipper-bill.png)
 
 ### Examining the Plot
 
@@ -258,9 +260,9 @@ similar options---for instance, geometry layers include `geom_point`,
 ## Guidelines for Graphics
 
 I've attached the [PDF checklist for creating good data
-visualizations](img/graphics_checklist.pdf), created by Nick Ulle of UC Davis
-Datalab. Download it and keep a copy around---it's an excellent guide. I'm
-going to go over how the checklist translates into the grammar of graphics.
+visualizations][checklist], created by Nick Ulle of UC Davis Datalab. Download
+it and keep a copy around---it's an excellent guide. I'm going to go over how
+the checklist translates into the grammar of graphics.
 
 ### Data
 
