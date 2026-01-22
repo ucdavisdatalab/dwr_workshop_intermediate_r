@@ -37,5 +37,15 @@ docs/*.md
 .Rproj.user
 _bookdown_files/
 
+# Quarto
+.quarto/
+chapters/*_cache/
+chapters/*_files/
+_build/*
+
 # DVC
 .dvc/
+
+# pixi environments
+.pixi/*
+!.pixi/config.toml
