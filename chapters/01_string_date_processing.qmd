@@ -1,5 +1,4 @@
-String & Date Processing {#sec-string-date-processing}
-========================
+# String & Date Processing {#sec-string-date-processing}
 
 This chapter is part 1 (of 2) of _Cleaning & Reshaping Data_, a workshop series
 about how to prepare data for analysis. The major topics of this chapter are
@@ -22,9 +21,7 @@ After completing this session, learners should be able to:
 * Use the regular expressions mini-language
 
 
-
-The Tidyverse {#sec-the-tidyverse}
--------------
+## The Tidyverse {#sec-the-tidyverse}
 
 For working with dates, times, and strings, we recommend using packages from
 the [Tidyverse][], a popular collection of packages for doing data science.
@@ -59,8 +56,7 @@ website and the most popular ones also have [cheatsheets][].
 [cheatsheets]: https://posit.co/resources/cheatsheets/
 
 
-Parsing Dates & Times
----------------------
+## Parsing Dates & Times
 
 When working with dates and times, you might want to:
 
@@ -334,9 +330,7 @@ from each, create a new column identifying the data source, and then row-bind
 the datasets together.
 
 
-
-String Fundamentals
--------------------
+## String Fundamentals
 
 Strings represent text, but even if your datasets are composed entirely of
 numbers, you'll need to know how to work with strings. Text formats for data
@@ -518,9 +512,7 @@ Encoding problems when writing a file are slightly more complicated to fix. See
 [ushey-encodings]: https://kevinushey.github.io/blog/2018/02/21/string-encoding-and-r/
 
 
-
-Processing Strings
-------------------
+## Processing Strings
 
 String processing encompasses a variety of tasks such as searching for patterns
 within strings, extracting data from within strings, splitting strings into
@@ -985,9 +977,7 @@ These entail more string processing and data frame manipulation---if you want
 to practice your R skills, try doing them on your own.
 
 
-
-Regular Expression Examples {#sec-regular-expression-examples}
-----------------------------
+## Regular Expression Examples {#sec-regular-expression-examples}
 
 This section provides examples of several different regular expression
 metacharacters and other features. Most of the examples use the `str_view`

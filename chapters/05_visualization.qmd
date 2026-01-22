@@ -2,6 +2,7 @@
 
 We are here today to learn how to do data visualization in R. Some of you will have recently done the Principles of Data Visualization workshop. There you were given a checklist of questions to guide you as you create a plot, which we are going to use today. [The checklist is here](./img/graphics_checklist.pdf).
 
+
 ## Our Friend `ggplot2`
 
 We will be using the R package `ggplot2` to create data visualizations. Install it via the `install.packages()` function. While we are at it, let's make sure we install all of the packages that we'll need for today's workshop. Beyone `ggplot2`, we'll use `readr` for reading data files, `dplyr` for manupulating data, and `palmerpenguins` provides a nice dataset.
@@ -29,6 +30,7 @@ The grammar of graphics breaks the elements of statistical graphics into parts i
 
 
 ## Example: Palmer Penguins
+
 Let's look at an example. This uses data from the `palmerpenguins` package that you just installed (make sure to load the package with `library(palmerpenguins)`). It is measurements of 344 penguins, collected and made available by [Dr. Kristen Gorman](https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php) and the [Palmer Station, Antarctica LTER](https://pallter.marine.rutgers.edu/), a member of the [Long Term Ecological Research Network](https://lternet.edu/). [The data package](https://allisonhorst.github.io/palmerpenguins/) was created by [Allison Horst](https://allisonhorst.com). Before jumping in, let's have a look at the data and the image we want to create.
 
 ```{r head-penguins, message=FALSE, warning=FALSE}
@@ -38,6 +40,7 @@ head(penguins)
 ![Plot of bill length vs. flipper length for the Palmer Penguins](img/flipper-bill.png)
 
 ### Examining the Plot
+
 Referring to the graphics checklist, we see that this plot has two numerical features (bill length and flipper length), expressed using a scatter plot. There is also a categorical feature (species), which is indicated by the different colors and shapes of the plot. The plot expresses the fact that flipper length is positively associated with bill length for all thre species of penguins, but the sizes and the relationships between them are unique to each species. There is a title and a legend, the axes are labeled with units, and all of the text is in plain language. There is a risk that the data may hide the message, so a smoothing line is added to each species for clarity. The colors are accessible (avoiding red/green colorblindness issues).
 
 This is a good dataviz, now let's duplicate it!
@@ -66,6 +69,7 @@ ggplot(penguins) +
 ```
 
 ### Analysis
+
 This is a complicated data visualization that includes features we haven't covered yet, so let's go into how it works. You might have noticed how the code to make the plot is separated into a bunch of function calls, all separated by plus signs (`+`). Each function does something small and specific. The functions and the ability to add them together provide a powerful and flexible "grammar" to describe the desired plot. 
 
 Our plot begins the way that most do - by calling `ggplot()` with the data as the argument. This creates a plot object (but doesn't draw it) and sets the data. Then we add the a so-called "aesthetic mapping" with the `aes()` function. An aesthetic mapping describes how features of the data map to visual channels of the plot. In our case, that means mapping the flipper length to the `x` (horizontal) direction, the bill length to the `y` (vertical) direction, and mapping species to both color and shape. Next, we add a geometry to describe what kind of marks to use in drawing the plot. Here you can refer to the table at the top of the graphics checklist that suggests geometries to use for different kinds of features. We have numeric features for both `x` and `y`, so the table suggests line, scatter (points), and heatmap. We've selected points (`geom_point()`) because we want to show the individual penguins (lines would imply a chain of connections from one penguin to the next.)
@@ -153,6 +157,7 @@ Layers are the building blocks of the grammar of graphics. The typical pattern i
 - Facets (`facet_*()`) - used to separate the data into subplots called "facets".
 - Theme (`theme()`) - modifies plot details like titles, labels, and legends.
 
+
 ## Guidelines for Graphics
 
 I've attached the [PDF checklist for creating good data
@@ -162,6 +167,7 @@ guide. I'm going to go over how the checklist translates into the
 grammar of graphics.
 
 ### Data
+
 You can't have a data visualization without data! `ggplot2` expects that your data is **tidy**, which means that each row is a complete observation and each column is a unique feature. In fact, `ggplot2` is part of an actively developing collection of packages [called the `tidyverse`](https://tidyverse.org) that provides ways to create and work with tidy data. You dont have to adopt the entire tidyverse to use `ggplot2`, though.
 
 ### Feature Types
@@ -172,6 +178,7 @@ to read and bar plots don't use space efficiently (Cleveland and McGill
 1990; Heer and Bostock 2010). Generally a dot plot is a better choice.
 
 ### Theme Guidelines
+
  - Does the graphic convey important information? Don't include graphics that are uninformative or redundant. 
  - Title? Make sure the title explains what the graphic shows. 
  - Axis labels? Label the axes in plain language (no variable names!). 
@@ -180,22 +187,25 @@ to read and bar plots don't use space efficiently (Cleveland and McGill
 
 
 ### Scale Guidelines
+
  - Appropriate scales and limits? Make sure the scales and limits of the axes do not lead people to incorrect conclusions. For side-by-side graphics or graphics that viewers will compare, use identical scales and limits. 
 
  - Print safe? Design graphics to be legible in black & white. Color is great, but use point and line styles to distinguish groups in addition to color. Also try to choose colors that are accessible to colorblind people. The RColorBrewer and viridis packages can help with choosing colors.
 
 
 ### Facet Guidelines
+
  - No more than 5 lines? Line plots with more than 5 lines risk becoming hard-to-read "spaghetti" plots. Generally a line plot with more than 5 lines should be split into multiple plots with fewer lines. If the x-axis is discrete, consider using a heat map instead. 
  - No overplotting? Scatter plots where many plot points overlap hide the actual patterns in the data. Consider splitting the data into facets, making the points smaller, or using a two-dimensional density plot (a smooth scatter plot) instead. 
 
 
-
 ## Case Studies
+
 We have covered enough of the grammar of graphics that you should begin to see the patterns in how it is used to express graphical ideas for `ggplot2`. Now we will work through some examples.
 
 
 ### Counting Penguins
+
 First, let's revisit the `penguins` data. There are tree categorical features in the data: `species`, `island`, and `sex`. Let's use `geom_bar()` to count how many penguins of each species and/or sex were observed on each island. The x-axis of the plot should be the island, but note that there are multiple values of `species` and `sex` that have the same position on that x-axis. In this case, you can use the `position_dodge()` or `position_stack()` arguments to tell `ggplot2` how to handle the second grouping channel.
 
 ```{r counting-penguins, warning=FALSE, message=FALSE}
@@ -238,6 +248,7 @@ ggplot(penguins) +
 
 
 ### Experimental Data with Error Bars
+
 Here's an example that recently came up in my office hours. You've done an experiment to see how mice with two different genotypes respond to two different treatments. Now you want to plot the mean response of each group as a column, with error bars indicating the standard deviation of the mean. You also want to show the raw data. I've simulated some data for us to use - download it [here](https://ucdavis.box.com/s/lxgplwqn23ncbeb5gc6ktpfknr56xws6).
 
 This one is kind of complicated because you have to tell `ggplot2` how to calculate the height of the columns and of the error bars. This involves cr
@@ -270,6 +281,7 @@ ggplot(mice_geno) +
 
 
 ### Bird Flu Mortality
+
 People mail dead birds to the USDA and USGS, where scientists analyze the birds to find out why they died. Right now there is a bird flu epidemic, and the USDA provides public data about the birds in whom the disease has been detected. You can access the data [here](https://ucdavis.box.com/s/babz1b5ak0kh7q7cktg7k5gzrt2ve9gc) or see the official USDA webpage [here](https://www.aphis.usda.gov/aphis/ourfocus/animalhealth/animal-disease-information/avian/avian-influenza/). After you download the data, we will load the data and do some visualization.
 
 ```{r example-bird-flu, message=FALSE, warning=FALSE}
@@ -344,6 +356,7 @@ ggplot(flu) +
 ```
 
 ### Small Business Loans
+
 The US Small Business Administration (SBA) maintains data on the loans it offers to businesses. Data about loans made since 2020 can be found at the [Small Business Administration website](https://data.sba.gov/dataset/7-a-504-foia), or you can download it from [here](https://ucdavis.box.com/s/ctx6grx10c83lh561ekl9tnmi20561ed). We'll load that data and then explore some ways to visualize it. Since the difference between a \$100 loan and a \$1000 loan is more like the difference between \$100,000 and \$1M than between \$100,000 ad $100,900, we should put the loan values on a  logarithmic scale. You can do this in `ggplot2` with the `scale_y_log10()` function (when the loan values are on the y axis).
 
 

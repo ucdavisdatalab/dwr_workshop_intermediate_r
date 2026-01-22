@@ -1,5 +1,4 @@
-Squashing Bugs with R's Debugging Tools
-=======================================
+# Squashing Bugs with R's Debugging Tools
 
 ```{r hidden-load}
 #| echo: false
@@ -24,9 +23,7 @@ After completing this session, learners should be able to:
 * Describe what kinds of profiling tools R provides
 
 
-
-Printing
---------
+## Printing
 
 Perhaps the simplest thing you can do to get a better understanding of some
 code is make it print out lots of information about what's happening as it
@@ -51,8 +48,7 @@ These features make the `print` function ideal for printing information when
 you're trying to understand some code or diagnose a bug.
 
 
-The Conditions System {#sec-the-conditions-system}
----------------------
+## The Conditions System {#sec-the-conditions-system}
 
 R's conditions system provides a way to signal and handle unusual conditions
 that arise while code runs. With the conditions system, you can make R print
@@ -252,9 +248,7 @@ If you want to learn more about R's conditions system, start by reading
 `?conditions`.
 
 
-
-Global Options {#sec-global-options}
---------------
+## Global Options {#sec-global-options}
 
 R's **global options** to control many different aspects of how R works.
 They're relevant to the theme of this chapter because some of them control when
@@ -328,9 +322,7 @@ You can learn more about the `.Rprofile` file and R's startup process at
 [homedir]: https://ucdavisdatalab.github.io/workshop_r_basics/getting-started.html#absolute-relative-paths
 
 
-
-Debugging
----------
+## Debugging
 
 It can be very frustrating when your computer doesn't do what you expect! **Debugging** code is the process of addressing why your computer is doing something unexpected. Almost anything you do in R will be a process made up of many steps, executed line-by-line in sequential order. In general, you should proceed by breaking your workflow into small parts and confirming, step-by-step, that the result is what you expected.
 
@@ -710,8 +702,8 @@ make_bootstrap_plots(penguins, "species", "island")
 
 Here you can see that the unobserved species/island combinations have been simply left empty and we no longer have an error. Yay!
 
-Measuring Performance
----------------------
+
+## Measuring Performance
 
 How quickly code runs and how much memory it uses can be just as much of an
 obstacle to research computing tasks as errors and bugs. This section describes

@@ -1,5 +1,4 @@
-Tidy & Relational Data
-======================
+# Tidy & Relational Data
 
 This chapter is part 2 (of 2) of _Cleaning & Reshaping Data_, a workshop
 series about how to prepare data for analysis. The major topics of this chapter
@@ -18,8 +17,7 @@ After completing this session, learners should be able to:
 * Identify which types of joins to use when faced with a relational dataset
 
 
-Tidy Datasets
--------------
+## Tidy Datasets
 
 The structure of a dataset---its shape and organization---has enormous
 influence on how difficult it will be to analyze, so making structural changes
@@ -491,8 +489,7 @@ rbind(df99, df00)
 ```
 
 
-Relational Datasets
--------------------
+## Relational Datasets
 
 Many datasets contain multiple tables (or data frames) that are all closely
 related to each other. Sometimes, the rows in one table may be connected the

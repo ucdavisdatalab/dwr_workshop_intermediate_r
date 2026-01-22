@@ -1,5 +1,4 @@
-Language Fundamentals
-=====================
+# Language Fundamentals
 
 This chapter is part 1 (of 2) of _Thinking in R_, a workshop series about how R
 works and how to examine code critically. The major topics of this chapter are
@@ -21,9 +20,7 @@ After completing this session, learners should be able to:
 * Describe R's other object-oriented programming systems at a high level
 
 
-
-Variables & Environments
-------------------------
+## Variables & Environments
 
 Assigning and looking up values of variables are fundamental operations in R,
 as in most programming languages. They were likely among the first operations
@@ -418,7 +415,6 @@ environment(get_tea)
 ```
 
 
-
 ### Variable Lookup
 
 The key to how R looks up variables and how lexical scoping works is that in
@@ -503,7 +499,6 @@ function sparingly. R already provides a much simpler way to get a variable:
 the variable's name.
 
 
-
 ### The Search Path {#sec-the-search-path}
 
 R also uses environments to manage packages. Each time you load a package with
@@ -576,7 +571,6 @@ ggplot2::ggplot
 The related triple-colon operator `:::` gets a **private** variable in a
 package. Generally these are private for a reason! Only use `:::` if you're
 sure you know what you're doing.
-
 
 
 ## Closures
@@ -691,8 +685,7 @@ counter
 ```
 
 
-Attributes
-----------
+## Attributes
 
 An **attribute** is named metadata attached to an R object. Attributes provide
 basic information about objects and play an important role in R's class system,
@@ -756,9 +749,7 @@ attributes with special behavior and requirements, such as `dim`, are set
 correctly.
 
 
-
-S3 {#sec-s3}
---
+## S3 {#sec-s3}
 
 R provides several systems for [**object-oriented programming** (OOP)][oop], a
 programming paradigm where code is organized into a collection of "objects"
@@ -1035,8 +1026,7 @@ method that is the next closest match for an object's class. You can learn more
 by reading `?NextMethod`.
 
 
-Other Object Systems {#sec-other-object-systems}
---------------------
+## Other Object Systems {#sec-other-object-systems}
 
 R provides many systems for object-oriented programming besides S3. Some are
 built into the language, while others are provided by packages. A few of the

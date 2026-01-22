@@ -1,5 +1,4 @@
-Assessment
-==========
+# Assessment
 
 If you are taking this workshop to complete a [GradPathways research computing
 or other DataLab sponsored pathway][pathways], you need to complete an

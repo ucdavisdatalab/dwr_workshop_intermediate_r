@@ -1,5 +1,4 @@
-Best Practices for Writing R Scripts
-====================================
+# Best Practices for Writing R Scripts
 
 This chapter is all about R scripts: what they are, when to use them, and how
 to write them---with specific emphasis making sure your scripts are easy to
@@ -23,8 +22,7 @@ After completing this session, learners should be able to:
 * Read data from configuration files into R
 
 
-Introduction
-------------
+## Introduction
 
 An **R script** is a text file that contains R code. R scripts usually have the
 extension `.R`. You might already use R scripts in your workflow (for example,
@@ -73,8 +71,7 @@ recommend. At a few points, the narrative branches off from the case study to
 take a closer look at a particular practice or topic in more general terms.
 
 
-Case Study: U.S. Fruit Prices {#sec-case-study-us-fruit-prices}
------------------------------
+## Case Study: U.S. Fruit Prices {#sec-case-study-us-fruit-prices}
 
 The U.S. Department of Agriculture (USDA) Economic Research Service (ERS)
 computed [national average retail prices for various fruits and vegetables in
@@ -809,8 +806,7 @@ and also a small bug (related to frozen juice), but all of these can be fixed
 with small changes to the script.
 
 
-Managing Environments {#sec-managing-environments}
----------------------
+## Managing Environments {#sec-managing-environments}
 
 Your **computing environment** is the collection of hardware and software you
 use to run code. Code developed for one computing environment will not
@@ -842,8 +838,7 @@ package.
 
 
 
-Iteration Strategies {#sec-iteration-strategies}
---------------------
+## Iteration Strategies {#sec-iteration-strategies}
 
 R is powerful tool for automating tasks that have repetitive steps. For
 example, you can:
@@ -1188,11 +1183,10 @@ Mini-reader][liza-reader].
 [liza-reader]: https://d-rug.github.io/realworld_functions_iteration/
 
 
-Printing Output {#sec-printing-output}
----------------
+## Printing Output {#sec-printing-output}
 
- This section introduces several different functions for printing output
-and making that output easier to read.
+This section introduces several different functions for printing output and
+making that output easier to read.
 
 
 ### The `print` Function
@@ -1487,8 +1481,7 @@ actively maintained as of January 2023:
 [log4r]: https://github.com/johnmyleswhite/log4r
 
 
-Reading Input
--------------
+## Reading Input
 
 This section explains how to make R read inputs from the command line,
 configuration files, and interactive prompts. These kinds of inputs are often
