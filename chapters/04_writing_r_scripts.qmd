@@ -14,6 +14,15 @@ After this lesson, you should be able to:
 * Read data from configuration files into R
 :::
 
+:::{.callout-important}
+We also use [slides][] to teach this lesson.
+
+This is a highly interactive lesson, so the reader might not have notes for
+everything we cover live.
+
+[slides]: https://docs.google.com/presentation/d/11fLDc3Wt_R0DwIiB4ySl5FhRFOk0DFcQodf6VzmGIfI/edit?usp=sharing
+:::
+
 This chapter is all about R scripts: what they are, when to use them, and how
 to write them---with specific emphasis making sure your scripts are easy to
 read, extend, debug, and reuse. Topics covered along the way include package
