@@ -73,10 +73,49 @@ reader][repro-org].
 
 [repro-org]: https://ucdavisdatalab.github.io/workshop_reproducible_research/chapters/02_core.html#project-organization
 
-This chapter is organized around a single case study
-(@sec-case-study-us-fruit-prices) that benefits from many of the practices we
+This chapter is organized around case studies (@sec-case-study-bart-ridership,
+@sec-case-study-us-fruit-prices) that benefit from many of the practices we
 recommend. At a few points, the narrative branches off from the case study to
 take a closer look at a particular practice or topic in more general terms.
+
+
+## Case Study: BART Ridership {#sec-case-study-bart-ridership}
+
+[Bay Area Rapid Transit (BART)][BART] is a passenger heavy rail service that
+connects cities in the greater San Francisco Bay Area. They regularly [publish
+data about ridership][bart-data] in Excel and CSV format. They provide multiple
+datasets with different sampling frequencies and covering different periods of
+time. Specifically:
+
+[BART]: https://www.bart.gov/
+[bart-data]: https://www.bart.gov/about/reports/ridership
+
+* Hourly entry-exit counts from 1 January 2018 to the present. This dataset is
+  a single CSV file.
+* Daily exit counts from 1 January 1998 to the present. This dataset is a
+  single Excel file.
+* Monthly entry-exit averages for weekdays, Saturdays, and Sundays, from 1
+  January 2001 to the present. This dataset consists of multiple Excel files:
+  one for each month-year.
+
+The entry-exit datasets break down statistics by the entry station and exit
+station, whereas the exit dataset break down statistics by the exit station
+only. Unfortunately, this means that to obtain monthly entry-exit counts before
+2018, you must manually compute them from the monthly averages. In this case
+study, you'll use R to download, read, and reshape the monthly entry-exit
+averages dataset for 2001 to 2008.
+
+<!--
+### Setting Up the Project
+
+### Downloading the Data
+
+### Unzipping the Data
+
+### Reading a File
+
+### Reading Multiple Files
+-->
 
 
 ## Case Study: U.S. Fruit Prices {#sec-case-study-us-fruit-prices}
