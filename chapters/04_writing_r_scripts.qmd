@@ -81,6 +81,13 @@ take a closer look at a particular practice or topic in more general terms.
 
 ## Case Study: BART Ridership {#sec-case-study-bart-ridership}
 
+:::{important}
+Each time we teach this case study, the result is slightly different. Here are
+some of the scripts from past workshops:
+
+* [2025-02-05](https://github.com/ucdavisdatalab/workshop_intermediate_r/blob/main/R/2025-02-06_clean-bart.R)
+:::
+
 [Bay Area Rapid Transit (BART)][BART] is a passenger heavy rail service that
 connects cities in the greater San Francisco Bay Area. They regularly [publish
 data about ridership][bart-data] in Excel and CSV format. They provide multiple
