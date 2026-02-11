@@ -123,6 +123,8 @@ by [Allison Horst](https://allisonhorst.com). Before jumping in, let's have a
 look at the data and the image we want to create.
 
 ```{r head-penguins, message=FALSE, warning=FALSE}
+library("palmerpenguins")
+
 head(penguins)
 ```
 
@@ -148,6 +150,8 @@ This is a good dataviz, now let's duplicate it!
 Here is the code to make the plot:
 
 ```{r penguin-plot, message=FALSE, warning=FALSE}
+library("ggplot2")
+
 # matching the Allison Horst peguins plot
 ggplot(penguins) +
   aes(x = flipper_length_mm,
@@ -458,6 +462,8 @@ This one is kind of complicated because you have to tell `ggplot2` how to
 calculate the height of the columns and of the error bars.
 
 ```{r example-genotype, warning=FALSE, message=FALSE}
+library("readr")
+
 mice_geno = read_csv("data/genotype-response.csv")
 
 # show the treatment response for different genotypes
@@ -496,6 +502,8 @@ official USDA webpage
 After you download the data, we will load the data and do some visualization.
 
 ```{r example-bird-flu, message=FALSE, warning=FALSE}
+library("lubridate")
+
 # load data directly from the USDA website
 flu <- read_csv("data/hpai-wild-birds-ver2.csv")
 flu$date <- mdy(flu$`Date Detected`)
