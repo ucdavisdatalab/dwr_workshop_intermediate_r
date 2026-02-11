@@ -11,10 +11,13 @@ After this lesson, you should be able to:
 * Create well-designed data visualizations
 :::
 
-We are here today to learn how to do data visualization in R. Some of you will
-have recently done the Principles of Data Visualization workshop. There you
-were given a checklist of questions to guide you as you create a plot, which we
-are going to use today. [The checklist is here][checklist].
+This chapter is about creating and customizing data visualizations in R with
+the [ggplot2][] package. The first section is a review of ggplot2's interfaces
+and computational model; it explains how to reason about and modify
+visualizations created with the package. The subsequent sections put these
+ideas into practice through case studies with real data.
+
+[ggplot2]: https://ggplot2.tidyverse.org/
 
 [checklist]: /docs/graphics_checklist.pdf
 
