@@ -1,5 +1,16 @@
 # Next-level Data Visualization
 
+:::{.callout-note title="Learning Goals" collapse="false"}
+After this lesson, you should be able to:
+
+* Explain what the grammar of graphics is
+* Explain ggplot2's computational model
+* Choose appropriate visualizations based on data type(s)
+* List the steps to making a well-designed visualization
+* Assess what aspects of a visualization need improvement
+* Create well-designed data visualizations
+:::
+
 We are here today to learn how to do data visualization in R. Some of you will
 have recently done the Principles of Data Visualization workshop. There you
 were given a checklist of questions to guide you as you create a plot, which we
