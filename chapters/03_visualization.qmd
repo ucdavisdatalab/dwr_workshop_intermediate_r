@@ -1,4 +1,4 @@
-# Data Visualization in R
+# Next-level Data Visualization
 
 We are here today to learn how to do data visualization in R. Some of you will
 have recently done the Principles of Data Visualization workshop. There you
