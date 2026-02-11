@@ -22,36 +22,84 @@ ideas into practice through case studies with real data.
 [checklist]: /docs/graphics_checklist.pdf
 
 
-## Our Friend `ggplot2`
+## Data Visualization in R
 
-We will be using the R package `ggplot2` to create data visualizations. Install
-it via the `install.packages` function. While we are at it, let's make sure we
-install all of the packages that we'll need for today's workshop. Beyone
-`ggplot2`, we'll use `readr` for reading data files, `dplyr` for manupulating
-data, and `palmerpenguins` provides a nice dataset.
+There are many ways to create visualizations in R, because visualization is a
+highly effective way to summarize and gain insights about data. Tools for
+creating static visualizations include:
+
+* R's built-in base and graphics packages provide many data visualization
+  functions. For instance, the `plot` function creates scatter plots and line
+  plots, while the `barplot`, `boxplot`, `histogram`, and `smoothScatter`
+  functions are named after the plots they create. With these functions, adding
+  more details to a plot is relatively straightforward (for example, use the
+  `lines` function to add lines). There's also no need to install any packages
+  to use them. A disadvantage is that they all have slightly different
+  parameters, which can make them difficult to learn and remember.
+* The [tinyplot][] package extends R's built-in data visualization functions to
+  provide better support for grouped data, custom color palettes, and more,
+  without changing the feel. By design, the package has no other dependencies.
+* The [ggplot2][] package uses the grammar of graphics, a convenient way to
+  describe visualizations in terms of layers. The package provides a consistent
+  interface, detailed [documentation][ggplot2], and a
+  [cheatsheet][ggplot2-cheat], all of which are helpful for learning. As R's
+  most-downloaded package, ggplot2 is so popular that people have created
+  equivalents for the Python and Julia programming languages. The package is
+  also part of the [Tidyverse][tidy], a popular collection of R packages
+  designed to work well together.
+* The [lattice][] package is another package that aims to provide rich support
+  for multivariate and grouped data. While lattice creates nice-looking plots
+  by default, customizing them usually requires writing a lot of boilerplate
+  code.
+
+[tinyplot]: https://grantmcdermott.com/tinyplot/
+[ggplot2-cheat]: https://github.com/rstudio/cheatsheets/blob/master/data-visualization.pdf
+[tidy]: https://www.tidyverse.org/
+[lattice]: https://cran.r-project.org/web/packages/lattice/
+
+Many packages extend these systems further. There are also many packages for
+creating dynamic visualizations, which react to user input or change over time,
+that we do not cover here.
+
+:::{.callout-warning}
+R's built-in data visualization functions, ggplot2, and lattice are not
+interoperable! Consequently, it's best to choose one system to use exclusively.
+
+We recommend ggplot2 and will focus on it for the rest of this chapter.
+:::
+
+:::{.callout-important}
+To follow along with this chapter, you'll need recent versions of the tidyverse
+(which includes ggplot2) and palmerpenguins packages. You can install or update
+these by running this code in an R prompt:
 
 ```{r install-packages, eval=FALSE}
-install.packages("ggplot2")
-install.packages("dplyr")
-install.packages("readr")
+install.packages("tidyverse")
 install.packages("palmerpenguins")
 ```
+:::
 
 
-```{r include=FALSE}
-library(ggplot2)
-library(lubridate)
-library(readr)
-library(palmerpenguins)
-```
+## The Grammar of Graphics
 
-`ggplot2` is an enormously popular R package that provides a way to create data
-visualizations through a so-called "grammar of graphics" (hence the "gg" in the
-name). That grammar interface may be a little bit unintuitive at first but once
-you grasp it, you hold enormous power to quickly craft plots. It doesn't hurt
-that the `ggplot2` plots look great, too.
+The "gg" in ggplot2 stands for **grammar of graphics**. The idea of a grammar
+of graphics is that visualizations can be built up in layers. In ggplot2, the
+three layers every plot must have are:
 
-### The Grammar of Graphics
+* Data
+* Geometry
+* Aesthetics
+
+There are also several optional layers. Here are a few:
+
+Layer       | Description
+----------  | -----------
+scales      | Title, label, and axis value settings
+facets      | Side-by-side plots
+guides      | Axis and legend position settings
+annotations | Shapes that are not mapped to data
+coordinates | Coordinate systems (Cartesian, logarithmic, polar)
+
 
 The grammar of graphics breaks the elements of statistical graphics into parts
 in an analogy to human language grammars. Knowing how to put together subject
