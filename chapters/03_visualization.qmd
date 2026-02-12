@@ -630,7 +630,9 @@ experiment to see how mice with two different genotypes respond to two
 different treatments. Now you want to plot the mean response of each group as a
 column, with error bars indicating the standard deviation of the mean. You also
 want to show the raw data. I've simulated some data for us to use---download it
-[here](https://ucdavis.box.com/s/lxgplwqn23ncbeb5gc6ktpfknr56xws6).
+[here][simulated-data].
+
+[simulated-data]: https://ucdavis.box.com/s/lxgplwqn23ncbeb5gc6ktpfknr56xws6
 
 This one is kind of complicated because you have to tell `ggplot2` how to
 calculate the height of the columns and of the error bars.
@@ -669,11 +671,12 @@ ggplot(mice_geno) +
 People mail dead birds to the USDA and USGS, where scientists analyze the birds
 to find out why they died. Right now there is a bird flu epidemic, and the USDA
 provides public data about the birds in whom the disease has been detected. You
-can access the data
-[here](https://ucdavis.box.com/s/babz1b5ak0kh7q7cktg7k5gzrt2ve9gc) or see the
-official USDA webpage
-[here](https://www.aphis.usda.gov/aphis/ourfocus/animalhealth/animal-disease-information/avian/avian-influenza/).
-After you download the data, we will load the data and do some visualization.
+can access the data [here][usda-birds-data] or see the official USDA webpage
+[here][usda-birds]. After you download the data, we will load the data and do
+some visualization.
+
+[usda-birds]: https://www.aphis.usda.gov/aphis/ourfocus/animalhealth/animal-disease-information/avian/avian-influenza/
+[usda-birds-data]: https://ucdavis.box.com/s/babz1b5ak0kh7q7cktg7k5gzrt2ve9gc
 
 ```{r example-bird-flu, message=FALSE, warning=FALSE}
 library("lubridate")
@@ -710,14 +713,15 @@ subset(flu, State %in% c("California", "Oregon", "Washington")) |>
 
 
 Let's compare the bird flu season to the human flu season. Download
-hospitalization data for the 2021-2022 and 2022-2023 flu seasons from the CDC
-website [here](https://gis.cdc.gov/GRASP/Fluview/FluHospRates.html) or see the
-official Centers for Disease Control website
-[here](https://gis.cdc.gov/GRASP/Fluview/FluHospRates.html). After you download
+hospitalization data for the 2021-2022 and 2022-2023 flu seasons from
+[here][fluserv-data] or see the CDC website [here][fluserv]. After you download
 the data, we will see how adding a second data series works a little
 differently from the first. That's because composing data, aesthetic mapping,
 and geometry with addition only works when there is no ambiguity about which
 data series is being mapped or drawn.
+
+[fluserv-data]: https://ucdavis.box.com/s/a4m4ermwm0lqes2sh1jckdf16h0rpdkc
+[fluserv]: https://gis.cdc.gov/GRASP/Fluview/FluHospRates.html
 
 After downloading the data, there is some work required to adjust the dates and
 change the hospitalization rate from cases per 100,000 to cases per 10 million,
@@ -763,14 +767,16 @@ ggplot(flu) +
 
 The US Small Business Administration (SBA) maintains data on the loans it
 offers to businesses. Data about loans made since 2020 can be found at the
-[Small Business Administration
-website](https://data.sba.gov/dataset/7-a-504-foia), or you can download it
-from [here](https://ucdavis.box.com/s/ctx6grx10c83lh561ekl9tnmi20561ed). We'll
-load that data and then explore some ways to visualize it. Since the difference
-between a \$100 loan and a \$1000 loan is more like the difference between
-\$100,000 and \$1M than between \$100,000 ad $100,900, we should put the loan
-values on a  logarithmic scale. You can do this in `ggplot2` with the
-`scale_y_log10` function (when the loan values are on the y axis).
+[Small Business Administration website][sba], or you can download it from
+[here][sba-data]. We'll load that data and then explore some ways to visualize
+it. Since the difference between a \$100 loan and a \$1000 loan is more like
+the difference between \$100,000 and \$1M than between \$100,000 and \$100,900,
+we should put the loan values on a  logarithmic scale. You can do this in
+`ggplot2` with the `scale_y_log10` function (when the loan values are on the y
+axis).
+
+[sba]: https://data.sba.gov/dataset/7-a-504-foia
+[sba-data]: https://ucdavis.box.com/s/ctx6grx10c83lh561ekl9tnmi20561ed
 
 
 ```{r example-SBA, message=FALSE, warning=FALSE}
