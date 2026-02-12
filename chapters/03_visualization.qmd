@@ -109,7 +109,7 @@ annotation  | `annotation_*` | Adds manually-positioned annotations
 guides      | `guide_*`      | Sets axes and legends
 coordinate  | `coord_*`      | Sets coordinate systems (Cartesian, logarithmic, polar)
 
-The ggplot2 [documentation][ggplot] provides a complete list of all layers and
+The ggplot2 [documentation][ggplot2] provides a complete list of all layers and
 their corresponding functions.
 
 :::{.callout-tip}
