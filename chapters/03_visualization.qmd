@@ -566,7 +566,7 @@ This is a good data visualization!
 :::
 
 
-## Case Study: Counting Penguins
+## Case Study: Plotting a Categorical Distribution
 
 First, let's revisit the `penguins` data. There are tree categorical features
 in the data: `species`, `island`, and `sex`. Let's use `geom_bar` to count how
@@ -623,50 +623,11 @@ ggplot(penguins) +
 ```
 
 
-## Case Study: Error Bars
-
-Here's an example that recently came up in my office hours. You've done an
-experiment to see how mice with two different genotypes respond to two
-different treatments. Now you want to plot the mean response of each group as a
-column, with error bars indicating the standard deviation of the mean. You also
-want to show the raw data. I've simulated some data for us to use---download it
-[here][simulated-data].
-
-[simulated-data]: https://ucdavis.box.com/s/lxgplwqn23ncbeb5gc6ktpfknr56xws6
-
-This one is kind of complicated because you have to tell `ggplot2` how to
-calculate the height of the columns and of the error bars.
-
-```{r example-genotype, warning=FALSE, message=FALSE}
-library("readr")
-
-mice_geno = read_csv("data/genotype-response.csv")
-
-# show the treatment response for different genotypes
-ggplot(mice_geno) +
-  aes(x=trt,
-      y=resp,
-      fill=genotype) +
-  scale_fill_brewer(palette="Dark2") +
-  geom_bar(position=position_dodge(),
-           stat='summary',
-           fun='mean') +
-  geom_errorbar(fun.min=function(x) {mean(x) - sd(x) / sqrt(length(x))},
-               fun.max=function(x) {mean(x) + sd(x) / sqrt(length(x))},
-               stat='summary',
-               position=position_dodge(0.9),
-               width=0.2) +
-  geom_point(position=
-               position_jitterdodge(
-                 dodge.width=0.9,
-                 jitter.width=0.1)) +
-  xlab("Treatment") +
-  ylab("Response (mm/g)") +
-  ggtitle("Mean growth response of mice by genotype and treatment")
-```
+## Case Study: Plotting a Continuous Distribution
 
 
-## Case Study: Bird Flu Mortality
+
+## Case Study: Plotting a Time Series
 
 People mail dead birds to the USDA and USGS, where scientists analyze the birds
 to find out why they died. Right now there is a bird flu epidemic, and the USDA
@@ -679,6 +640,7 @@ some visualization.
 [usda-birds-data]: https://ucdavis.box.com/s/babz1b5ak0kh7q7cktg7k5gzrt2ve9gc
 
 ```{r example-bird-flu, message=FALSE, warning=FALSE}
+library("readr")
 library("lubridate")
 
 # load data directly from the USDA website
@@ -760,6 +722,50 @@ ggplot(flu) +
   xlab("Date") +
   ylab("Count") +
   xlim(as_date("2022-01-01"), as_date("2023-05-01"))
+```
+
+
+## Case Study: Plotting a Function
+
+
+## Case Study: Error Bars
+
+Here's an example that recently came up in my office hours. You've done an
+experiment to see how mice with two different genotypes respond to two
+different treatments. Now you want to plot the mean response of each group as a
+column, with error bars indicating the standard deviation of the mean. You also
+want to show the raw data. I've simulated some data for us to use---download it
+[here][simulated-data].
+
+[simulated-data]: https://ucdavis.box.com/s/lxgplwqn23ncbeb5gc6ktpfknr56xws6
+
+This one is kind of complicated because you have to tell `ggplot2` how to
+calculate the height of the columns and of the error bars.
+
+```{r example-genotype, warning=FALSE, message=FALSE}
+mice_geno = read_csv("data/genotype-response.csv")
+
+# show the treatment response for different genotypes
+ggplot(mice_geno) +
+  aes(x=trt,
+      y=resp,
+      fill=genotype) +
+  scale_fill_brewer(palette="Dark2") +
+  geom_bar(position=position_dodge(),
+           stat='summary',
+           fun='mean') +
+  geom_errorbar(fun.min=function(x) {mean(x) - sd(x) / sqrt(length(x))},
+               fun.max=function(x) {mean(x) + sd(x) / sqrt(length(x))},
+               stat='summary',
+               position=position_dodge(0.9),
+               width=0.2) +
+  geom_point(position=
+               position_jitterdodge(
+                 dodge.width=0.9,
+                 jitter.width=0.1)) +
+  xlab("Treatment") +
+  ylab("Response (mm/g)") +
+  ggtitle("Mean growth response of mice by genotype and treatment")
 ```
 
 
