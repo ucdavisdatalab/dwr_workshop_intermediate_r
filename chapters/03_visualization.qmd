@@ -12,14 +12,16 @@ After this lesson, you should be able to:
 :::
 
 This chapter is about creating and customizing data visualizations in R with
-the [ggplot2][] package. The first section is a review of ggplot2's interfaces
-and computational model; it explains how to reason about and modify
-visualizations created with the package. The subsequent sections put these
-ideas into practice through case studies with real data.
+the [ggplot2][] package. The first section is an overview of data visalization
+systems for R. The second and third sections provide a detailed example of how
+to use ggplot2 to recreate a plot. These serve as a review of (or introduction
+to) ggplot2's interfaces and computational model; they explain how to reason
+about and modify visualizations created with the package. The fourth section
+outlines the (non-programming) graphic design skills necessary to make
+high-quality plots. Finally, the remaining sections put all of these ideas into
+practice through case studies with real data.
 
 [ggplot2]: https://ggplot2.tidyverse.org/
-
-[checklist]: /docs/graphics_checklist.pdf
 
 
 ## Data Visualization in R
@@ -80,61 +82,83 @@ install.packages("palmerpenguins")
 :::
 
 
-## The Grammar of Graphics
+### The Grammar of Graphics
 
 The "gg" in ggplot2 stands for **grammar of graphics**. The idea of a grammar
-of graphics is that visualizations can be built up in layers. In ggplot2, the
-three layers every plot must have are:
+of graphics is that visualizations can be built up in layers. In ggplot2, you
+can add layers to a plot with plus (`+`). There are three layers that every
+plot must have are:
 
-* Data
-* Geometry
-* Aesthetics
+Layer      | Functions | Description
+---------- | --------- | -----------
+data       | `ggplot2` | Sets the data used to make the plot.
+geometry   | `geom_*`  | Sets the geometry (points, lines, etc.) of the plot.
+aesthetics | `aes`     | Sets the relationship between data and geometries.
+
+Each layer corresponds to one or more functions. The geometry layer consists of
+multiple functions; the asterisk (`*`) in the table is a wildcard.
 
 There are also several optional layers. Here are a few:
 
-Layer       | Description
-----------  | -----------
-scales      | Title, label, and axis value settings
-facets      | Side-by-side plots
-guides      | Axis and legend position settings
-annotations | Shapes that are not mapped to data
-coordinates | Coordinate systems (Cartesian, logarithmic, polar)
+Layer       | Functions      | Description
+----------- | -------------- | -----------
+scale       | `scale_*`      | Sets palettes (color, shape, etc.) and labels
+theme       | `theme_*`      | Sets appearance of non-data elements
+facets      | `facet_*`      | Makes side-by-side plots
+annotation  | `annotation_*` | Adds manually-positioned annotations
+guides      | `guide_*`      | Sets axes and legends
+coordinate  | `coord_*`      | Sets coordinate systems (Cartesian, logarithmic, polar)
 
+The ggplot2 [documentation][ggplot] provides a complete list of all layers and
+their corresponding functions.
 
+:::{.callout-tip}
 The grammar of graphics breaks the elements of statistical graphics into parts
 in an analogy to human language grammars. Knowing how to put together subject
 nouns, object nouns, verbs, and adjectives allows you to construct sentences
 that express meaning. Similarly, the grammar of graphics is a collection of
 layers and the rules for putting them together to graphically express the
 meaning of your data.
+:::
 
 
-### Dataset: Palmer Penguins
+## Example: Palmer Penguins, Part 1 {#sec-example-palmer-penguins-part-1}
 
 ![
   Artwork by [Allison Horst][horst].
 ](/images/lter_penguins.png){#fig-penguins}
 
-As a reminder about the fundamentals of ggplot2, we'll recreate the scatter
-plot (without the regression lines) in @fig-flipper-bill, which shows flipper
-length versus bill length for hundreds of individual penguins from three
-different species: [Adélie][], [Chinstrap][], and [Gentoo][]. Both the plot and
-data come from the [Palmer Penguins data set][penguins], which was collected by
-[Dr. Kristen Gorman][gorman] at [Palmer Station, Antarctica][palmer], and
-packaged for public use by [Alison Horst][horst]. The package is called
-palmerpenguins; install it now if you didn't earlier.
+[horst]: https://allisonhorst.com/
 
-[penguins]: https://allisonhorst.github.io/palmerpenguins/
+As a refresher about the fundamentals of ggplot2, let's recreate the scatter
+plot in @fig-flipper-bill, which shows flipper length versus bill length for
+hundreds of individual penguins from three different species: [Adélie][],
+[Chinstrap][], and [Gentoo][].
+
 [Adélie]: https://en.wikipedia.org/wiki/Ad%C3%A9lie_penguin
 [Chinstrap]: https://en.wikipedia.org/wiki/Chinstrap_penguin
 [Gentoo]: https://en.wikipedia.org/wiki/Gentoo_penguin
-[gorman]: https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php
-[palmer]: https://pallter.marine.rutgers.edu/
-[horst]: https://allisonhorst.com/
 
 ![
-  A scatter plot of data from the [Palmer Penguins dataset][penguins].
+  A scatter plot of data from the [Palmer Penguins dataset][penguins], by
+  Allison Horst.
 ](/images/flipper-bill.png){#fig-flipper-bill}
+
+[penguins]: https://allisonhorst.github.io/palmerpenguins/
+
+The scatter plot uses the [Palmer Penguins dataset][penguins], which was
+collected by [Dr. Kristen Gorman][gorman] at [Palmer Station,
+Antarctica][palmer]. The plot was created by [Alison Horst][horst], who also
+packaged the data for public use. The package is called palmerpenguins; install
+it now if you didn't earlier.
+
+[gorman]: https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php
+[palmer]: https://pallter.marine.rutgers.edu/
+
+:::{.callout-tip}
+Recreating plots from scratch is a great way to practice and learn new data
+visualization skills.
+:::
 
 Before you start working on any plot, it's a good idea to take a look at the
 data. Use the `library` function to load the palmerpenguins package, which
@@ -175,32 +199,6 @@ error, or even worse, produce a plot that misrepresents the data.
 
 The data types in the `penguins` data look okay, so we're ready to start
 plotting!
-
-<!--
-This is a complicated data visualization that includes features we haven't
-covered yet, so let's go into how it works. You might have noticed how the code
-to make the plot is separated into a bunch of function calls, all separated by
-plus signs (`+`). Each function does something small and specific. The
-functions and the ability to add them together provide a powerful and flexible
-"grammar" to describe the desired plot.
-
-Our plot begins the way that most do---by calling `ggplot` with the data as the
-argument. This creates a plot object (but doesn't draw it) and sets the data.
-Then we add the a so-called "aesthetic mapping" with the `aes` function. An
-aesthetic mapping describes how features of the data map to visual channels of
-the plot. In our case, that means mapping the flipper length to the `x`
-(horizontal) direction, the bill length to the `y` (vertical) direction, and
-mapping species to both color and shape. Next, we add a geometry to describe
-what kind of marks to use in drawing the plot. Here you can refer to the table
-at the top of the graphics checklist that suggests geometries to use for
-different kinds of features. We have numeric features for both `x` and `y`, so
-the table suggests line, scatter (points), and heatmap. We've selected points
-(`geom_point`) because we want to show the individual penguins (lines would
-imply a chain of connections from one penguin to the next.)
-
-Those three parts (data, a geometry, and a map between the two) would be enough
-to get a basic plot that looks like this:
--->
 
 
 ### Layer 1: Data
@@ -268,8 +266,7 @@ ggplot(penguins) +
   geom_point()
 ```
 
-Now we've got a plot! There's still a long way to go to get it to look like
-@fig-flipper-bill, but this has the same form.
+Now we've got a plot!
 
 Notice that ggplot2 displays a warning about `missing values or values outside
 the scale range`. This warning is a reminder that some of the observations in
@@ -294,13 +291,12 @@ ggplot(penguins) +
   geom_point()
 ```
 
-<!--
-We know, though, that this plot is not complete. In particular, there is no
-title and the axes aren't labeled meaningfully. Also, the clouds of points seem
-to hide the meaning that we are trying to convey and the colors aren't
-colorblind-safe. The rest of the pieces of the plot call are meant to address
-those shortcomings.
+This version of the copycat plot has roughly the same form as
+@fig-flipper-bill, although there's still a long way to go to make it exactly
+the same. We'll address the remaining differences in
+@sec-example-palmer-penguins-part-2.
 
+<!--
 We can begin to better understand the grammar of graphics as we consider this
 example. Recognize that we our data visualization conveys information via
 several visual channels that express data as visual marks. The geometry
@@ -341,6 +337,25 @@ like poetry). Recognizing the grammar of graphics allows us to reason in a
 consistent way about different kinds of plots, and make intelligent assumptions
 about mappings and geometries.
 -->
+
+
+## Example: Palmer Penguins, Part 2 {#sec-example-palmer-penguins-part-2}
+
+There are several details we still need to change in the copycat plot from
+@sec-example-palmer-penguins-part-1 to make it match @fig-flipper-bill. In
+particular:
+
+* The clouds of points are missing the regression lines, which makes it harder
+  to see the trends.
+* The colors of the points are different. In this case, they're red, green, and
+  blue, which are not colorblind-safe.
+* The background color and gridline color are different.
+* The legend is off to the side.
+* There are no titles, and the labels are column names rather than
+  descriptions.
+
+We'll fix these in the subsequent sections. Each section focuses on a single
+detail and associated ggplot2 layer.
 
 
 ### Adding Regression Lines (Geometry)
@@ -486,7 +501,7 @@ you can use to fine-tune the theme.
 
 Adding labels and titles to a visualization is a critical step. Without labels,
 the viewer might not be able to understand what the visualization shows. In
-ggplot2, we can set these with the scales layer function `labs` (short for
+ggplot2, we can set these with the scale layer function `labs` (short for
 "labels"). We can set a title, subtitle, and also a label for each aesthetic.
 
 Here's how to set the labels on the copycat plot to match @fig-flipper-bill:
@@ -515,149 +530,43 @@ ggplot(penguins) +
 ```
 
 
-### Examining the Plot
+## Visualization Best Practices
 
-Referring to the graphics checklist, we see that this plot has two numerical
-features (bill length and flipper length), expressed using a scatter plot.
-There is also a categorical feature (species), which is indicated by the
-different colors and shapes of the plot. The plot expresses the fact that
-flipper length is positively associated with bill length for all thre species
-of penguins, but the sizes and the relationships between them are unique to
-each species. There is a title and a legend, the axes are labeled with units,
-and all of the text is in plain language. There is a risk that the data may
-hide the message, so a smoothing line is added to each species for clarity. The
-colors are accessible (avoiding red/green colorblindness issues).
+Besides programming skills, to create a visualization that conveys a clear
+message about a dataset, you need to know graphic design best practices and the
+principles of visual perception. DataLab's [Principles of Data
+Visualization][datalab-data-viz] covers these important skills.
 
-This is a good dataviz, now let's duplicate it!
+[datalab-data-viz]: https://ucdavisdatalab.github.io/workshop_data_viz_principles/
 
-<!--
-### Duplicating the Palmer Penguins Plot
+DataLab's [Data Visualization Guidelines][checklist] is a concise reference and
+reminder of these skills. Bookmark or print out a copy and run through the
+checklist whenever you design a visualization. The case studies in the
+{numref}`case-studies` show how to fix some of the issues on the checklist.
 
-Here is the code to make the plot:
+[checklist]: /docs/graphics_checklist.pdf
 
-```{r penguin-plot, message=FALSE, warning=FALSE}
-library("ggplot2")
+:::{.callout-note title="Revisiting the Palmer Penguins Plot"}
+Let's apply the Data Visualization Guidelines to the Palmer Penguins plot
+(@fig-flipper-bill):
 
-# matching the Allison Horst peguins plot
-ggplot(penguins) +
-  aes(x = flipper_length_mm,
-      y = bill_length_mm,
-      color = species,
-      shape = species) +
-  geom_point() +
-  geom_smooth(method = lm, se = FALSE) +
-  xlab("Flipper length (mm)") +
-  ylab("Bill length (mm)") +
-  ggtitle(
-    "Flipper and bill length",
-    subtitle = "Dimensions for Adelie, Chinstrap, and Gentoo penguins at Palmer Station LTER"
-  ) +
-  labs(color = "Penguin species", shape = "Penguin species") +
-  scale_color_brewer(palette = "Dark2")
-```
--->
+* This plot has two numerical features (bill length and flipper length),
+  expressed using a scatter plot. There's also a categorical feature (species),
+  which is indicated by the different colors and shapes of the plot.
+* The plot expresses the fact that flipper length is positively associated with
+  bill length for all three species of penguins, but the sizes and the
+  relationships between them are unique to each species.
+* There's a title and a legend, the axes are labeled with units, and all of
+  the text is in plain language.
+* There's a risk that the data may hide the message, so a smoothing line is
+  added to each species for clarity.
+* The colors are accessible to colorblind people.
+
+This is a good data visualization!
+:::
 
 
-## Layers
-
-Layers are the building blocks of the grammar of graphics. The typical pattern
-is that you express the idea of a plot in the grammar of graphics by adding
-layers with the addition symbol (`+`). There aren't even that many of layers to
-know! Here is the list, and the name of the function(s) you'll use to control
-the layer. Some of the names include asterisks because there are a lot of
-similar options---for instance, geometry layers include `geom_point`,
-`geom_line`, `geom_boxplot`, and many more. See the comprehensive listing on
-[the official `ggplot2` website](https://ggplot2.tidyverse.org/reference/).
-
-* Data (`ggplot2`) -- provides the data for the visualization.
-* Aesthetic mapping (`aes`) -- a mapping that indicates which variables in the
-  data control which channel in the plot (recall from the [Principle of Data
-  Visualization](https://ucdavisdatalab.github.io/workshop_data_viz_principles/graphical-elements-of-a-plot.html)
-  that a "channel" is used in an abstract way to include things like shape,
-  color, and line width.)
-* Geometry (`geom_*`) -- how the marks will be drawn in the figure.
-* Statistical transform (`stat_*`) -- alters the data before drawing. For
-  instance, by binning or removing duplicates.
-* Scale (`scale_*`) -- used to control the way that values in the data are
-  mapped to the channels. For instance, you can control how numbers or
-  categories in the data map to colors.
-* Coordinates (`coord_*`) -- used to control how the data are mapped to plot
-  axes.
-* Facets (`facet_*`) -- used to separate the data into subplots called
-  "facets".
-* Theme (`theme`) -- modifies plot details like titles, labels, and legends.
-
-
-## Guidelines for Graphics
-
-I've attached the [PDF checklist for creating good data
-visualizations][checklist], created by Nick Ulle of UC Davis Datalab. Download
-it and keep a copy around---it's an excellent guide. I'm going to go over how
-the checklist translates into the grammar of graphics.
-
-### Data
-
-You can't have a data visualization without data! `ggplot2` expects that your
-data is **tidy**, which means that each row is a complete observation and each
-column is a unique feature. In fact, `ggplot2` is part of an actively
-developing collection of packages [called the
-`tidyverse`](https://tidyverse.org) that provides ways to create and work with
-tidy data. You dont have to adopt the entire tidyverse to use `ggplot2`,
-though.
-
-### Feature Types
-
-The first item on the list is a table of options for geometries that are
-commonly relevant for a given kind of data---for instance, a histogram is a
-geometry that can be used with a single numeric feature, and a box plot can be
-used with one numeric and one categorical feature.
-
-* Should it be a dot plot? Pie plots are hard to read and bar plots don't use
-  space efficiently (Cleveland and McGill 1990; Heer and Bostock 2010).
-  Generally a dot plot is a better choice.
-
-### Theme Guidelines
-
-* Does the graphic convey important information? Don't include graphics that
-  are uninformative or redundant.
-* Title? Make sure the title explains what the graphic shows.
-* Axis labels? Label the axes in plain language (no variable names!).
-* Axis units? Label the axes with units (inches, dollars, etc).
-* Legend? Any graphic that shows two or more categories coded by style or color
-  must include a legend.
-
-
-### Scale Guidelines
-
-* Appropriate scales and limits? Make sure the scales and limits of the axes do
-  not lead people to incorrect conclusions. For side-by-side graphics or
-  graphics that viewers will compare, use identical scales and limits.
-* Print safe? Design graphics to be legible in black & white. Color is great,
-  but use point and line styles to distinguish groups in addition to color.
-  Also try to choose colors that are accessible to colorblind people. The
-  RColorBrewer and viridis packages can help with choosing colors.
-
-
-### Facet Guidelines
-
-* No more than 5 lines? Line plots with more than 5 lines risk becoming
-  hard-to-read "spaghetti" plots. Generally a line plot with more than 5 lines
-  should be split into multiple plots with fewer lines. If the x-axis is
-  discrete, consider using a heat map instead.
-* No overplotting? Scatter plots where many plot points overlap hide the actual
-  patterns in the data. Consider splitting the data into facets, making the
-  points smaller, or using a two-dimensional density plot (a smooth scatter
-  plot) instead.
-
-
-## Case Studies
-
-We have covered enough of the grammar of graphics that you should begin to see
-the patterns in how it is used to express graphical ideas for `ggplot2`. Now we
-will work through some examples.
-
-
-### Counting Penguins
+## Case Study: Counting Penguins
 
 First, let's revisit the `penguins` data. There are tree categorical features
 in the data: `species`, `island`, and `sex`. Let's use `geom_bar` to count how
@@ -714,7 +623,7 @@ ggplot(penguins) +
 ```
 
 
-### Experimental Data with Error Bars
+## Case Study: Error Bars
 
 Here's an example that recently came up in my office hours. You've done an
 experiment to see how mice with two different genotypes respond to two
@@ -755,7 +664,7 @@ ggplot(mice_geno) +
 ```
 
 
-### Bird Flu Mortality
+## Case Study: Bird Flu Mortality
 
 People mail dead birds to the USDA and USGS, where scientists analyze the birds
 to find out why they died. Right now there is a bird flu epidemic, and the USDA
@@ -849,7 +758,8 @@ ggplot(flu) +
   xlim(as_date("2022-01-01"), as_date("2023-05-01"))
 ```
 
-### Small Business Loans
+
+## Case Study: Small Business Loans
 
 The US Small Business Administration (SBA) maintains data on the loans it
 offers to businesses. Data about loans made since 2020 can be found at the
