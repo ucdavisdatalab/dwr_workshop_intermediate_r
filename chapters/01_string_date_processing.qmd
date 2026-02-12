@@ -55,7 +55,7 @@ website and the most popular ones also have [cheatsheets][].
 [cheatsheets]: https://posit.co/resources/cheatsheets/
 
 
-## Parsing Dates & Times
+## Parsing Dates & Times {#sec-parsing-dates-times}
 
 When working with dates and times, you might want to:
 

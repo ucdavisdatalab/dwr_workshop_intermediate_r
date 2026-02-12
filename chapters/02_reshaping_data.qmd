@@ -17,7 +17,7 @@ are how to reshape datasets with pivots and how to combine related datasets
 with joins
 
 
-## Tidy Datasets
+## Tidy Datasets {#sec-tidy-datasets}
 
 The structure of a dataset---its shape and organization---has enormous
 influence on how difficult it will be to analyze, so making structural changes
