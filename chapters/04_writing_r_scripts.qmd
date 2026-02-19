@@ -383,7 +383,7 @@ library("stringr")
 We'll use several functions from stringr, but each will be explained in
 context. The package provides detailed documentation as well as a
 [cheatsheet][stringr-cheatsheet]. If you want to learn more about string
-processing and stringr in general, see @sec-string-date-processing.
+processing and stringr in general, see @sec-strings.
 
 [stringr-cheatsheet]: https://github.com/rstudio/cheatsheets/blob/master/strings.pdf
 
@@ -779,8 +779,8 @@ main()
 Some of the columns in the data frame have inappropriate data types. This can
 be fixed with just a few lines of code, but since it doesn't provide any
 additional insight into how to write scripts, we won't do so here. If you want
-to know more about how to fix "messy data" problems, read
-@sec-string-date-processing.
+to know more about how to fix "messy data" problems, start with
+@sec-dates-times.
 
 
 ### Iterating Over All Fruit
