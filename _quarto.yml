@@ -16,8 +16,10 @@ book:
     - "index.qmd"
     - part: "Cleaning & Reshaping Data"
       chapters:
-        - "chapters/01_string_date_processing.qmd"
-        - "chapters/02_reshaping_data.qmd"
+        - "chapters/cleaning-reshaping/01_dates-times.qmd"
+        - "chapters/cleaning-reshaping/02_strings.qmd"
+        - "chapters/cleaning-reshaping/03_reshaping-data.qmd"
+        - "chapters/cleaning-reshaping/04_combining-data.qmd"
     - part: "Visualizing & Analyzing Data"
       chapters:
         - "chapters/03_visualization.qmd"
