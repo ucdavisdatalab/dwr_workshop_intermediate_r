@@ -19,6 +19,30 @@ how to convert dates and times into appropriate R data types and how to extract
 and clean up data from strings (including numbers with non-numeric characters
 such as `$`, `%`, and `,`).
 
+Given a dataset with dates or times, you might want to:
+
+* Sort the observations chronologically
+* Compute the times between observations
+* Add or subtract a time offset
+* Get just the month, year, hour, etc. of each observation
+
+You can do all of these things and more with R, but only if your dates and
+times are represented by appropriate data types.
+
+Strings represent text, but even if your datasets are composed entirely of
+numbers, you'll need to know how to work with strings. Text formats for data
+are widespread: comma-separated values (CSV), tab-separated values (TSV),
+JavaScript object notation (JSON), various markup languages (HTML, XML, YAML,
+TOML), and more. When you read data in these formats into R, sometimes R will
+correctly convert the values to appropriate non-string types. The rest of the
+time, you need to know how to work with strings so that you can fix whatever
+went wrong and convert the data yourself.
+
+String processing encompasses a variety of tasks such as searching for patterns
+within strings, extracting data from within strings, splitting strings into
+component parts, and removing or replacing unwanted characters (excess
+whitespace, punctuation, and so on).
+
 
 ## The Tidyverse {#sec-the-tidyverse}
 
@@ -55,20 +79,7 @@ website and the most popular ones also have [cheatsheets][].
 [cheatsheets]: https://posit.co/resources/cheatsheets/
 
 
-## Dates & Times
-
-Given a dataset with dates or times, you might want to:
-
-* Sort the observations chronologically
-* Compute the times between observations
-* Add or subtract a time offset
-* Get just the month, year, hour, etc. of each observation
-
-You can do all of these things and more with R, but only if your dates and
-times are represented by appropriate data types.
-
-
-### The lubridate Package {#sec-the-lubridate-package}
+## The lubridate Package {#sec-the-lubridate-package}
 
 As explained in @sec-the-tidyverse, we recommend the Tidyverse packages for
 working with dates and times over other packages or R's built-in functions.
@@ -103,7 +114,7 @@ You'll have to install the package if you haven't already, and then load it:
 library("lubridate")
 ```
 
-### Parsing Dates {#sec-parsing-dates}
+## Parsing Dates {#sec-parsing-dates}
 
 Many popular file formats for data, such as CSV, *do not* store metadata about
 which values are dates and times, so these values get typed as strings. Dates
@@ -213,7 +224,7 @@ class(time_ct)
 :::
 
 
-### Creating Dates
+## Creating Dates
 
 Another common task is combining the numeric components of a date or time into
 a single object. You can use the `make_date` and `make_datetime` functions to
@@ -236,7 +247,7 @@ dates and times from tabular datasets where each component is stored in a
 separate column.
 
 
-### Extracting Components
+## Extracting Components
 
 Once you have dates or times, you might want to extract components from them.
 For instance, suppose we want to get the years from the dates we parsed
@@ -258,7 +269,7 @@ See [the lubridate documentation][lubridate] for even more details about
 what you can do.
 
 
-### Durations & Periods
+## Durations & Periods
 
 Occasionally, you might need to adjust dates or times by adding an offset. For
 example, suppose we want to add 30 days to the dates from earlier. The
@@ -533,30 +544,13 @@ from each, create a new column identifying the data source, and then row-bind
 the datasets together.
 
 
-## Strings & Regular Expressions
-
-Strings represent text, but even if your datasets are composed entirely of
-numbers, you'll need to know how to work with strings. Text formats for data
-are widespread: comma-separated values (CSV), tab-separated values (TSV),
-JavaScript object notation (JSON), various markup languages (HTML, XML, YAML,
-TOML), and more. When you read data in these formats into R, sometimes R will
-correctly convert the values to appropriate non-string types. The rest of the
-time, you need to know how to work with strings so that you can fix whatever
-went wrong and convert the data yourself.
-
-String processing encompasses a variety of tasks such as searching for patterns
-within strings, extracting data from within strings, splitting strings into
-component parts, and removing or replacing unwanted characters (excess
-whitespace, punctuation, and so on).
-
-
-### String Fundamentals
+## String Fundamentals
 
 This section introduces several fundamental concepts related to working with
 strings.
 
 
-#### Escape Sequences
+### Escape Sequences
 
 In a string, an **escape sequence** or **escape code** consists of a backslash
 followed by one or more characters. Escape sequences make it possible to:
@@ -645,7 +639,7 @@ correctly in older versions.
 :::
 
 
-#### Character Encodings
+### Character Encodings
 
 Computers store data as numbers. In order to store text on a computer, people
 have to agree on a **character encoding**, a system for mapping characters to
@@ -731,7 +725,7 @@ Encoding problems when writing a file are slightly more complicated to fix. See
 :::
 
 
-### The stringr Package {#sec-the-stringr-package}
+## The stringr Package {#sec-the-stringr-package}
 
 Although R has built-in functions for string processing, we recommend using the
 [stringr][] package for all of your string processing needs. The package is
@@ -826,7 +820,7 @@ documentation's [reference page][stringr-ref] and the
 [stringr-cheatsheet]: https://github.com/rstudio/cheatsheets/blob/master/strings.pdf
 
 
-### Regular Expressions {#sec-regular-expressions}
+## Regular Expressions {#sec-regular-expressions}
 
 The stringr functions use a special language called **regular expressions** or
 **regex** to describe patterns in strings. Many other programming languages
@@ -881,7 +875,7 @@ regex, prevents bugs, and makes your code more efficient.
 :::
 
 
-### Replacing Parts of Strings
+## Replacing Parts of Strings
 
 Replacing part of a string is a common string processing task. For instance,
 quantitative data often contain non-numeric characters such as commas, currency
@@ -939,7 +933,7 @@ The `str_squish` function does this as well as removing all whitespace from the
 beginning and end of a string.
 
 
-### Splitting Strings {#sec-splitting-strings}
+## Splitting Strings {#sec-splitting-strings}
 
 Distinct data in a text are generally separated by a character like a space or
 a comma, to make them easy for people to read. Often these separators also make
@@ -1020,7 +1014,7 @@ result[, 1]
 :::
 
 
-### Extracting Matches {#sec-extracting-matches}
+## Extracting Matches {#sec-extracting-matches}
 
 Occasionally, you might need to extract parts of a string in a more complicated
 way than string splitting allows. One solution is to write a regular expression
