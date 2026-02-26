@@ -38,24 +38,6 @@ This chapter is part 4 (of 4) of _Cleaning & Reshaping Data_, a workshop
 series about how to prepare data for analysis.
 
 
-### The dplyr Package
-
-The [dplyr][] package provides functions to join related data frames, among
-other things. Check out [this list of all the functions provided by
-dplyr][dplyr-ref].
-
-[dplyr]: https://dplyr.tidyverse.org/
-[dplyr-ref]: https://dplyr.tidyverse.org/reference/index.html
-
-If you've ever used SQL, you're probably familiar with relational datasets and
-recognize functions like `select`, `left_join`, and `group_by`. In fact,
-`dplyr` was designed to bring SQL-style data manipulation to R. As a result,
-many concepts of dplyr and SQL are nearly identical, and even the language
-overlaps a lot. I'll point out some examples of this as we go, because I think
-some people might find it helpful. If you haven't used SQL, don't worry---all
-of the functions will be explained in detail.
-
-
 ### Gradebook Dataset
 
 Another example of a relational dataset that we all interact with regularly is

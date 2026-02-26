@@ -58,24 +58,54 @@ There are a few different kinds of joins. We'll use a simplified, fictitious
 version of the restaurant reviews data to demonstrate some of them. The
 `restaurants` table contains names and phone numbers for three restaurants:
 
-```{code-cell}
-restaurants = pl.DataFrame({
-    "id": [1, 2, 3],
-    "name": ["Alice's Restaurant", "The Original Beef", "The Pie Hole"],
-    "phone": ["555-3213", "555-1111", "555-9983"]
-})
+```{r}
+restaurants = data.frame(
+  id = c(1, 2, 3),
+  name = c("Alice's Restaurant", "The Original Beef", "The Pie Hole"),
+  phone = c("555-3213", "555-1111", "555-9983")
+)
 restaurants
 ```
 
 The `reviews` table contains scores from five restaurant reviews:
 
-```{code-cell}
-reviews = pl.DataFrame({
-    "id": [4, 2, 1, 2, 2],
-    "score": [4.2, 3.5, 4.7, 4.8, 4.0],
-})
+```{r}
+reviews = data.frame(
+    id = c(4, 2, 1, 2, 2),
+    score = c(4.2, 3.5, 4.7, 4.8, 4.0)
+)
 reviews
 ```
+
+
+## The dplyr Package
+
+The [dplyr][] package provides a wide variety of functions for working with
+data frames. In this chapter, we'll focus almost exclusively on the functions
+for combining data frames, but the other parts of the package are also useful.
+Like most Tidyverse packages, it comes with detailed [documentation][dplyr] and
+a [cheatsheet][dplyr-cheat].
+
+[dplyr]: https://dplyr.tidyverse.org/
+[dplyr-cheat]: https://github.com/rstudio/cheatsheets/blob/main/data-transformation.pdf
+
+Install the package if you haven't already, and then load it:
+
+```{r}
+# install.packages("dplyr")
+library("dplyr")
+```
+
+:::{.callout-note}
+If you've ever used SQL, you're probably familiar with relational datasets and
+recognize commands like `SELECT`, `LEFT JOIN`, and `GROUP BY`. The dplyr
+package borrows some of the ideas of SQL, and provides `select`, `left_join`,
+and `group_by` functions (among others) that are reminiscent of their SQL
+counterparts.
+
+If you haven't used SQL, don't worry---all of the functions will be explained
+in detail.
+:::
 
 
 ## Inner Joins
@@ -83,16 +113,13 @@ reviews
 An **inner join** only keeps rows from the left table if they match rows in the
 right table and vice-versa.
 
-You can use the `.join` method to join two data frames with Polars. The data
-frame on the left side of `.join` is the left table. The right table is the
-first argument to `.join`. The `.join` method also requires an argument for the
-`on` parameter, which should be the name of the column to use to match the two
-data frames. By default, `.join` does an inner join.
+You can use dplyr's `inner_join` function to join two data frames with an inner
+join. The first argument is the left table and the second argument is the right
+table. Set the `by` parameter to the name of the column to use to match the
+rows. Try joining the `restaurants` table and the `reviews` table:
 
-Try joining the `restaurants` table and the `reviews` table:
-
-```{code-cell}
-restaurants.join(reviews, on = "id")
+```{r}
+inner_join(restaurants, reviews)
 ```
 
 The inner join keeps rows where `id` is `1` or `2`, since these values appear
@@ -101,8 +128,9 @@ where `id` is `4` in `reviews`. The resulting table has 4 rows and the columns
 from both data frames.
 
 :::{.callout-tip}
-If the column you want to use to join two data frames has a different name in
-each one, set the `left_on` and `right_on` parameters instead of `on`.
+If the columns you want to use to join two data frames have different names,
+set `by = join_by(LCOL == RCOL)`, replacing `LCOL` with the name of the column
+in the left table and `RCOL` with the name of the column in the right table.
 :::
 
 
@@ -112,11 +140,12 @@ A **left join** keeps all rows from the left table and only keeps rows from the
 right table if they match. Missing values fill any spaces where there was no
 match.
 
-You can do a left join with the `.join` method by setting `how = "left"`. Try a
-left join on the restaurant reviews data:
+You can use dplyr's `left_join` function to join two data frames with a left
+join. The arguments are the same as for the `inner_join` function. Try a left
+join on the restaurant reviews data:
 
-```{code-cell}
-restaurants.join(reviews, on = "id", how = "left")
+```{r}
+left_join(restaurants, reviews)
 ```
 
 The left join keeps all of the rows from `restaurants`, and matches rows from
@@ -126,14 +155,14 @@ is missing for that row.
 A left join is asymmetric, so switching the order of the tables will generally
 produce a different result:
 
-```{code-cell}
-reviews.join(restaurants, on = "id", how = "left")
+```{r}
+left_join(reviews, restaurants)
 ```
 
 A **right join** is equivalent to a left join with the order of the tables
 switched. Because of this, some relational data tools don't have a right join
-command (only a left join command). You can do a right join with the `.join`
-method by setting `how = "right"`.
+command (only a left join command). You can use dplyr's `right_join` function
+to join two data frames with a right join.
 
 
 ## Full Joins
@@ -141,22 +170,21 @@ method by setting `how = "right"`.
 A **full join** keeps all rows from both tables. Missing values fill any spaces
 where there was no match.
 
-You can do a full join with the `.join` method by setting `how = "full"`. Try a
-full join on the restaurant reviews data:
+You can use dplyr's `full_join` function to join two data frames with a full
+join. The arguments are the same as for the `inner_join` and `left_join`
+function. Try a full join on the restaurant reviews data:
 
-```{code-cell}
-restaurants.join(reviews, on = "id", how = "full")
+```{r}
+full_join(restaurants, reviews)
 ```
 
 :::{.callout-note title="See Also"}
-There are a few more kinds of joins. The Polars User Guide has [a complete
-list with examples.][pl-joins].
-
-[pl-joins]: https://docs.pola.rs/user-guide/transformations/joins/
+There are a few more kinds of joins. See the dplyr [documentation][dplyr] for
+details.
 :::
 
 
-## Case Study: CA Crash Reporting System
+## Dataset: CA Crash Reporting System
 
 The California Highway Patrol publish data about vehicle crashes in the state
 as the California Crash Reporting System (CCRS). The CCRS is a relational data
@@ -166,19 +194,19 @@ Sacramento and Yolo Counties to compute statistics about crashes in those
 counties.
 
 :::{.callout-important}
-[Click here][crash-data] to download the 2024 Sacramento & Yolo Crash data set
+[Click here][crash-data] to download the 2024 Sacramento & Yolo Crash dataset
 (3 CSV files).
 
 [crash-data]: https://ucdavis.box.com/s/kjxowylvg3cfqgnofh03gn5e3xicsobt
 
 If you haven't already, we recommend you create a directory for this workshop.
 In your workshop directory, create a `data/` subdirectory. Download and save
-the data set in the `data/` subdirectory.
+the dataset in the `data/` subdirectory.
 :::
 
-:::{.callout-note title="Documentation for the 2024 Sacramento & Yolo Crash Data Set" collapse=true}
+:::{.callout-note title="Documentation for the 2024 Sacramento & Yolo Crash Dataset" collapse=true}
 
-The data set consists of three tables:
+The dataset consists of three tables:
 
 * `2024_sac-yolo_crashes.csv`, where each row is a crash.
 * `2024_sac-yolo_parties.csv`, where each row is a person directly involved in
@@ -186,12 +214,11 @@ The data set consists of three tables:
 * `2024_sac-yolo_injured-witness-passenger.csv`, where each row is an injured
   person (including drivers), witness, or passenger.
 
-[Click here][ccrs-docs] to download the documentation for the source data set.
+[Click here][ccrs-docs] to download the documentation for the source dataset.
 
 [ccrs-docs]: https://ucdavis.box.com/s/pfgbup6fw17nq7vajo1e05eoj0w57ygi
 
-This data set is a subset of the much larger [CA Crash Reporting System data
-set][ccrs].
+This dataset is a subset of the much larger [CA Crash Reporting System dataset][ccrs].
 
 [ccrs]: https://data.ca.gov/dataset/ccrs
 :::
