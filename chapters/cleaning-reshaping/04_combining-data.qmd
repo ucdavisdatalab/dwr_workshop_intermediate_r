@@ -9,6 +9,9 @@ After this lesson, you should be able to:
 * Identify which types of joins to use when faced with a relational dataset
 :::
 
+
+## Relational Datasets
+
 Think about how you would organize restaurant reviews data. Each restaurant has
 a name, address, phone number, operating hours, and other restaurant level
 details. Because the number of reviews for each restaurant will vary, we could
@@ -36,7 +39,7 @@ We can keep track of the relationship by including a column for restaurant name
 **relational**: multiple tables where the relationships between them are
 expressed through columns in common.
 
-:::{note}
+:::{.callout-note}
 Most database software are designed to efficiently store and query relational
 data, so in computing contexts, **database** is often synonymous with
 relational data.
@@ -75,7 +78,7 @@ reviews
 ```
 
 
-### Inner Joins
+## Inner Joins
 
 An **inner join** only keeps rows from the left table if they match rows in the
 right table and vice-versa.
@@ -97,13 +100,13 @@ in both tables. It drops the row where `id` is `3` in `restaurants` and the row
 where `id` is `4` in `reviews`. The resulting table has 4 rows and the columns
 from both data frames.
 
-:::{tip}
+:::{.callout-tip}
 If the column you want to use to join two data frames has a different name in
 each one, set the `left_on` and `right_on` parameters instead of `on`.
 :::
 
 
-### Left & Right Joins
+## Left & Right Joins
 
 A **left join** keeps all rows from the left table and only keeps rows from the
 right table if they match. Missing values fill any spaces where there was no
@@ -133,7 +136,7 @@ command (only a left join command). You can do a right join with the `.join`
 method by setting `how = "right"`.
 
 
-### Full Joins
+## Full Joins
 
 A **full join** keeps all rows from both tables. Missing values fill any spaces
 where there was no match.
@@ -145,7 +148,7 @@ full join on the restaurant reviews data:
 restaurants.join(reviews, on = "id", how = "full")
 ```
 
-:::{seealso}
+:::{.callout-note title="See Also"}
 There are a few more kinds of joins. The Polars User Guide has [a complete
 list with examples.][pl-joins].
 
@@ -153,7 +156,7 @@ list with examples.][pl-joins].
 :::
 
 
-### Case Study: CA Crash Reporting System
+## Case Study: CA Crash Reporting System
 
 The California Highway Patrol publish data about vehicle crashes in the state
 as the California Crash Reporting System (CCRS). The CCRS is a relational data
@@ -162,7 +165,7 @@ and all injuries, witnesses, and passengers. Let's use the 2024 CCRS data for
 Sacramento and Yolo Counties to compute statistics about crashes in those
 counties.
 
-:::{important}
+:::{.callout-important}
 [Click here][crash-data] to download the 2024 Sacramento & Yolo Crash data set
 (3 CSV files).
 
@@ -173,8 +176,7 @@ In your workshop directory, create a `data/` subdirectory. Download and save
 the data set in the `data/` subdirectory.
 :::
 
-:::{admonition} Documentation for the 2024 Sacramento & Yolo Crash Data Set
-:class: note, dropdown
+:::{.callout-note title="Documentation for the 2024 Sacramento & Yolo Crash Data Set" collapse=true}
 
 The data set consists of three tables:
 
