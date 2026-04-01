@@ -5,27 +5,23 @@
 > [!IMPORTANT]
 > If it's your first time contributing, see [Installation](#installation).
 >
-> Do not commit large files (> 1 MB) to the repository. Upload these to cloud
-> storage (such as Google Drive or Box) instead.
->
 > Before you contribute, make sure to take a look at the
 > [workshop reader style guide][style] in the [DataLab Handbook][handbook].
+>
+> Do not commit large files (> 1 MB) to the repository. Upload these to cloud
+> storage (such as Google Drive or Box) instead.
 
 [style]: https://github.com/datalab-dev/handbook/tree/main/workshops
 [handbook]: https://github.com/datalab-dev/handbook
 
-The reader is a live webpage, hosted through GitHub, where you can enter
-curriculum content and post it to a public-facing site for learners.
-
-
-The reader is written in Markdown and rendered with [Quarto][]. To make
-alterations to the reader:
+The reader is written in Markdown and rendered with [Quarto][]. To make changes
+to the reader:
 
 [Quarto]: https://quarto.org/
 
-1.  Check in with the reader's current maintainer and notify them about your 
-    intended changes. Maintainers might ask you to open an issue, use pull 
-    requests, tag your commits with versions, etc.
+1.  Talk to the reader's maintainer about what you want to change. The
+    maintainer might ask you to open an issue, consult an existing issue, tag
+    commits with versions, etc.
 
 2.  Run `git pull` to get the latest version of the reader.
 
