@@ -7,11 +7,14 @@ project:
   output-dir: "_build/"
 
 book:
-  title: "Intermediate R"
+  # Metadata
   author:
     - "Nick Ulle"
     - "Wesley Brooks"
-  date: now
+  title: "Intermediate R"
+  description: "Reader for the Intermediate R workshop series."
+  repo-url: "https://github.com/ucdavisdatalab/workshop_intermediate_r"
+  site-url: "https://ucdavisdatalab.github.io/workshop_intermediate_r"
   chapters:
     - "index.qmd"
     - part: "Cleaning & Reshaping Data"
@@ -34,10 +37,17 @@ book:
   appendices:
     - "chapters/appendices/references.qmd"
     - "chapters/appendices/assessment.qmd"
-  repo-url: "https://github.com/ucdavisdatalab/workshop_intermediate_r"
+
+  # Formatting
+  date: now
   repo-actions: [issue, source]
+  open-graph: true
+  twitter-card: true
+  favicon: "/images/logos/datalab-logo_square_150x150.png"
+  image: "/images/logos/datalab-logo_opengraph_1200x630.png"
+  image-alt: "The logo of the UC Davis DataLab."
   sidebar:
-    logo: "images/datalab-logo-full-color-rgb.png"
+    logo: "/images/logos/datalab-logo-full-color-rgb.png"
     logo-alt: "The logo of the UC Davis DataLab."
     logo-href: "https://datalab.ucdavis.edu/"
 
