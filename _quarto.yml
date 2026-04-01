@@ -30,11 +30,8 @@ book:
       chapters:
         - "chapters/04_writing_r_scripts.qmd"
         - "chapters/05_debugging.qmd"
-    - part: "Thinking in R"
-      chapters:
-        - "chapters/06_language_fundamentals.qmd"
-        - "chapters/07_language_fundamentals_2.qmd"
   appendices:
+    - "chapters/appendices/thinking-in-r.qmd"
     - "chapters/appendices/references.qmd"
     - "chapters/appendices/assessment.qmd"
 
