@@ -25,11 +25,11 @@ book:
         - "chapters/cleaning-reshaping/04_combining-data.qmd"
     - part: "Visualizing & Analyzing Data"
       chapters:
-        - "chapters/03_visualization.qmd"
+        - "chapters/visualizing-analyzing/01_visualization.qmd"
     - part: "Writing & Debugging Code"
       chapters:
-        - "chapters/04_writing_r_scripts.qmd"
-        - "chapters/05_debugging.qmd"
+        - "chapters/writing-debugging/01_writing-r-scripts.qmd"
+        - "chapters/writing-debugging/02_debugging.qmd"
   appendices:
     - "chapters/appendices/thinking-in-r.qmd"
     - "chapters/appendices/references.qmd"
