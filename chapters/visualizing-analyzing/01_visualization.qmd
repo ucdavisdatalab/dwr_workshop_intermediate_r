@@ -1245,7 +1245,7 @@ ggplot(mice_geno) +
   )
 ```
 
-
+<!--
 ## Case Study: Small Business Loans
 
 :::{.callout-note}
@@ -1348,3 +1348,4 @@ ggplot(ca_sba_no_exempt) +
   ) +
   scale_color_brewer(type = "qual", palette = "Accent")
 ```
+-->
