@@ -1196,45 +1196,56 @@ This case study shows how to:
 * Add error bars to a plot
 :::
 
-Here's an example that recently came up in DataLab office hours. You've done an
-experiment to see how mice with two different genotypes respond to two
-different treatments. Now you want to plot the mean response of each group as a
-column, with error bars indicating the standard deviation of the mean. You also
-want to show the raw data. I've simulated some data for us to use---download it
-[here][simulated-data].
+This case study is based on a question that came up in DataLab's office hours.
+Suppose you've done an experiment to see how mice with two different genotypes
+respond to two different treatments. Now you want to make a bar plot of the
+mean response for each group, with error bars indicating the standard deviation
+of the mean. You also want to show the raw data. I've simulated some data for
+us to use.
+
+:::{.callout-important}
+You can download the simulated genotype data [HERE][simulated-data].
 
 [simulated-data]: https://ucdavis.box.com/s/lxgplwqn23ncbeb5gc6ktpfknr56xws6
+:::
 
-This one is kind of complicated because you have to tell `ggplot2` how to
-calculate the height of the columns and of the error bars.
+To make this work, we have to tell `ggplot2` how to calculate the heights of
+the mean bars and the error bars.
 
 ```{r example-genotype, warning=FALSE, message=FALSE}
 mice_geno = read_csv("data/genotype-response.csv")
 
 # show the treatment response for different genotypes
 ggplot(mice_geno) +
-  aes(x=trt,
-      y=resp,
-      fill=genotype) +
-  scale_fill_brewer(palette="Dark2") +
-  geom_bar(position=position_dodge(),
-           stat='summary',
-           fun='mean') +
-  geom_errorbar(fun.min=function(x) {mean(x) - sd(x) / sqrt(length(x))},
-               fun.max=function(x) {mean(x) + sd(x) / sqrt(length(x))},
-               stat='summary',
-               position=position_dodge(0.9),
-               width=0.2) +
-  geom_point(position=
-               position_jitterdodge(
-                 dodge.width=0.9,
-                 jitter.width=0.1)) +
-  xlab("Treatment") +
-  ylab("Response (mm/g)") +
-  ggtitle("Mean growth response of mice by genotype and treatment")
+  aes(
+    x = trt,
+    y = resp,
+    fill = genotype
+  ) +
+  geom_bar(
+    position = position_dodge(),
+    stat = "summary",
+    fun = "mean"
+  ) +
+  geom_errorbar(
+    fun.min = function(x) {mean(x) - sd(x) / sqrt(length(x))},
+    fun.max = function(x) {mean(x) + sd(x) / sqrt(length(x))},
+    stat = "summary",
+    position = position_dodge(0.9),
+    width = 0.2
+  ) +
+  geom_point(
+    position = position_jitterdodge(dodge.width = 0.9, jitter.width = 0.1)
+  ) +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(
+    x = "Treatment",
+    y = "Response (mm/g)",
+    title = "Mean growth response of mice by genotype and treatment"
+  )
 ```
 
-
+<!--
 ## Case Study: Small Business Loans
 
 :::{.callout-note}
@@ -1244,70 +1255,97 @@ This case study shows how to:
 :::
 
 The US Small Business Administration (SBA) maintains data on the loans it
-offers to businesses. Data about loans made since 2020 can be found at the
-[Small Business Administration website][sba], or you can download it from
-[here][sba-data]. We'll load that data and then explore some ways to visualize
-it. Since the difference between a \$100 loan and a \$1000 loan is more like
-the difference between \$100,000 and \$1M than between \$100,000 and \$100,900,
-we should put the loan values on a  logarithmic scale. You can do this in
-`ggplot2` with the `scale_y_log10` function (when the loan values are on the y
-axis).
+offers to businesses. In this case study, we'll explore sevaral ways to
+visualize SBA loans made since 2020.
 
-[sba]: https://data.sba.gov/dataset/7-a-504-foia
+:::{.callout-important}
+You can download the SBA Loans dataset [HERE][sba-data].
+
+The source of this dataset is [this SBA page][sba-source].
+
 [sba-data]: https://ucdavis.box.com/s/ctx6grx10c83lh561ekl9tnmi20561ed
+[sba-source]: https://data.sba.gov/dataset/7-a-504-foia
+:::
 
+Since the difference between a \$100 loan and a \$1000 loan is more like the
+difference between \$100,000 and \$1M than between \$100,000 and \$100,900, we
+should put the loan values on a  logarithmic scale. You can do this in ggplot2
+with the `scale_y_log10` function (when the loan values are on the y-axis).
 
 ```{r example-SBA, message=FALSE, warning=FALSE}
-# load the small business loan data
-sba <- read_csv("data/small-business-loans.csv")
+# Load the small business loan data
+sba = read_csv("data/small-business-loans.csv")
 
-# check the SBA data to see the data types, etc.
+# Check the SBA data to see the data types, etc.
 head(sba)
 
-# boxplot of loan sizes by business type
-subset(sba, ProjectState == "CA") |>
-  ggplot() +
-  aes(x = BusinessType, y = SBAGuaranteedApproval) +
+# Focus on California loans.
+ca_sba = subset(sba, ProjectState == "CA")
+
+# Make a boxplot of loan size by business type.
+ggplot(ca_sba) +
+  aes(
+    x = BusinessType,
+    y = SBAGuaranteedApproval
+  ) +
   geom_boxplot() +
   scale_y_log10() +
-  ggtitle("Small Business Administraton guaranteed loans in California") +
-  ylab("Loan guarantee (dollars)")
+  labs(
+    x = "Business Type",
+    y = "Loan Guarantee (dollars)",
+    title = "Small Business Administration Guaranteed Loans in California"
+  )
 
 
-# relationship between loan size and interest rate
-subset(sba, ProjectState == "CA") |>
-  ggplot() +
-  aes(x = GrossApproval, y = InitialInterestRate, ) +
+# Plot relationship between loan size and interest rate.
+ggplot(ca_sba) +
+  aes(
+    x = GrossApproval,
+    y = InitialInterestRate
+  ) +
   geom_point() +
   facet_wrap(~BusinessType, ncol = 3) +
   scale_x_log10() +
-  ggtitle("Interest rate as a function of loan size") +
-  xlab("Loan size (dollars)") +
-  ylab("Interest rate (%)")
+  labs(
+    x = "Loan size (dollars)",
+    y = "Interest rate (%)",
+    title = "Interest rate as a function of loan size"
+  )
 ```
 
 
-Now let's color the points by the loan status. Thankfully, `ggplot2` integrates
-directly with [Color Brewer (colorbrewer2.org)](https://colorbrewer2.org) to
-get better color palettes. We will use the `Accent` color palette, which is
-just one of the many options that can be found on the Color Brewer site.
+Now let's color the points by the loan status. The ggplot2 package integrates
+directly with [Color Brewer][color-brewer] to get better color palettes. We
+will use the `Accent` color palette, which is just one of the many options that
+can be found on the Color Brewer site.
 
-There are a lot of data points, which tent to largely overlap and hide each
-other. We use a smoother (`geom_smooth`) to help call out differences that
-would otherwise be lost in the noise of the points.
+There are so many data points that they overlap, making it hard to see some of
+them. This is a common problem visualizations called **overplotting**. One way
+we can address overplotting is by smoothing out or smudging the points
+(`geom_smooth`) so that it's easier to see where there are relatively few or
+many points.
 
 ```{r example-SBA-facet, message=FALSE, warning=FALSE}
-# color the dots by the loan status.
-subset(sba, ProjectState == "CA" & LoanStatus != "EXEMPT" & LoanStatus != "CHGOFF") |>
-  ggplot() +
-  aes(x = GrossApproval, y = InitialInterestRate, color = LoanStatus) +
+# Ignore exempt loans.
+ca_sba_no_exempt = subset(ca_sba, LoanStatus != "EXEMPT")
+
+ggplot(ca_sba_no_exempt) +
+  aes(
+    x = GrossApproval,
+    y = InitialInterestRate,
+    # Color the points by the loan status.
+    color = LoanStatus
+  ) +
   geom_point() +
   geom_smooth() +
   facet_wrap(~BusinessType, ncol = 3) +
   scale_x_log10() +
-  ggtitle("Interest rate as a function of loan size by loan status") +
-  xlab("Loan size (dollars)") +
-  ylab("Interest rate (%)") +
-  labs(color = "Loan status") +
+  labs(
+    x = "Loan Size (dollars)",
+    y = "Interest Rate (%)",
+    title = "Interest Rate as a Function of Loan Size by Loan Status",
+    color = "Loan Status"
+  ) +
   scale_color_brewer(type = "qual", palette = "Accent")
 ```
+-->
