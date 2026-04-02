@@ -1,4 +1,4 @@
-# Language Fundamentals
+# Thinking in R
 
 :::{.callout-note title="Learning Goals" collapse="false"}
 After this lesson, you should be able to:
@@ -13,10 +13,11 @@ After this lesson, you should be able to:
 * Describe R's other object-oriented programming systems at a high level
 :::
 
-This chapter is part 1 (of 2) of _Thinking in R_, a workshop series about how R
-works and how to examine code critically. The major topics of this chapter are
-how R stores and locates variables (including functions) defined in your code
-and in packages, and how some of R's object-oriented programming systems work.
+This appendix contains materials from _Thinking in R_, a retired workshop
+series about how R works and how to examine code critically. The major topics
+of this chapter are how R stores and locates variables (including functions)
+defined in your code and in packages, and how some of R's object-oriented
+programming systems work.
 
 
 ## Variables & Environments

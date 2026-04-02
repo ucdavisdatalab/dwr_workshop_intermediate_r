@@ -7,11 +7,14 @@ project:
   output-dir: "_build/"
 
 book:
-  title: "Intermediate R"
+  # Metadata
   author:
     - "Nick Ulle"
     - "Wesley Brooks"
-  date: now
+  title: "Intermediate R"
+  description: "Reader for the Intermediate R workshop series."
+  repo-url: "https://github.com/ucdavisdatalab/workshop_intermediate_r"
+  site-url: "https://ucdavisdatalab.github.io/workshop_intermediate_r"
   chapters:
     - "index.qmd"
     - part: "Cleaning & Reshaping Data"
@@ -22,22 +25,26 @@ book:
         - "chapters/cleaning-reshaping/04_combining-data.qmd"
     - part: "Visualizing & Analyzing Data"
       chapters:
-        - "chapters/03_visualization.qmd"
+        - "chapters/visualizing-analyzing/01_visualization.qmd"
     - part: "Writing & Debugging Code"
       chapters:
-        - "chapters/04_writing_r_scripts.qmd"
-        - "chapters/05_debugging.qmd"
-    - part: "Thinking in R"
-      chapters:
-        - "chapters/06_language_fundamentals.qmd"
-        - "chapters/07_language_fundamentals_2.qmd"
+        - "chapters/writing-debugging/01_writing-r-scripts.qmd"
+        - "chapters/writing-debugging/02_debugging.qmd"
   appendices:
+    - "chapters/appendices/thinking-in-r.qmd"
     - "chapters/appendices/references.qmd"
     - "chapters/appendices/assessment.qmd"
-  repo-url: "https://github.com/ucdavisdatalab/workshop_intermediate_r"
+
+  # Formatting
+  date: now
   repo-actions: [issue, source]
+  open-graph: true
+  twitter-card: true
+  favicon: "/images/logos/datalab-logo_square_150x150.png"
+  image: "/images/logos/datalab-logo_opengraph_1200x630.png"
+  image-alt: "The logo of the UC Davis DataLab."
   sidebar:
-    logo: "images/datalab-logo-full-color-rgb.png"
+    logo: "/images/logos/datalab-logo-full-color-rgb.png"
     logo-alt: "The logo of the UC Davis DataLab."
     logo-href: "https://datalab.ucdavis.edu/"
 
@@ -55,6 +62,9 @@ format:
             overflow-y: scroll;
             max-height: 30rem;
             margin-bottom: 0.75rem;
+          }
+          #quarto-sidebar a.text-start {
+            font-variant: small-caps;
           }
           </style>
   # Uncomment to also generate a PDF:
