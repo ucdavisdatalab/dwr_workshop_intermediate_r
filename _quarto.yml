@@ -13,8 +13,8 @@ book:
     - "Wesley Brooks"
   title: "Intermediate R"
   description: "Reader for the Intermediate R workshop series."
-  repo-url: "https://github.com/ucdavisdatalab/workshop_intermediate_r"
-  site-url: "https://ucdavisdatalab.github.io/workshop_intermediate_r"
+  repo-url: "https://github.com/ucdavisdatalab/dwr_workshop_intermediate_r"
+  site-url: "https://ucdavisdatalab.github.io/dwr_workshop_intermediate_r"
   chapters:
     - "index.qmd"
     - part: "Cleaning & Reshaping Data"
