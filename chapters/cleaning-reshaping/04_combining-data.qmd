@@ -184,7 +184,7 @@ details.
 :::
 
 
-## Dataset: CA Crash Reporting System
+## Case Study: CA Crash Reporting System
 
 The California Highway Patrol publish data about vehicle crashes in the state
 as the California Crash Reporting System (CCRS). The CCRS is a relational data
@@ -222,3 +222,283 @@ This dataset is a subset of the much larger [CA Crash Reporting System dataset][
 
 [ccrs]: https://data.ca.gov/dataset/ccrs
 :::
+
+To get started, let's read each of the three tables in this dataset into R.
+We'll use the [readr][] package (a part of the Tidyverse), since its functions
+are more efficient and robust than R's built-in data reader functions.
+Specifically, we'll use the `read_csv` function to read the files.
+
+[readr]: https://readr.tidyverse.org/
+
+In the crashes table, the `SketchDesc` column contains many blanks, which
+inteferes with the `read_csv` function's ability to infer the column type. To
+fix this, we'll set the column type manually. In the injured-witness-passenger
+table, the `SeatPositionOther` column has the same problem, and we'll use the
+same fix. Here's the code to read the three files:
+
+```{r}
+library("readr")
+
+crashes = read_csv(
+  "data/ca_crash_reporting/2024_sac-yolo_crashes.csv",
+  col_types = list(SketchDesc = "c")
+)
+
+parties = read_csv("data/ca_crash_reporting/2024_sac-yolo_parties.csv")
+
+injured = read_csv(
+  "data/ca_crash_reporting/2024_sac-yolo_injured-witness-passenger.csv",
+  col_types = list(SeatPositionOther = "c")
+)
+```
+
+Each table has many columns we could use. To stay focused, we'll try to answer
+two questions:
+
+1. How do lighting conditions interact with driver age?
+2. Among injured people, do drivers or passengers experience more severe
+   injuries? Does it matter whether they're in the vehicle of the driver at
+   fault?
+
+There are, of course, many other ways to explore this dataset.
+
+
+### Question 1
+
+In this section, we'll try to address this question:
+
+> How do lighting conditions interact with driver age?
+
+Let's work on driver age first. In the parties table, the `StatedAge` column
+gives the age of each party involved in the crash. The parties table includes
+drivers, but also pedestrians, cyclists, and other parties; this is indicated
+by the `PartyType` column. We only want drivers, so we'll filter the rows:
+
+```{r}
+library("dplyr")
+
+drivers = filter(parties, PartyType == "Driver")
+```
+
+This reduces the table from `r nrow(parties)` to `r nrow(drivers)` rows.
+
+Now we need to get the lighting conditions associated with each crash. The
+`LightingCode` and `LightingDescription` columns in the crashes table provide
+this information. The two columns are just different ways of describing the
+same thing, which we can verify by counting all combinations of them:
+
+```{r}
+count(crashes, LightingCode, LightingDescription)
+```
+
+We'll keep both, since the codes in `LightingCode` are easier to type (for
+instance, for filtering) but the descriptions in `LightingDescription` are
+easier to understand.
+
+We can attach the lighting conditions to the drivers data frame with a join.
+We want to get a lighting condition for every driver, so we'll use a left join
+with the drivers data frame as the left table. We can use the `CollisionId`
+column, which is shared by both data frames, as the key for the join:
+
+```{r}
+joined = left_join(
+  drivers,
+  # We only care about 3 columns in the crashes table.
+  crashes[c("CollisionId", "LightingCode", "LightingDescription")],
+  by = "CollisionId"
+)
+```
+
+Notice that the resulting data frame has the same number of rows as the drivers
+data frame:
+
+```{r}
+nrow(drivers) == nrow(joined)
+```
+
+This indicates that we didn't duplicate any drivers in the join.
+
+Driver age is a continous feature, while lighting condition in categorical. So
+we can use a density plot or histogram to show age, with different colors to
+show lighting condition. For instance, here's a density plot:
+
+```{r}
+library("ggplot2")
+
+ggplot(joined) +
+  aes(x = StatedAge, color = LightingDescription) +
+  geom_density() +
+  # Increase the number of x-axis tick marks.
+  scale_x_continuous(n.breaks = 20) +
+  # Position legend at the bottom and decrease font size (since it's wide).
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 6),
+    legend.title = element_text(size = 6)
+  )
+```
+
+Alternatively, here's a histogram:
+
+```{r}
+ggplot(joined) +
+  aes(x = StatedAge, fill = LightingDescription) +
+  geom_histogram(color = "black") +
+  scale_x_continuous(n.breaks = 20) +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 6),
+    legend.title = element_text(size = 6)
+  )
+```
+
+In both cases, the number of lighting categories makes the plots difficult to
+read. Let's create a new feature to separate out the dark categories from the
+others. The dark categories have `LightingCode` equal to `C`, `D`, and `E`:
+
+```{r}
+joined$is_dark = joined$LightingCode %in% c("C", "D", "E")
+```
+
+We can use the new `is_dark` feature to vary the line type in the density plot:
+
+```{r}
+ggplot(joined) +
+  aes(x = StatedAge, color = LightingDescription, linetype = is_dark) +
+  geom_density() +
+  scale_x_continuous(n.breaks = 20) +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 6),
+    legend.title = element_text(size = 6)
+  )
+```
+
+Or to facet the histogram:
+
+```{r}
+ggplot(joined) +
+  aes(x = StatedAge, fill = LightingDescription) +
+  geom_histogram(color = "black") +
+  scale_x_continuous(n.breaks = 10) +
+  theme(
+    legend.position = "bottom",
+    legend.text = element_text(size = 6),
+    legend.title = element_text(size = 6)
+  ) +
+  facet_wrap(~ is_dark)
+```
+
+Based on the plots, we can see that most crashes happen in daylight and involve
+younger drivers (under 50). In daylight crashes, drivers from age 20-40 are
+almost equally likely, whereas in dark crashes there are sharp peaks around 25.
+The "Dark - Street Lights Not Functioning" category is notably different from
+the others, with a peak around age 32, but the histogram shows that this
+category as also very small, so the peak is likely just a quirk of this sample
+rather than a general tendency in the larger population (and it would be quite
+surprising if older drivers were more likely to encounter non-functional street
+lights).
+
+
+### Question 2
+
+Now we'll try to address the second question:
+
+> Among injured people, do drivers or passengers experience more severe
+> injuries? Does it matter whether they're in the vehicle of the driver at
+> fault?
+
+For the first part of the question, we need to look at the injured table. The
+table includes an `InjuredPersonType` column that indicates which people are
+passengers and which are drivers. A complication here is that the
+`IsPassengerOnly` column also appears to indicate passengers, and the doesn't
+match up with `InjuredPersonType`:
+
+```{r}
+count(
+  injured,
+  PassengerType = InjuredPersonType == "Passenger",
+  IsPassengerOnly
+)
+```
+
+We can compare `IsPassengerOnly` with `ExtentOfInjuryCode` to see that the
+column seems to indicate *uninjured passengers*:
+
+```{r}
+count(injured, IsPassengerOnly, ExtentOfInjuryCode)
+```
+
+So let's filter the table to keep only the rows where the person type is
+`Driver` or `Passenger`:
+
+```{r}
+injured_in_car = filter(
+  injured,
+  InjuredPersonType %in% c("Driver", "Passenger")
+)
+```
+
+The nature of injure is in the `ExtentOfInjuryCode` column. To make our
+visualizations easier to read, let's put the categories in order from least to
+most severe (with the understanding that some categories are vague):
+
+```{r}
+injured_in_car$ExtentOfInjuryCode = factor(
+  injured_in_car$ExtentOfInjuryCode,
+  c("OtherVisibleInactive", "ComplaintOfPainInactive", "PossibleInjury",
+    "SuspectMinor", "SuspectSerious", "Fatal")
+)
+```
+
+Now we can make a bar plot to address the first part of the question:
+
+```{r}
+ggplot(injured_in_car) +
+  aes(x = ExtentOfInjuryCode, fill = InjuredPersonType) +
+  geom_bar(position = "dodge") +
+  theme(
+    legend.position = "bottom",
+    # Rotate axis labels to 45 degrees and align at right edge.
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+The plot suggests that far more drivers are injured in crashes than passengers.
+That said, it's important to keep in mind that the plot shows all crashes. If
+we filter the dataset to only the crashes where passengers were present, the
+result might be very different. Try visualizing this as an exercise!
+
+Let's address the second part of the question about being in the vehicle of the
+driver at fault. The party at fault is indicated by the `IsAtFault` column in
+the parties table. We need to join this to the `injured_in_car` data frame.
+Since collisions usually involve multiple parties, we need to use both
+`CollisionId` and `PartyNumber` as keys in the join. We'll use a left join with
+`injured_in_car` as the left table:
+
+```{r}
+joined = left_join(
+  injured_in_car,
+  parties[c("CollisionId", "PartyNumber", "IsAtFault")],
+  by = c("CollisionId", "PartyNumber")
+)
+```
+
+We can use the joined `IsAtFault` column to facet the bar plot we made earlier:
+
+```{r}
+ggplot(joined) +
+  aes(x = ExtentOfInjuryCode, fill = InjuredPersonType) +
+  geom_bar(position = "dodge") +
+  facet_wrap(~ IsAtFault) +
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+```
+
+From the plot, we can see that fewer injured people were in at fault vehicles
+overall, but there were still more drivers injured than passengers. This could
+be due to crashes where only one driver is at fault, but more than two vehicles
+are involved. Once again, we could check this through further inspection and
+visualization of the dataset. Try writing the code to do so!
