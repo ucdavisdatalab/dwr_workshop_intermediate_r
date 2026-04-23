@@ -1,0 +1,1 @@
+Sitemap: https://ucdavisdatalab.github.io/dwr_workshop_intermediate_r/sitemap.xml
