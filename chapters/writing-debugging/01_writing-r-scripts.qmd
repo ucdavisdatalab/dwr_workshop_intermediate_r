@@ -23,15 +23,6 @@ everything we cover live.
 [slides]: https://docs.google.com/presentation/d/11fLDc3Wt_R0DwIiB4ySl5FhRFOk0DFcQodf6VzmGIfI/edit?usp=sharing
 :::
 
-This chapter is all about R scripts: what they are, when to use them, and how
-to write them---with specific emphasis making sure your scripts are easy to
-read, extend, debug, and reuse. Topics covered along the way include package
-management, how to use iteration, how to print or log output, and how to read
-input from the command line or from configuration files.
-
-
-## Introduction
-
 An **R script** is a text file that contains R code. R scripts usually have the
 extension `.R`. You might already use R scripts in your workflow (for example,
 if you learned R from DataLab's [R Basics Workshop Series][r-basics-scripts]).
@@ -39,7 +30,119 @@ Even if you do, this chapter covers many different practices you can adopt to
 use scripts more effectively. Although the chapter is focused on R, many of the
 practices also apply to scripting other languages.
 
-[r-basics-scripts]: https://ucdavisdatalab.github.io/workshop_r_basics/getting-started.html#r-scripts
+[r-basics-scripts]: https://ucdavisdatalab.github.io/workshop_r_basics/chapters/getting-started/working-with-files.html#saving-loading-code
+
+This chapter is all about R scripts: what they are, when to use them, and how
+to write them---with specific emphasis making sure your scripts are easy to
+read, extend, debug, and reuse. Topics covered along the way include package
+management, how to use iteration, how to print or log output, and how to read
+input from the command line or from configuration files. The chapter is
+organized around case studies (@sec-case-study-bart-ridership,
+@sec-case-study-us-fruit-prices) that benefit from many of the practices we
+recommend.
+
+
+## Tips for Projects
+
+A well-organized project makes it easier to write well-organized scripts. This
+section briefly describes a few ways to keep your projects in order. The UC
+Davis Library's [Reproducible Research Guide][rr-guide] provides many more tips
+for organizing research projects.
+
+[rr-guide]: https://ucdavisdatalab.github.io/guide_reproducible_research/
+
+
+### Create a Project Directory
+
+Each time you start working on a new project, create a new directory on your
+computer. This is the **project directory** (also called a **repository**).
+Keep all of the files for the project in the project directory, so that you can
+easily find files and share or make back ups. Use subdirectories with standard,
+descriptive names to organize the files. Document the project with a README and
+a file manifest (a descriptive list of the files and directories).
+
+:::{.callout-note title="See Also"}
+You can read more about how to organize a project directory in the [Planning
+for Success][rr-guide-projects] chapter of the Reproducible Research Guide.
+
+[rr-guide-projects]: https://ucdavisdatalab.github.io/guide_reproducible_research/chapters/02_planning-for-success.html#establish-a-directory-structure
+:::
+
+
+### Document the Computing Environment {#sec-managing-environments}
+
+A **computing environment** is a collection of hardware and software you use to
+run code. It's important to document the computing environment where the code
+was written and tested, because it might not run correctly in other
+environments. R is designed to work seamlessly with a wide variety of hardware,
+so software, including R packages, is the primary concern.
+
+You can view information about the computing environment in R with the built-in
+`sessionInfo` function:
+
+```{r}
+sessionInfo()
+```
+
+You can document the computing environment manually, but it's usually better to
+use an **environment manager**, a software tool that automates recording and
+recreating software environments. The environment manager we recommend and use
+at DataLab is [Pixi][], which has a command line interface. If you prefer to
+work entirely within R, the [renv][] package is an environment manager
+exclusively for R packages (which is quite limiting!).
+
+[Pixi]: https://pixi.prefix.dev/
+[renv]: https://pkgs.rstudio.com/renv/
+
+:::{.callout-note title="See Also"}
+You can read more about environment management in the [Reproducible
+Computing][rr-guide-env] chapter of the Reproducible Research Guide.
+
+[rr-guide-env]: https://ucdavisdatalab.github.io/guide_reproducible_research/chapters/04_reproducible-computing.html#document-the-environment
+:::
+
+
+### Consider Making a Package
+
+Spend some time thinking about how the code in your project will be used. Will
+you need to run the code frequently? Will you need to run it as part of other
+projects or on other computers? Will other people need to run the code (would
+they benefit from being able to)? If the answer to some of these questions is
+yes, then it might be a good idea to turn the code into a package.
+
+Developing a package can be a lot of work, especially if it's your first time
+doing so. However, putting code in a package makes it substantially easier to
+distribute, install, and reuse.
+
+:::{.callout-note title="See Also"}
+You can read more about how to create an R package in [R Packages][rpkgs] by
+Wickham and Bryan.
+
+[rpkgs]: https://r-pkgs.org/
+:::
+
+
+## Tips for Code
+
+This section is a buffet of ways to ensure the R code you write is clear,
+organized, and effective. As you read, think about which are relevant to your
+project(s).
+
+
+### Write Outlines
+
+Before you start writing code to solve a problem, make an outline. The outline
+should describe the problem you're trying to solve and the steps to solve it in
+natural language. You can write the outline as comments in an R script or as an
+entirely separate document. Make sure to write down descriptions of all
+necessary inputs and intended outputs. Draw pictures if they help to clarify
+the details of the problem.
+
+Outlining is a critical step in programming and problem solving. Don't skip it!
+The outline will serve as a roadmap as you write the code.
+
+
+### Notebooks versus Scripts
 
 Notebooks, which usually have the extension `.Rmd`, are the main alternative to
 scripts. Scripts and notebooks are both great ways to store code, and for most
@@ -67,26 +170,574 @@ Scripts also have one big disadvantage compared to notebooks: results must be
 saved and viewed after the script runs, which means you have to plan ahead and
 write some extra code. As a result, we recommend scripts for code you plan to
 reuse or run at the command-line (especially if it will take a long time to
-run), and recommend notebooks for exploratory work. You can read more about how
-to decide in DataLab's [Reproducibility Principles and Practices
-reader][repro-org].
+run), and recommend notebooks for exploratory work.
 
-[repro-org]: https://ucdavisdatalab.github.io/workshop_reproducible_research/chapters/02_core.html#project-organization
 
-This chapter is organized around case studies (@sec-case-study-bart-ridership,
-@sec-case-study-us-fruit-prices) that benefit from many of the practices we
-recommend. At a few points, the narrative branches off from the case study to
-take a closer look at a particular practice or topic in more general terms.
+:::{.callout-note title="See Also"}
+You can read more about how to decide in the [Reproducible
+Computing][rr-guide-code] chapter of the Reproducible Research Guide.
+
+[rr-guide-code]: https://ucdavisdatalab.github.io/guide_reproducible_research/chapters/04_reproducible-computing.html#organize-the-code
+:::
+
+
+### Use Naming Conventions
+
+Before you start writing code, choose conventions for naming variables,
+constants, functions, and other objects. If you're working with a team, make
+sure the entire team is aware of and agrees with the conventions. Documenting
+the conventions in a style guide is often a good idea.
+
+There's no official style guide for R, but the [Tidyverse style
+guide][tidy-style] is likely the most popular unofficial style guide.
+
+[tidy-style]: https://style.tidyverse.org/
+
+:::{.callout-note title="See Also"}
+See the [Reproducible Computing][rr-guide-code] chapter of the Reproducible
+Research Guide for more about how name things in code.
+:::
+
+
+### Avoid `setwd`
+
+When you set the working directory in a script, you typically have to make
+assumptions about where files and directories will be. These assumptions will
+not necessarily hold on other computers or for other users. A simple way to
+make your scripts more robust is to avoid the `setwd` function entirely when
+you write them. Treat `setwd` as a function that should only ever be used
+interactively (that is, typed into the R console).
+
+:::{.callout-note title="See Also"}
+The [here][pkg-here] provides an elegant solution for managing the working
+directory without using `setwd` or making assumptions about the layout of the
+file system.
+
+[pkg-here]: https://here.r-lib.org/
+:::
+
+
+### Make Scripts `source`-friendly
+
+You never know when some code you wrote might be useful in another context or
+might need to be adapted to fit into a larger pipeline. You can ensure your
+code is easy to resuse by writing all of your code in custom functions.
+
+When you write a script, you'll typically want it to do something when you run
+it. On the other hand, you might want to load the functions from a script for
+use elsewhere without actually running the script. The built-in `source`
+function loads and runs an R script.
+
+You can design a script to do something when run from the command line (with
+the `Rscript` command) but not when loaded with `source`. This is the best of
+both worlds: you can use the script as a script or as library of functions. To
+do this, add code like this, called a **guard**, to your script:
+
+```{.r}
+if (sys.nframe() == 0) {
+  # Code to run only when the script runs (e.g., with Rscript)
+}
+```
+
+
+### Handle Repetitive Tasks with Iteration {#sec-iteration-strategies}
+
+R is powerful tool for automating tasks that have repetitive steps. For
+example, you can:
+
+* Apply a transformation to an entire column of data.
+* Compute distances between all pairs from a set of points.
+* Read a large collection of files from disk in order to combine and analyze
+  the data they contain.
+* Simulate how a system evolves over time from a specific set of starting
+  parameters.
+* Scrape data from many pages of a website.
+
+You can implement concise, efficient solutions for these kinds of tasks in R by
+using **iteration**, which means repeating a computation many times. R provides
+multiple strategies for writing iterative code:
+
+1. Vectorization, where a function is implicitly called on each element of a
+   vector. See [this section][vectorization] of DataLab's R Basics reader for
+   more details.
+2. Loops, including map and apply functions, where an expression is evaluated
+   repeatedly until some condition is met. See [this chapter][] of DataLab's R
+   Basics reader for more details.
+3. Recursion, where a function calls itself.
+
+[vectorization]: https://ucdavisdatalab.github.io/workshop_r_basics/chapters/exploring-data/indexing.html#sec-vectorization
+[loops]: https://ucdavisdatalab.github.io/workshop_r_basics/chapters/organizing-code/control-flow.html
+
+Vectorization is the most efficient and most concise iteration strategy, but
+also the least flexible, because it only works with vectorized functions and
+vectors. Loops, map, and apply functions are more flexible---they work with any
+function and any data structure with elements---but less efficient and less
+concise. Recursion tends to be the least efficient iteration strategy in R.
+
+
+### Print or Log Status Information {#sec-printing-output}
+
+Printing out messages is a great way to provide feedback as your code runs, and
+can also help you find and fix bugs. R provides several different functions for
+printing out messages. Choose the one that's most appropriate for your message:
+
+* `message`: This is the primary way to print informational messages in R. It's
+  part of R's **conditions system**, which means other code can detect the
+  message if necessary (for instance, to save it to a file).
+* `warning`: This function prints a warning message. Like `message`, it's part
+  of R's conditions system. Use warnings when you want to warn the user about
+  something, but want the code to keep running.
+* `print`: This function prints out a string representation of an R object,
+  intended for programmers. You can use it to help you fix bugs by printing out
+  variables at various points in your code. Use `message` instead if you just
+  want to print a message to the user.
+* `cat`: This function, whose name stands for "concatenate and print," is a
+  low-level way to print output to the console or a file. The `message`
+  function prints output by calling `cat`, but `cat` is not part of R's
+  conditions system. Use a different function unless you're sure `cat` is
+  necessary.
+
+**Logging** means saving the output from some code to a file as the code runs.
+The file where the output is saved is called a **log file** or log, but this
+name isn't indicative of a specific format (unlike, say, a "CSV file").
+
+It's a good idea to set up some kind of logging for any code that takes more
+than a few minutes to run, because then if something goes wrong you can inspect
+the log to diagnose the problem. Think of any output that's not logged as
+ephemeral: it could disappear if someone reboots the computer, or there's a
+power outage, or some other, unforeseen event.
+
+R's built-in tools for logging are rudimentary, but members of the community
+have developed a variety of packages for logging. Here are a few that are still
+actively maintained as of April 2026:
+
+* [logger][] -- a relatively new package that aims to improve aspects of other
+  logging packages that R users find confusing.
+* [futile.logger][] -- a popular, mature logging package based on Apache's
+  Log4j utility and on R idioms.
+
+[logger]: https://github.com/daroczig/logger
+[futile.logger]: https://github.com/zatonovo/futile.logger
+
+<!--
+* [logging][] -- a mature logging package based on Python's `logging` module.
+* [loggit][] -- integrates with R's conditions system and writes logs in
+  JavaScript Object Notation (JSON) format so they are easy to inspect
+  programmatically.
+* [log4r][] -- another package based on Log4j with an object-oriented
+  programming approach.
+
+[logging]: https://github.com/WLOGSolutions/r-logging
+[loggit]: https://github.com/ryapric/loggit
+[log4r]: https://github.com/johnmyleswhite/log4r
+-->
+
+<!--
+#### The `print` Function
+
+The `print` function prints a **string representation** of an object to the
+console. The string representation is usually formatted in a way that exposes
+details important to programmers rather than users.
+
+For example, when printing a vector, the function prints the position of the
+first element on each line in square brackets `[ ]`:
+
+```{r}
+print(1:100)
+```
+
+The `print` function also prints quotes around strings:
+
+```{r}
+print("Hi")
+```
+
+These features make the `print` function ideal for printing information when
+you're trying to understand some code or diagnose a bug. On the other hand,
+these features also make `print` a bad choice for printing output or status
+messages for users (including you).
+
+R calls the `print` function automatically anytime a result is returned at the
+prompt. Thus it's not necessary to call `print` to print something when you're
+working directly in the console---only from within loops, functions, scripts,
+and other code that runs non-interactively.
+
+The `print` function is an S3 generic (see @sec-s3), so you if you create an S3
+class, you can define a custom print method for it. For S4 objects, R uses the
+S4 generic `show` instead of `print`.
+
+
+#### The `message` Function
+
+To print output for users, the `message` function is the one you should use.
+The main reason for this is that the `message` function is part of R's
+**conditions system** for reporting status information as code runs. This makes
+it easier for other code to detect, record, respond to, or suppress the output
+(see @sec-the-conditions-system to learn more about R's conditions system).
+
+The `message` function prints its argument(s) and a newline to the console:
+
+```{r}
+message("Hello world!")
+```
+
+If an argument isn't a string, the function automatically and silently attempts
+to coerce it to one:
+
+```{r}
+message(4)
+```
+
+Some types of objects can't be coerced to a string:
+
+```{r, error = TRUE}
+message(sqrt)
+```
+
+For objects with multiple elements, the function pastes together the string
+representations of the elements with no separators in between:
+
+```{r}
+x = c(1, 2, 3)
+message(x)
+```
+
+Similarly, if you pass the `message` function multiple arguments, it pastes
+them together with no separators:
+
+```{r}
+name = "R"
+message("Hi, my name is ", name, " and x is ", x)
+```
+
+This is a convenient way to print names or descriptions alongside values from
+your code without having to call a formatting function like `paste`.
+
+You can make the message function print something without adding a newline at
+the end by setting the argument `appendLF = FALSE`. The difference can be easy
+to miss unless you make several calls to `message`, so the `say_hello` function
+in this example calls `message` twice:
+
+```{r}
+say_hello = function(appendLF) {
+  message("Hello", appendLF = appendLF)
+  message(" world!")
+}
+
+say_hello(appendLF = TRUE)
+
+say_hello(appendLF = FALSE)
+```
+
+Note that RStudio always adds a newline in front of the prompt, so making an
+isolated call to `message` with `appendLF = FALSE` appears to produce the same
+output as with `appendLF = TRUE`. This is an example of a situation where
+RStudio leads you astray: in an ordinary R console, the two are clearly
+different.
+
+
+#### The `cat` Function
+
+The `cat` function, whose name stands for "concatenate and print," is a
+low-level way to print output to the console or a file. The `message` function
+prints output by calling `cat`, but `cat` is not part of R's conditions system.
+
+The `cat` function prints its argument(s) to the console. It does not add a
+newline at the end:
+
+```{r}
+cat("Hello")
+```
+
+As with `message`, RStudio hides the fact that there's no newline if you make
+an isolated call to `cat`.
+
+The `cat` function coerces its arguments to strings and concatenates them. By
+default, a space ` ` is inserted between arguments and their elements:
+
+```{r}
+cat(4)
+cat(x)
+cat("Hello", "Nick")
+```
+
+You can set the `sep` parameter to control the separator `cat` inserts:
+
+```{r}
+cat("Hello", "world", x, sep = "|")
+```
+
+If you want to write output to a file rather than to the console, you can call
+`cat` with the `file` parameter set. However, it's preferable to use functions
+tailored to writing specific kinds of data, such as `writeLines` (for text) or
+`write.table` (for tabular data), since they provide additional options to
+control the output.
+
+Many scripts and packages still use `cat` to print output, but the `message`
+function provides more flexibility and control to people running the code. Thus
+it's generally preferable to use `message` in new code. Nevertheless, there are
+a few specific cases where `cat` is useful---for example, if you want to pipe
+data to a UNIX shell command. See `?cat` for details.
+
+
+#### Formatting Output
+
+R provides a variety of ways to format data before you print it. Taking the
+time to format output carefully makes it easier to read and understand, as well
+as making your scripts seem more professional.
+
+##### Escape Sequences
+
+One way to format strings is by adding (or removing) **escape sequences**. An
+escape sequence is a sequence of characters that represents some other
+character, usually one that's invisible (such as whitespace) or doesn't appear
+on a standard keyboard.
+
+In R, escape sequences always begin with a backslash. For example, `\n` is a
+newline. The `message` and `cat` functions automatically convert escape
+sequences to the characters they represent:
+
+```{r}
+x = "Hello\nworld!"
+message(x)
+```
+
+The `print` function doesn't convert escape sequences:
+
+```{r}
+print(x)
+```
+
+Some escape sequences trigger special behavior in the console. For example,
+ending a line with a carriage return `\r` makes the console print the next line
+over the line. Try running this code in a console (it's not possible to see the
+result in a static book):
+
+```{r, eval = FALSE}
+# Run this in an R console.
+for (i in 1:10) {
+  message(i, "\r", appendLF = FALSE)
+  # Wait 0.5 seconds.
+  Sys.sleep(0.5)
+}
+```
+
+You can find a complete list of escape sequences in `?Quotes`.
+
+
+##### Formatting Functions
+
+You can use the `sprintf` function to apply specific formatting to values and
+substitute them into strings. The function uses a mini-language to describe the
+formatting and substitutions. The `sprintf` function (or something like it) is
+available in many programming languages, so being familiar with it will serve
+you well on your programming journey.
+
+The key idea is that substitutions are marked by a percent sign `%` and a
+character. The character indicates the kind of data to be substituted: `s` for
+strings, `i` for integers, `f` for floating point numbers, and so on.
+
+The first argument to `sprintf` must be a string, and subsequent arguments are
+values to substitute into the string (from left to right).  For example:
+
+```{r}
+sprintf("My age is %i, and my name is %s", 32, "Nick")
+```
+
+You can use the mini-language to do things like specify how many digits to
+print after a decimal point. Format settings for a substituted value go between
+the percent sign `%` and the character. For instance, here's how to print `pi`
+with 2 digits after the decimal:
+
+```{r}
+sprintf("%.2f", pi)
+```
+
+You can learn more by reading `?sprintf`.
+
+Much simpler are the `paste` and `paste0` functions, which coerce their
+arguments to strings and concatenate (or "paste together") them. The `paste`
+function inserts a space ` ` between each argument, while the `paste0`
+function doesn't:
+
+```{r}
+paste("Hello", "world")
+paste0("Hello",  "world")
+```
+
+You can control the character inserted between arguments with the `sep`
+parameter.
+
+By setting an argument for the `collapse` parameter, you can also use the
+`paste` and `paste0` functions to concatenate the elements of a vector. The
+argument to `collapse` is inserted between the elements. For example, suppose
+you want to paste together elements of a vector inserting  a comma and space
+`,` in between:
+
+```{r}
+paste(1:3, collapse = ", ")
+```
+
+Members of the R community have developed many packages to make formatting
+strings easier:
+
+* [cli][] -- helper functions for developing command-line interfaces,
+  including functions to add color, progress bars, and more.
+* [glue][] -- alternatives to `sprintf` for string iterpolation.
+* [stringr][] -- a collection of general-purpose string manipulation functions.
+
+[cli]: https://cli.r-lib.org/
+[glue]: https://glue.tidyverse.org/
+[stringr]: https://stringr.tidyverse.org/
+
+
+#### Logging Output
+
+-->
+
+<!--
+
+### Reading Input
+
+This section explains how to make R read inputs from the command line,
+configuration files, and interactive prompts. These kinds of inputs are often
+important for scripts, because they allow for flexibility in initial parameters
+and how run-time events are handled.
+
+
+#### Command Line Arguments
+
+When you run an R script from the command line, you can optionally pass
+additional arguments to the script by putting them after command. Command line
+arguments are a convenient and relatively safe way to set parameters in
+scripts. This is in contrast to editing scripts directly, which may be
+difficult (if the code is complex or disorganized) and may introduce bugs. That
+said, for scripts with lots of parameters, we recommend reading the parameters
+from a configuration file (see @sec-configuration-files) instead or in addition
+to command line arguments.
+
+
+You can capture command line arguments with R's built-in the `commandArgs`
+function or with functions from a variety of packages. By default, the
+`commandArgs` function returns the entire command used to run R, including the
+`Rscript` command and the name of the script. You can get just the arguments
+after the name of the script by setting `trailingOnly = TRUE`. The function
+assumes arguments are space-separated and returns a character vector with one
+element for each argument. As an example, set up a script called
+`hello_name.R`:
+
+```{r, eval = FALSE}
+main = function(
+  args = commandArgs(trailingOnly = TRUE)
+) {
+  if (length(args) < 1)
+    message("Usage: Rscript hello_name.R NAME")
+
+  message("Hello, ", args[[1]], "!")
+}
+
+main()
+```
+
+Try running the script from the command line with this command:
+
+```{.none}
+Rscript hello_name.R Susan
+```
+
+```{r, echo = FALSE}
+main = function(
+  args = commandArgs(trailingOnly = TRUE)
+) {
+  if (length(args) < 1)
+    message("Usage: Rscript hello_name.R NAME")
+
+  message("Hello, ", args[[1]], "!")
+}
+
+main("Susan")
+```
+
+Several packages on [CRAN][] provide functions for more complex processing of
+command line arguments. As of 2024, many of these packages appear to be
+unmaintained or have undesirable dependencies (for example, the [argparse][]
+package depends on Python). One of the more promising packages is [optparse][].
+
+[CRAN]: https://cran.r-project.org/
+[argparse]: https://github.com/trevorld/r-argparse
+[optparse]: https://github.com/trevorld/r-optparse
+
+
+#### Configuration Files {#sec-configuration-files}
+
+When a script has lots of parameters, reading them from a separate
+configuration file is often a good idea. Configuration files are beneficial
+because they provide a record of parameter settings that can be saved
+separately from the code (with command line arguments, it's easy to forget
+which settings you used in earlier runs).
+
+There are many different formats available for configuration files. Two that
+are especially popular are:
+
+* **Yet Another Markup Language** (YAML) -- YAML is a plain text format
+  designed to be easy for people to read. It's widely used in the R community.
+  For instance, R Markdown notebooks typically include a YAML header for
+  settings. The [yaml][r-yaml] package provides functions to read and write
+  YAML files.
+
+* **Tom's Obvious Markup Language** (TOML) -- TOML is also a plain text format
+  designed to be easy for people to read. Compared to YAML, TOML's main
+  advantage is that its syntax is simpler and thus easier to learn. TOML is
+  widely used in other programming communities (especially Python and Rust),
+  but is not yet widely used in the R community. The [RcppTOML][] package
+  provides functions to read TOML files.
+
+[r-yaml]: https://github.com/vubiostat/r-yaml/
+[RcppTOML]: https://github.com/eddelbuettel/rcpptoml
+
+
+#### Prompts
+
+Sometimes it's useful to prompt the user for input while code is running. For
+instance, a script that produces output can prompt the user about what to do if
+the output would overwrite an existing file. You can also use prompts to
+develop interactive programs, which may be more accessible to users unfamiliar
+with programming and command line interfaces.
+
+One way to prompt the user for input is with R's built-in `readline` function.
+The function prompts the user for input and returns whatever they enter as a
+string. Try out the `readline` function in an R prompt:
+
+```{r, eval = FALSE}
+readline()
+```
+
+A more sophisticated way to prompt the user for input is with R's built-in
+`scan` function. The `scan` function attempts to read a specific type of data,
+which you can customize. By default, the function prompts the user for numbers
+and returns when they enter a blank line. The result is a vector with one
+element for each number they entered. Try out the `scan` function in an R
+prompt:
+
+```{r, eval = FALSE}
+result = scan()
+```
+
+You can set the `what` parameter in `scan` to specify the type of data to read.
+For instance, if you want to read strings (into a character vector), set `what
+= character()`:
+
+```{r, eval = FALSE}
+scan(what = character())
+```
+
+The `scan` function has many other parameters, which you can use to control
+things like how many values the user can enter and which values should be
+interpreted as the missing value `NA`.
+-->
 
 
 ## Case Study: BART Ridership {#sec-case-study-bart-ridership}
-
-:::{.callout-important}
-Each time we teach this case study, the result is slightly different. Here are
-some of the scripts from past workshops:
-
-* [2026-02-05](https://github.com/ucdavisdatalab/workshop_intermediate_r/blob/main/R/2026-02-05_clean-bart.R)
-:::
 
 [Bay Area Rapid Transit (BART)][BART] is a passenger heavy rail service that
 connects cities in the greater San Francisco Bay Area. They regularly [publish
@@ -111,6 +762,14 @@ only. Unfortunately, this means that to obtain monthly entry-exit counts before
 2018, you must manually compute them from the monthly averages. In this case
 study, you'll use R to download, read, and reshape the monthly entry-exit
 averages dataset for 2001 to 2008.
+
+:::{.callout-important}
+Each time we teach this case study, the result is slightly different, so we
+don't provide a write-up in this chapter. Instead, here are some of the scripts
+from past workshops:
+
+* [2026-02-05](https://github.com/ucdavisdatalab/workshop_intermediate_r/blob/main/R/2026-02-05_clean-bart.R)
+:::
 
 <!--
 ### Setting Up the Project
@@ -858,819 +1517,3 @@ main()
 This looks almost perfect. There are still a few minor issues with data types,
 and also a small bug (related to frozen juice), but all of these can be fixed
 with small changes to the script.
-
-
-## Managing Environments {#sec-managing-environments}
-
-Your **computing environment** is the collection of hardware and software you
-use to run code. Code developed for one computing environment will not
-necessarily run correctly in another. Scripting languages like R and Python are
-designed to work with a wide variety of hardware, so in the context of these
-languages, software, especially package versions, are the primary cause of
-incompatibility.
-
-Documenting the computing environment your code was designed for is an
-important part of making your research (or other work) reproducible. One way to
-do this is to maintain documentation that lists the specific packages your code
-depends on, with complete version information.
-
-You can get version information about your R environment with the `sessionInfo`
-function:
-
-```{r}
-sessionInfo()
-```
-
-Documentation is often neglected, and it's easy to forget that you updated a
-package, so you might prefer a more automated approach to recording your R
-environment. The [renv][] package provides functions to record and recreate
-environments. See the package documentation for details about how to use the
-package.
-
-[renv]: https://rstudio.github.io/renv/
-
-
-
-
-## Iteration Strategies {#sec-iteration-strategies}
-
-R is powerful tool for automating tasks that have repetitive steps. For
-example, you can:
-
-* Apply a transformation to an entire column of data.
-* Compute distances between all pairs from a set of points.
-* Read a large collection of files from disk in order to combine and analyze
-  the data they contain.
-* Simulate how a system evolves over time from a specific set of starting
-  parameters.
-* Scrape data from many pages of a website.
-
-You can implement concise, efficient solutions for these kinds of tasks in R by
-using **iteration**, which means repeating a computation many times. R provides
-four different strategies for writing iterative code:
-
-1. Vectorization, where a function is implicitly called on each element of a
-   vector. See [this section][vectorization] of DataLab's R Basics reader for
-   more details.
-2. Apply functions, where a function is explicitly called on each element of a
-   vector or array. See [this section][apply-functions] of DataLab's R Basics
-   reader for more details.
-3. Loops, where an expression is evaluated repeatedly until some condition is
-   met.
-4. Recursion, where a function calls itself.
-
-[vectorization]: https://ucdavisdatalab.github.io/workshop_r_basics/data-structures.html#vectorization
-[apply-functions]: https://ucdavisdatalab.github.io/workshop_r_basics/exploring-data.html#apply-functions
-
-Vectorization is the most efficient and most concise iteration strategy, but
-also the least flexible, because it only works with vectorized functions and
-vectors. Apply functions are more flexible---they work with any function and
-any data structure with elements---but less efficient and less concise. Loops
-and recursion provide the most flexibility but are the least concise. In recent
-versions of R, apply functions and loops are similar in terms of efficiency.
-Recursion tends to be the least efficient iteration strategy in R.
-
-The rest of this section explains how to write loops and how to choose which
-iteration strategy to use. We assume you're already comfortable with
-vectorization and have at least some familiarity with apply functions.
-
-
-### For-loops {#sec-for-loops}
-
-A **for-loop** evaluates an expression once for each element of a vector or
-list. The `for` keyword creates a for-loop. The syntax is:
-
-```{r, eval = FALSE}
-for (I in DATA) {
-  # Your code goes here
-}
-```
-
-The variable `I` is called an **induction variable**. At the beginning of each
-iteration, `I` is assigned the next element of `DATA`. The loop iterates once
-for each element, unless a keyword instructs R to exit the loop early (more
-about this in @section-break-next). As with if-statements and functions, the
-curly braces `{ }` are only required if the body contains multiple lines of
-code. Here's a simple for-loop:
-
-```{r}
-for (i in 1:10)
-  message("Hi from iteration  ", i)
-```
-
-When some or all of the iterations in a task depend on results from prior
-iterations, loops tend to be the most appropriate iteration strategy. For
-instance, loops are a good way to implement time-based simulations or compute
-values in recursively defined sequences.
-
-As a concrete example, suppose you want to compute the result of starting from
-the value 1 and composing the sine function 100 times:
-
-```{r}
-result = 1
-for (i in 1:100) {
-  result = sin(result)
-}
-
-result
-```
-
-Unlike other iteration strategies, loops don't return a result automatically.
-It's up to you to use variables to store any results you want to use later. If
-you want to save a result from every iteration, you can use a vector or a list
-indexed on the iteration number:
-
-```{r}
-n = 1 + 100
-result = numeric(n)
-result[1] = 1
-for (i in 2:n) {
-  result[i] = sin(result[i - 1])
-}
-
-plot(result)
-```
-
-@sec-saving-multiple-results explains this in more detail.
-
-If the iterations in a task are not dependent, it's preferable to use
-vectorization or apply functions instead of a loop. Vectorization is more
-efficient, and apply functions are usually more concise.
-
-In some cases, you can use vectorization to handle a task even if the
-iterations are dependent. For example, you can use vectorized exponentiation
-and the `sum` function to compute the sum of the cubes of many numbers:
-
-```{r}
-numbers = c(10, 3, 100, -5, 2, 10)
-sum(numbers^3)
-```
-
-
-### While-loops
-
-A **while-loop** runs a block of code repeatedly as long as some condition is
-`TRUE`. The `while` keyword creates a while-loop. The syntax is:
-
-```{r, eval = FALSE}
-while (CONDITION) {
-  # Your code goes here
-}
-```
-
-The `CONDITION` should be a scalar logical value or an expression that returns
-one. At the beginning of each iteration, R checks the `CONDITION` and exits the
-loop if it's `FALSE`. As always, the curly braces `{ }` are only required if
-the body contains multiple lines of code. Here's a simple while-loop:
-
-```{r}
-i = 0
-while (i < 10) {
-  i = i + 1
-  message("Hello from iteration ", i)
-}
-```
-
-Notice that this example does the same thing as the simple for-loop in
-@sec-for-loops, but requires 5 lines of code instead of 2. While-loops are a
-generalization of for-loops, and only do the bare minimum necessary to iterate.
-They tend to be most useful when you don't know how many iterations will be
-necessary to complete a task.
-
-As an example, suppose you want to add up the integers in order until the total
-is greater than 50:
-
-```{r}
-total = 0
-i = 1
-while (total < 50) {
-  total = total + i
-  message("i is ", i, " total is ", total)
-  i = i + 1
-}
-
-total
-i
-```
-
-
-### Saving Multiple Results {#sec-saving-multiple-results}
-
-Loops often produce a different result for each iteration. If you want to save
-more than one result, there are a few things you must do.
-
-First, set up an index vector. The index vector should usually correspond to
-the positions of the elements in the data you want to process. The `seq_along`
-function returns an index vector when passed a vector or list. For instance:
-
-```{r}
-numbers = c(-1, 21, 3, -8, 5)
-index = seq_along(numbers)
-```
-
-The loop will iterate over the index rather than the input, so the induction
-variable will track the current iteration number. On the first iteration, the
-induction variable will be 1, on the second it will be 2, and so on. Then you
-can use the induction variable and indexing to get the input for each
-iteration.
-
-Second, set up an empty output vector or list. This should usually also
-correspond to the input, or one element longer (the extra element comes from
-the initial value). R has several functions for creating vectors:
-
-* `logical`, `integer`, `numeric`, `complex`, and `character` create an empty
-  vector with a specific type and length
-
-* `vector` creates an empty vector with a specific type and length
-
-* `rep` creates a vector by repeating elements of some other vector
-
-Empty vectors are filled with `FALSE`, `0`, or `""`, depending on the type of
-the vector. Here are some examples:
-
-```{r}
-logical(3)
-numeric(4)
-rep(c(1, 2), 2)
-```
-
-Let's create an empty numeric vector congruent to the `numbers` vector:
-
-```{r}
-n = length(numbers)
-result = numeric(n)
-```
-
-As with the input, you can use the induction variable and indexing to set the
-output for each iteration.
-
-Creating a vector or list in advance to store something, as we've just done, is
-called **preallocation**. Preallocation is extremely important for efficiency
-in loops. Avoid the temptation to use `c` or `append` to build up the output
-bit by bit in each iteration.
-
-Finally, write the loop, making sure to get the input and set the output. As an
-example, this loop adds each element of `numbers` to a running total and
-squares the new running total:
-
-```{r}
-for (i in index) {
-  prev = if (i > 1) result[i - 1] else 0
-  result[i] = (numbers[i] + prev)^2
-}
-result
-```
-
-
-### Break & Next {#section-break-next}
-
-The `break` keyword causes a loop to immediately exit. It only makes sense to
-use `break` inside of an if-statement.
-
-For example, suppose you want to print each string in a vector, but stop at the
-first missing value. You can do this with a for-loop and the `break` keyword:
-
-```{r}
-my_messages = c("Hi", "Hello", NA, "Goodbye")
-
-for (msg in my_messages) {
-  if (is.na(msg))
-    break
-
-  message(msg)
-}
-```
-
-The `next` keyword causes a loop to immediately go to the next iteration. As
-with `break`, it only makes sense to use `next` inside of an if-statement.
-
-Let's modify the previous example so that missing values are skipped, but don't
-cause printing to stop. Here's the code:
-
-```{r}
-for (msg in my_messages) {
-  if (is.na(msg))
-    next
-
-  message(msg)
-}
-```
-
-These keywords work with both for-loops and while-loops.
-
-
-### Planning for Iteration
-
-At first it may seem difficult to decide if and what kind of iteration to use.
-Start by thinking about whether you need to do something over and over. If you
-don't, then you probably don't need to use iteration. If you do, then try
-iteration strategies in this order:
-
-1. Vectorization
-2. Apply functions
-    * Try an apply function if iterations are independent.
-3. Loops
-    * Try a for-loop if some iterations depend on others.
-    * Try a while-loop if the number of iterations is unknown.
-4. Recursion (which isn't covered here)
-    * Convenient for naturally recursive tasks (like Fibonacci),
-      but often there are faster solutions.
-
-
-Start by writing the code for just one iteration. Make sure that code works;
-it's easy to test code for one iteration.
-
-When you have one iteration working, then try using the code with an iteration
-strategy (you will have to make some small changes). If it doesn't work, try to
-figure out which iteration is causing the problem. One way to do this is to use
-`message` to print out information. Then try to write the code for the broken
-iteration, get that iteration working, and repeat this whole process.
-
-
-### Case Study: The Collatz Conjecture
-
-The [Collatz Conjecture][collatz] is a conjecture in math that was introduced
-in 1937 by Lothar Collatz and remains unproven today, despite being relatively
-easy to explain. Here's a statement of the conjecture:
-
-[collatz]: https://en.wikipedia.org/wiki/Collatz_conjecture
-
-> Start from any positive integer. If the integer is even, divide by 2. If the
-> integer is odd, multiply by 3 and add 1.
->
-> If the result is not 1, repeat using the result as the new starting value.
->
-> The result will always reach 1 eventually, regardless of the starting value.
-
-The sequences of numbers this process generates are called **Collatz
-sequences**. For instance, the Collatz sequence starting from 2 is `2, 1`. The
-Collatz sequence starting from 12 is `12, 6, 3, 10, 5, 16, 8, 4, 2, 1`.
-
-You can use iteration to compute the Collatz sequence for a given starting
-value. Since each number in the sequence depends on the previous one, and since
-the length of the sequence varies, a while-loop is the most appropriate
-iteration strategy:
-
-```{r}
-n = 5
-i = 0
-while (n != 1) {
-  i = i + 1
-  if (n %% 2 == 0) {
-    n = n / 2
-  } else {
-    n = 3 * n + 1
-  }
-  message(n, " ", appendLF = FALSE)
-}
-```
-
-As of 2020, scientists have used computers to check the Collatz sequences for
-every number up to approximately $2^{64}$. For more details about the Collatz
-Conjecture, check out [this video][collatz-video].
-
-[collatz-video]: https://www.youtube.com/watch?v=094y1Z2wpJg
-
-For another example, see Liza Wood's [Real-world Function Writing
-Mini-reader][liza-reader].
-
-[liza-reader]: https://d-rug.github.io/realworld_functions_iteration/
-
-
-## Printing Output {#sec-printing-output}
-
-This section introduces several different functions for printing output and
-making that output easier to read.
-
-
-### The `print` Function
-
-The `print` function prints a **string representation** of an object to the
-console. The string representation is usually formatted in a way that exposes
-details important to programmers rather than users.
-
-For example, when printing a vector, the function prints the position of the
-first element on each line in square brackets `[ ]`:
-
-```{r}
-print(1:100)
-```
-
-The `print` function also prints quotes around strings:
-
-```{r}
-print("Hi")
-```
-
-These features make the `print` function ideal for printing information when
-you're trying to understand some code or diagnose a bug. On the other hand,
-these features also make `print` a bad choice for printing output or status
-messages for users (including you).
-
-R calls the `print` function automatically anytime a result is returned at the
-prompt. Thus it's not necessary to call `print` to print something when you're
-working directly in the console---only from within loops, functions, scripts,
-and other code that runs non-interactively.
-
-The `print` function is an S3 generic (see @sec-s3), so you if you create an S3
-class, you can define a custom print method for it. For S4 objects, R uses the
-S4 generic `show` instead of `print`.
-
-
-### The `message` Function
-
-To print output for users, the `message` function is the one you should use.
-The main reason for this is that the `message` function is part of R's
-**conditions system** for reporting status information as code runs. This makes
-it easier for other code to detect, record, respond to, or suppress the output
-(see @sec-the-conditions-system to learn more about R's conditions system).
-
-The `message` function prints its argument(s) and a newline to the console:
-
-```{r}
-message("Hello world!")
-```
-
-If an argument isn't a string, the function automatically and silently attempts
-to coerce it to one:
-
-```{r}
-message(4)
-```
-
-Some types of objects can't be coerced to a string:
-
-```{r, error = TRUE}
-message(sqrt)
-```
-
-For objects with multiple elements, the function pastes together the string
-representations of the elements with no separators in between:
-
-```{r}
-x = c(1, 2, 3)
-message(x)
-```
-
-Similarly, if you pass the `message` function multiple arguments, it pastes
-them together with no separators:
-
-```{r}
-name = "R"
-message("Hi, my name is ", name, " and x is ", x)
-```
-
-This is a convenient way to print names or descriptions alongside values from
-your code without having to call a formatting function like `paste`.
-
-You can make the message function print something without adding a newline at
-the end by setting the argument `appendLF = FALSE`. The difference can be easy
-to miss unless you make several calls to `message`, so the `say_hello` function
-in this example calls `message` twice:
-
-```{r}
-say_hello = function(appendLF) {
-  message("Hello", appendLF = appendLF)
-  message(" world!")
-}
-
-say_hello(appendLF = TRUE)
-
-say_hello(appendLF = FALSE)
-```
-
-Note that RStudio always adds a newline in front of the prompt, so making an
-isolated call to `message` with `appendLF = FALSE` appears to produce the same
-output as with `appendLF = TRUE`. This is an example of a situation where
-RStudio leads you astray: in an ordinary R console, the two are clearly
-different.
-
-
-### The `cat` Function
-
-The `cat` function, whose name stands for "concatenate and print," is a
-low-level way to print output to the console or a file. The `message` function
-prints output by calling `cat`, but `cat` is not part of R's conditions system.
-
-The `cat` function prints its argument(s) to the console. It does not add a
-newline at the end:
-
-```{r}
-cat("Hello")
-```
-
-As with `message`, RStudio hides the fact that there's no newline if you make
-an isolated call to `cat`.
-
-The `cat` function coerces its arguments to strings and concatenates them. By
-default, a space ` ` is inserted between arguments and their elements:
-
-```{r}
-cat(4)
-cat(x)
-cat("Hello", "Nick")
-```
-
-You can set the `sep` parameter to control the separator `cat` inserts:
-
-```{r}
-cat("Hello", "world", x, sep = "|")
-```
-
-If you want to write output to a file rather than to the console, you can call
-`cat` with the `file` parameter set. However, it's preferable to use functions
-tailored to writing specific kinds of data, such as `writeLines` (for text) or
-`write.table` (for tabular data), since they provide additional options to
-control the output.
-
-Many scripts and packages still use `cat` to print output, but the `message`
-function provides more flexibility and control to people running the code. Thus
-it's generally preferable to use `message` in new code. Nevertheless, there are
-a few specific cases where `cat` is useful---for example, if you want to pipe
-data to a UNIX shell command. See `?cat` for details.
-
-
-### Formatting Output
-
-R provides a variety of ways to format data before you print it. Taking the
-time to format output carefully makes it easier to read and understand, as well
-as making your scripts seem more professional.
-
-#### Escape Sequences
-
-One way to format strings is by adding (or removing) **escape sequences**. An
-escape sequence is a sequence of characters that represents some other
-character, usually one that's invisible (such as whitespace) or doesn't appear
-on a standard keyboard.
-
-In R, escape sequences always begin with a backslash. For example, `\n` is a
-newline. The `message` and `cat` functions automatically convert escape
-sequences to the characters they represent:
-
-```{r}
-x = "Hello\nworld!"
-message(x)
-```
-
-The `print` function doesn't convert escape sequences:
-
-```{r}
-print(x)
-```
-
-Some escape sequences trigger special behavior in the console. For example,
-ending a line with a carriage return `\r` makes the console print the next line
-over the line. Try running this code in a console (it's not possible to see the
-result in a static book):
-
-```{r, eval = FALSE}
-# Run this in an R console.
-for (i in 1:10) {
-  message(i, "\r", appendLF = FALSE)
-  # Wait 0.5 seconds.
-  Sys.sleep(0.5)
-}
-```
-
-You can find a complete list of escape sequences in `?Quotes`.
-
-
-#### Formatting Functions
-
-You can use the `sprintf` function to apply specific formatting to values and
-substitute them into strings. The function uses a mini-language to describe the
-formatting and substitutions. The `sprintf` function (or something like it) is
-available in many programming languages, so being familiar with it will serve
-you well on your programming journey.
-
-The key idea is that substitutions are marked by a percent sign `%` and a
-character. The character indicates the kind of data to be substituted: `s` for
-strings, `i` for integers, `f` for floating point numbers, and so on.
-
-The first argument to `sprintf` must be a string, and subsequent arguments are
-values to substitute into the string (from left to right).  For example:
-
-```{r}
-sprintf("My age is %i, and my name is %s", 32, "Nick")
-```
-
-You can use the mini-language to do things like specify how many digits to
-print after a decimal point. Format settings for a substituted value go between
-the percent sign `%` and the character. For instance, here's how to print `pi`
-with 2 digits after the decimal:
-
-```{r}
-sprintf("%.2f", pi)
-```
-
-You can learn more by reading `?sprintf`.
-
-Much simpler are the `paste` and `paste0` functions, which coerce their
-arguments to strings and concatenate (or "paste together") them. The `paste`
-function inserts a space ` ` between each argument, while the `paste0`
-function doesn't:
-
-```{r}
-paste("Hello", "world")
-paste0("Hello",  "world")
-```
-
-You can control the character inserted between arguments with the `sep`
-parameter.
-
-By setting an argument for the `collapse` parameter, you can also use the
-`paste` and `paste0` functions to concatenate the elements of a vector. The
-argument to `collapse` is inserted between the elements. For example, suppose
-you want to paste together elements of a vector inserting  a comma and space
-`,` in between:
-
-```{r}
-paste(1:3, collapse = ", ")
-```
-
-Members of the R community have developed many packages to make formatting
-strings easier:
-
-* [cli][] -- helper functions for developing command-line interfaces,
-  including functions to add color, progress bars, and more.
-* [glue][] -- alternatives to `sprintf` for string iterpolation.
-* [stringr][] -- a collection of general-purpose string manipulation functions.
-
-[cli]: https://cli.r-lib.org/
-[glue]: https://glue.tidyverse.org/
-[stringr]: https://stringr.tidyverse.org/
-
-
-### Logging Output
-
-**Logging** means saving the output from some code to a file as the code runs.
-The file where the output is saved is called a **log file** or log, but this
-name isn't indicative of a specific format (unlike, say, a "CSV file").
-
-It's a good idea to set up some kind of logging for any code that takes more
-than a few minutes to run, because then if something goes wrong you can inspect
-the log to diagnose the problem. Think of any output that's not logged as
-ephemeral: it could disappear if someone reboots the computer, or there's a
-power outage, or some other, unforeseen event.
-
-R's built-in tools for logging are rudimentary, but members of the community
-have developed a variety of packages for logging. Here are a few that are still
-actively maintained as of January 2023:
-
-* [logger][] -- a relatively new package that aims to improve aspects of other
-  logging packages that R users find confusing.
-* [futile.logger][] -- a popular, mature logging package based on Apache's
-  Log4j utility and on R idioms.
-* [logging][] -- a mature logging package based on Python's `logging` module.
-* [loggit][] -- integrates with R's conditions system and writes logs in
-  JavaScript Object Notation (JSON) format so they are easy to inspect
-  programmatically.
-* [log4r][] -- another package based on Log4j with an object-oriented
-  programming approach.
-
-[futile.logger]: https://github.com/zatonovo/futile.logger
-[logging]: https://github.com/WLOGSolutions/r-logging
-[loggit]: https://github.com/ryapric/loggit
-[logger]: https://github.com/daroczig/logger
-[log4r]: https://github.com/johnmyleswhite/log4r
-
-
-## Reading Input
-
-This section explains how to make R read inputs from the command line,
-configuration files, and interactive prompts. These kinds of inputs are often
-important for scripts, because they allow for flexibility in initial parameters
-and how run-time events are handled.
-
-
-### Command Line Arguments
-
-When you run an R script from the command line, you can optionally pass
-additional arguments to the script by putting them after command. Command line
-arguments are a convenient and relatively safe way to set parameters in
-scripts. This is in contrast to editing scripts directly, which may be
-difficult (if the code is complex or disorganized) and may introduce bugs. That
-said, for scripts with lots of parameters, we recommend reading the parameters
-from a configuration file (see @sec-configuration-files) instead or in addition
-to command line arguments.
-
-
-You can capture command line arguments with R's built-in the `commandArgs`
-function or with functions from a variety of packages. By default, the
-`commandArgs` function returns the entire command used to run R, including the
-`Rscript` command and the name of the script. You can get just the arguments
-after the name of the script by setting `trailingOnly = TRUE`. The function
-assumes arguments are space-separated and returns a character vector with one
-element for each argument. As an example, set up a script called
-`hello_name.R`:
-
-```{r, eval = FALSE}
-main = function(
-  args = commandArgs(trailingOnly = TRUE)
-) {
-  if (length(args) < 1)
-    message("Usage: Rscript hello_name.R NAME")
-
-  message("Hello, ", args[[1]], "!")
-}
-
-main()
-```
-
-Try running the script from the command line with this command:
-
-```
-Rscript hello_name.R Susan
-```
-
-```{r, echo = FALSE}
-main = function(
-  args = commandArgs(trailingOnly = TRUE)
-) {
-  if (length(args) < 1)
-    message("Usage: Rscript hello_name.R NAME")
-
-  message("Hello, ", args[[1]], "!")
-}
-
-main("Susan")
-```
-
-Several packages on [CRAN][] provide functions for more complex processing of
-command line arguments. As of 2024, many of these packages appear to be
-unmaintained or have undesirable dependencies (for example, the [argparse][]
-package depends on Python). One of the more promising packages is [optparse][].
-
-[CRAN]: https://cran.r-project.org/
-[argparse]: https://github.com/trevorld/r-argparse
-[optparse]: https://github.com/trevorld/r-optparse
-
-
-### Configuration Files {#sec-configuration-files}
-
-When a script has lots of parameters, reading them from a separate
-configuration file is often a good idea. Configuration files are beneficial
-because they provide a record of parameter settings that can be saved
-separately from the code (with command line arguments, it's easy to forget
-which settings you used in earlier runs).
-
-There are many different formats available for configuration files. Two that
-are especially popular are:
-
-* **Yet Another Markup Language** (YAML) -- YAML is a plain text format
-  designed to be easy for people to read. It's widely used in the R community.
-  For instance, R Markdown notebooks typically include a YAML header for
-  settings. The [yaml][r-yaml] package provides functions to read and write
-  YAML files.
-
-* **Tom's Obvious Markup Language** (TOML) -- TOML is also a plain text format
-  designed to be easy for people to read. Compared to YAML, TOML's main
-  advantage is that its syntax is simpler and thus easier to learn. TOML is
-  widely used in other programming communities (especially Python and Rust),
-  but is not yet widely used in the R community. The [RcppTOML][] package
-  provides functions to read TOML files.
-
-[r-yaml]: https://github.com/vubiostat/r-yaml/
-[RcppTOML]: https://github.com/eddelbuettel/rcpptoml
-
-
-### Prompts
-
-Sometimes it's useful to prompt the user for input while code is running. For
-instance, a script that produces output can prompt the user about what to do if
-the output would overwrite an existing file. You can also use prompts to
-develop interactive programs, which may be more accessible to users unfamiliar
-with programming and command line interfaces.
-
-One way to prompt the user for input is with R's built-in `readline` function.
-The function prompts the user for input and returns whatever they enter as a
-string. Try out the `readline` function in an R prompt:
-
-```{r, eval = FALSE}
-readline()
-```
-
-A more sophisticated way to prompt the user for input is with R's built-in
-`scan` function. The `scan` function attempts to read a specific type of data,
-which you can customize. By default, the function prompts the user for numbers
-and returns when they enter a blank line. The result is a vector with one
-element for each number they entered. Try out the `scan` function in an R
-prompt:
-
-```{r, eval = FALSE}
-result = scan()
-```
-
-You can set the `what` parameter in `scan` to specify the type of data to read.
-For instance, if you want to read strings (into a character vector), set `what
-= character()`:
-
-```{r, eval = FALSE}
-scan(what = character())
-```
-
-The `scan` function has many other parameters, which you can use to control
-things like how many values the user can enter and which values should be
-interpreted as the missing value `NA`.
-
-
